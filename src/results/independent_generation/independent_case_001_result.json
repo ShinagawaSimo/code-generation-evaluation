@@ -1,0 +1,215 @@
+{
+  "instance_id": "ind-001",
+  "repo": "independent/local",
+  "version": "v0.1.0",
+  "task_type": "independent_function_development",
+  "language": "Python",
+  "task_original_statement": "Write a program that reads a list of integers and outputs them in ascending order using bubble sort.",
+  "is_original_task": true,
+  "task_revision_statement": "",
+  "input_direct": {
+    "prompt": "Read N followed by N integers from stdin and output the sorted sequence separated by spaces.",
+    "provided_code": [],
+    "instructions": [
+      "Use bubble sort.",
+      "Output exactly one line."
+    ]
+  },
+  "input_indirect": {
+    "repo_context": [],
+    "external_knowledge": []
+  },
+  "expected_output": {},
+  "tangling_level_input": 0,
+  "scattering_level_input": 0,
+  "scale_level_input": 0,
+  "domain_knowledge_dependence_input": 0,
+  "number_of_multimodal_input": 0,
+  "tangling_level_output": 0,
+  "scattering_level_output": 0,
+  "scale_level_output": 0,
+  "number_of_multimodal_output": 0,
+  "comprehensive_difficulty_level": 1,
+  "base_commit": "",
+  "patch": "",
+  "test_setup_id": "local-py",
+  "hints_text": "",
+  "model_input": {
+    "task_description": "Read N followed by N integers from stdin and output them in ascending order using bubble sort. Output exactly one line with numbers separated by spaces.",
+    "reference_samples": [
+      {
+        "input": "5\n5 1 4 2 8\n",
+        "expected_output": "1 2 4 5 8"
+      },
+      {
+        "input": "3\n3 2 1\n",
+        "expected_output": "1 2 3"
+      }
+    ],
+    "code_skeleton": "",
+    "tool_context": {
+      "repo_root": ".",
+      "allowed_tools": [
+        "ls",
+        "find",
+        "rg",
+        "cat",
+        "head",
+        "tail",
+        "nl",
+        "wc",
+        "touch",
+        "mkdir",
+        "sed"
+      ]
+    }
+  },
+  "tags": [],
+  "metrics_config": {
+    "build_weight": 1.0,
+    "sample_tests_weight": 1.0,
+    "process_weight": 0.5,
+    "max_response_time_ms": 30000,
+    "max_token_usage": 2000,
+    "max_cost_usd": 0.5
+  },
+  "run_records": {
+    "tool_trace": [
+      {
+        "tool": "ls",
+        "input": ".",
+        "output": ".git\n.gitignore\nartifacts\nconfig\ndocs\nprompt_example.md\nsrc"
+      },
+      {
+        "tool": "ls",
+        "input": ".",
+        "output": ".git\n.gitignore\nartifacts\nconfig\ndocs\nprompt_example.md\nsrc"
+      },
+      {
+        "tool": "find",
+        "input": ". -type f -name \"*\"",
+        "output": ".git\\HEAD\n.git\\config\n.git\\description\n.git\\hooks\\applypatch-msg.sample\n.git\\hooks\\commit-msg.sample\n.git\\hooks\\fsmonitor-watchman.sample\n.git\\hooks\\post-update.sample\n.git\\hooks\\pre-applypatch.sample\n.git\\hooks\\pre-commit.sample\n.git\\hooks\\pre-merge-commit.sample\n.git\\hooks\\pre-push.sample\n.git\\hooks\\pre-rebase.sample\n.git\\hooks\\pre-receive.sample\n.git\\hooks\\prepare-commit-msg.sample\n.git\\hooks\\push-to-checkout.sample\n.git\\hooks\\sendemail-validate.sample\n.git\\hooks\\update.sample\n.git\\info\\exclude\n.gitignore\nconfig\\eval_pipeline.json\nconfig\\model_api.json\nconfig\\run_cases.json\ndocs\\en\\codegen_eval_project.md\ndocs\\en\\content_generation_eval_flow.md\ndocs\\en\\content_generation_eval_schema.md\ndocs\\en\\independent_gen_eval_flow.md\ndocs\\prompt_zh\\independent_gen_prompt_ZH.txt\ndocs\\zh\\codegen_eval_project_ZH.md\ndocs\\zh\\content_generation_eval_schema_ZH.md\ndocs\\zh\\independent_gen_eval_flow_ZH.md\ndocs\\文档\\20260312-o.pptx\ndocs\\文档\\智能编码评测任务数据集构建基本框架-0305.docx\nprompt_example.md\nsrc\\cases\\independent_generation\\independent_case_001.json\nsrc\\cases\\independent_generation\\model_input_template.json\nsrc\\cases\\independent_generation\\standard_answer_template.json\nsrc\\content_generation_eval_sample.json\nsrc\\data_process\\__pycache__\\build_tools.cpython-312.pyc\nsrc\\data_process\\__pycache__\\data_io.cpython-312.pyc\nsrc\\data_process\\__pycache__\\execution.cpython-312.pyc\nsrc\\data_process\\build_tools.py\nsrc\\data_process\\data_io.py\nsrc\\data_process\\execution.py\nsrc\\eval_core\\__init__.py\nsrc\\eval_core\\__pycache__\\__init__.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\metrics.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\model_client.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\models.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\pipeline.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\registry.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\runner.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_input.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_scoring.cpython-312.pyc\nsrc\\eval_core\\metrics.py\nsrc\\eval_core\\model_client.py\nsrc\\eval_core\\models.py\nsrc\\eval_core\\pipeline.py\nsrc\\eval_core\\registry.py\nsrc\\eval_core\\runner.py\nsrc\\eval_core\\steps_input.py\nsrc\\eval_core\\steps_scoring.py\nsrc\\prompts\\content_generation_prompt.txt\nsrc\\results\\independent_generation\\independent_case_001_result.json\nsrc\\run_evaluation.py"
+      },
+      {
+        "tool": "find",
+        "input": ". -type f -name \"*\"",
+        "output": ".git\\HEAD\n.git\\config\n.git\\description\n.git\\hooks\\applypatch-msg.sample\n.git\\hooks\\commit-msg.sample\n.git\\hooks\\fsmonitor-watchman.sample\n.git\\hooks\\post-update.sample\n.git\\hooks\\pre-applypatch.sample\n.git\\hooks\\pre-commit.sample\n.git\\hooks\\pre-merge-commit.sample\n.git\\hooks\\pre-push.sample\n.git\\hooks\\pre-rebase.sample\n.git\\hooks\\pre-receive.sample\n.git\\hooks\\prepare-commit-msg.sample\n.git\\hooks\\push-to-checkout.sample\n.git\\hooks\\sendemail-validate.sample\n.git\\hooks\\update.sample\n.git\\info\\exclude\n.gitignore\nconfig\\eval_pipeline.json\nconfig\\model_api.json\nconfig\\run_cases.json\ndocs\\en\\codegen_eval_project.md\ndocs\\en\\content_generation_eval_flow.md\ndocs\\en\\content_generation_eval_schema.md\ndocs\\en\\independent_gen_eval_flow.md\ndocs\\prompt_zh\\independent_gen_prompt_ZH.txt\ndocs\\zh\\codegen_eval_project_ZH.md\ndocs\\zh\\content_generation_eval_schema_ZH.md\ndocs\\zh\\independent_gen_eval_flow_ZH.md\ndocs\\文档\\20260312-o.pptx\ndocs\\文档\\智能编码评测任务数据集构建基本框架-0305.docx\nprompt_example.md\nsrc\\cases\\independent_generation\\independent_case_001.json\nsrc\\cases\\independent_generation\\model_input_template.json\nsrc\\cases\\independent_generation\\standard_answer_template.json\nsrc\\content_generation_eval_sample.json\nsrc\\data_process\\__pycache__\\build_tools.cpython-312.pyc\nsrc\\data_process\\__pycache__\\data_io.cpython-312.pyc\nsrc\\data_process\\__pycache__\\execution.cpython-312.pyc\nsrc\\data_process\\build_tools.py\nsrc\\data_process\\data_io.py\nsrc\\data_process\\execution.py\nsrc\\eval_core\\__init__.py\nsrc\\eval_core\\__pycache__\\__init__.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\metrics.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\model_client.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\models.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\pipeline.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\registry.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\runner.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_input.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_scoring.cpython-312.pyc\nsrc\\eval_core\\metrics.py\nsrc\\eval_core\\model_client.py\nsrc\\eval_core\\models.py\nsrc\\eval_core\\pipeline.py\nsrc\\eval_core\\registry.py\nsrc\\eval_core\\runner.py\nsrc\\eval_core\\steps_input.py\nsrc\\eval_core\\steps_scoring.py\nsrc\\prompts\\content_generation_prompt.txt\nsrc\\results\\independent_generation\\independent_case_001_result.json\nsrc\\run_evaluation.py"
+      },
+      {
+        "tool": "cat",
+        "input": "./README.md",
+        "output": "ERROR: file_not_found"
+      },
+      {
+        "tool": "cat",
+        "input": "./README.md",
+        "output": "ERROR: file_not_found"
+      },
+      {
+        "tool": "ls",
+        "input": ".",
+        "output": ".git\n.gitignore\nartifacts\nconfig\ndocs\nprompt_example.md\nsrc"
+      },
+      {
+        "tool": "find",
+        "input": ". -type f -name \"*\"",
+        "output": ".git\\HEAD\n.git\\config\n.git\\description\n.git\\hooks\\applypatch-msg.sample\n.git\\hooks\\commit-msg.sample\n.git\\hooks\\fsmonitor-watchman.sample\n.git\\hooks\\post-update.sample\n.git\\hooks\\pre-applypatch.sample\n.git\\hooks\\pre-commit.sample\n.git\\hooks\\pre-merge-commit.sample\n.git\\hooks\\pre-push.sample\n.git\\hooks\\pre-rebase.sample\n.git\\hooks\\pre-receive.sample\n.git\\hooks\\prepare-commit-msg.sample\n.git\\hooks\\push-to-checkout.sample\n.git\\hooks\\sendemail-validate.sample\n.git\\hooks\\update.sample\n.git\\info\\exclude\n.gitignore\nconfig\\eval_pipeline.json\nconfig\\model_api.json\nconfig\\run_cases.json\ndocs\\en\\codegen_eval_project.md\ndocs\\en\\content_generation_eval_flow.md\ndocs\\en\\content_generation_eval_schema.md\ndocs\\en\\independent_gen_eval_flow.md\ndocs\\prompt_zh\\independent_gen_prompt_ZH.txt\ndocs\\zh\\codegen_eval_project_ZH.md\ndocs\\zh\\content_generation_eval_schema_ZH.md\ndocs\\zh\\independent_gen_eval_flow_ZH.md\ndocs\\文档\\20260312-o.pptx\ndocs\\文档\\智能编码评测任务数据集构建基本框架-0305.docx\nprompt_example.md\nsrc\\cases\\independent_generation\\independent_case_001.json\nsrc\\cases\\independent_generation\\model_input_template.json\nsrc\\cases\\independent_generation\\standard_answer_template.json\nsrc\\content_generation_eval_sample.json\nsrc\\data_process\\__pycache__\\build_tools.cpython-312.pyc\nsrc\\data_process\\__pycache__\\data_io.cpython-312.pyc\nsrc\\data_process\\__pycache__\\execution.cpython-312.pyc\nsrc\\data_process\\build_tools.py\nsrc\\data_process\\data_io.py\nsrc\\data_process\\execution.py\nsrc\\eval_core\\__init__.py\nsrc\\eval_core\\__pycache__\\__init__.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\metrics.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\model_client.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\models.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\pipeline.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\registry.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\runner.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_input.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_scoring.cpython-312.pyc\nsrc\\eval_core\\metrics.py\nsrc\\eval_core\\model_client.py\nsrc\\eval_core\\models.py\nsrc\\eval_core\\pipeline.py\nsrc\\eval_core\\registry.py\nsrc\\eval_core\\runner.py\nsrc\\eval_core\\steps_input.py\nsrc\\eval_core\\steps_scoring.py\nsrc\\prompts\\content_generation_prompt.txt\nsrc\\results\\independent_generation\\independent_case_001_result.json\nsrc\\run_evaluation.py"
+      },
+      {
+        "tool": "cat",
+        "input": "./README.md",
+        "output": "ERROR: file_not_found"
+      },
+      {
+        "tool": "ls",
+        "input": ".",
+        "output": ".git\n.gitignore\nartifacts\nconfig\ndocs\nprompt_example.md\nsrc"
+      },
+      {
+        "tool": "find",
+        "input": ". -type f -name \"*\"",
+        "output": ".git\\HEAD\n.git\\config\n.git\\description\n.git\\hooks\\applypatch-msg.sample\n.git\\hooks\\commit-msg.sample\n.git\\hooks\\fsmonitor-watchman.sample\n.git\\hooks\\post-update.sample\n.git\\hooks\\pre-applypatch.sample\n.git\\hooks\\pre-commit.sample\n.git\\hooks\\pre-merge-commit.sample\n.git\\hooks\\pre-push.sample\n.git\\hooks\\pre-rebase.sample\n.git\\hooks\\pre-receive.sample\n.git\\hooks\\prepare-commit-msg.sample\n.git\\hooks\\push-to-checkout.sample\n.git\\hooks\\sendemail-validate.sample\n.git\\hooks\\update.sample\n.git\\info\\exclude\n.gitignore\nconfig\\eval_pipeline.json\nconfig\\model_api.json\nconfig\\run_cases.json\ndocs\\en\\codegen_eval_project.md\ndocs\\en\\content_generation_eval_flow.md\ndocs\\en\\content_generation_eval_schema.md\ndocs\\en\\independent_gen_eval_flow.md\ndocs\\prompt_zh\\independent_gen_prompt_ZH.txt\ndocs\\zh\\codegen_eval_project_ZH.md\ndocs\\zh\\content_generation_eval_schema_ZH.md\ndocs\\zh\\independent_gen_eval_flow_ZH.md\ndocs\\文档\\20260312-o.pptx\ndocs\\文档\\智能编码评测任务数据集构建基本框架-0305.docx\nprompt_example.md\nsrc\\cases\\independent_generation\\independent_case_001.json\nsrc\\cases\\independent_generation\\model_input_template.json\nsrc\\cases\\independent_generation\\standard_answer_template.json\nsrc\\content_generation_eval_sample.json\nsrc\\data_process\\__pycache__\\build_tools.cpython-312.pyc\nsrc\\data_process\\__pycache__\\data_io.cpython-312.pyc\nsrc\\data_process\\__pycache__\\execution.cpython-312.pyc\nsrc\\data_process\\build_tools.py\nsrc\\data_process\\data_io.py\nsrc\\data_process\\execution.py\nsrc\\eval_core\\__init__.py\nsrc\\eval_core\\__pycache__\\__init__.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\metrics.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\model_client.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\models.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\pipeline.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\registry.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\runner.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_input.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_scoring.cpython-312.pyc\nsrc\\eval_core\\metrics.py\nsrc\\eval_core\\model_client.py\nsrc\\eval_core\\models.py\nsrc\\eval_core\\pipeline.py\nsrc\\eval_core\\registry.py\nsrc\\eval_core\\runner.py\nsrc\\eval_core\\steps_input.py\nsrc\\eval_core\\steps_scoring.py\nsrc\\prompts\\content_generation_prompt.txt\nsrc\\results\\independent_generation\\independent_case_001_result.json\nsrc\\run_evaluation.py"
+      },
+      {
+        "tool": "cat",
+        "input": "./README.md",
+        "output": "ERROR: file_not_found"
+      },
+      {
+        "tool": "cat",
+        "input": "./src/cases/independent_generation/independent_case_001.json",
+        "output": "{\n  \"instance_id\": \"ind-001\",\n  \"repo\": \"independent/local\",\n  \"version\": \"v0.1.0\",\n  \"task_type\": \"independent_function_development\",\n  \"language\": \"Python\",\n  \"task_original_statement\": \"Write a program that reads a list of integers and outputs them in ascending order using bubble sort.\",\n  \"is_original_task\": true,\n  \"task_revision_statement\": \"\",\n  \"input_direct\": {\n    \"prompt\": \"Read N followed by N integers from stdin and output the sorted sequence separated by spaces.\",\n    \"provided_code\": [],\n    \"instructions\": [\n      \"Use bubble sort.\",\n      \"Output exactly one line.\"\n    ]\n  },\n  \"input_indirect\": {\n    \"repo_context\": [],\n    \"external_knowledge\": []\n  },\n  \"expected_output\": {},\n  \"tangling_level_input\": 0,\n  \"scattering_level_input\": 0,\n  \"scale_level_input\": 0,\n  \"domain_knowledge_dependence_input\": 0,\n  \"number_of_multimodal_input\": 0,\n  \"tangling_level_output\": 0,\n  \"scattering_level_output\": 0,\n  \"scale_level_output\": 0,\n  \"number_of_multimodal_output\": 0,\n  \"comprehensive_difficulty_level\": 1,\n  \"base_commit\": \"\",\n  \"patch\": \"\",\n  \"test_setup_id\": \"local-py\",\n  \"hints_text\": \"\",\n  \"model_input\": {\n    \"task_description\": \"Read N followed by N integers from stdin and output them in ascending order using bubble sort. Output exactly one line with numbers separated by spaces.\",\n    \"reference_samples\": [\n      {\n        \"input\": \"5\\n5 1 4 2 8\\n\",\n        \"expected_output\": \"1 2 4 5 8\"\n      },\n      {\n        \"input\": \"3\\n3 2 1\\n\",\n        \"expected_output\": \"1 2 3\"\n      }\n    ],\n    \"code_skeleton\": \"\"\n  },\n  \"tags\": [],\n  \"metrics_config\": {\n    \"build_weight\": 1.0,\n    \"sample_tests_weight\": 1.0,\n    \"process_weight\": 0.5,\n    \"max_response_time_ms\": 30000,\n    \"max_token_usage\": 2000,\n    \"max_cost_usd\": 0.5\n  },\n  \"metrics_inputs\": {\n    \"case_id\": \"001\",\n    \"build_workspace\": \"artifacts/independent_build\",\n    \"sample_test_timeout_seconds\": 5,\n    \"raw_output_path\": \"artifacts/independent_build/raw_output_001.txt\"\n  }\n}\n"
+      },
+      {
+        "tool": "ls",
+        "input": ".",
+        "output": ".git\n.gitignore\nartifacts\nconfig\ndocs\nprompt_example.md\nsrc"
+      },
+      {
+        "tool": "find",
+        "input": ". -type f -name \"*\"",
+        "output": ".git\\HEAD\n.git\\config\n.git\\description\n.git\\hooks\\applypatch-msg.sample\n.git\\hooks\\commit-msg.sample\n.git\\hooks\\fsmonitor-watchman.sample\n.git\\hooks\\post-update.sample\n.git\\hooks\\pre-applypatch.sample\n.git\\hooks\\pre-commit.sample\n.git\\hooks\\pre-merge-commit.sample\n.git\\hooks\\pre-push.sample\n.git\\hooks\\pre-rebase.sample\n.git\\hooks\\pre-receive.sample\n.git\\hooks\\prepare-commit-msg.sample\n.git\\hooks\\push-to-checkout.sample\n.git\\hooks\\sendemail-validate.sample\n.git\\hooks\\update.sample\n.git\\info\\exclude\n.gitignore\nconfig\\eval_pipeline.json\nconfig\\model_api.json\nconfig\\run_cases.json\ndocs\\en\\codegen_eval_project.md\ndocs\\en\\content_generation_eval_flow.md\ndocs\\en\\content_generation_eval_schema.md\ndocs\\en\\independent_gen_eval_flow.md\ndocs\\prompt_zh\\independent_gen_prompt_ZH.txt\ndocs\\zh\\codegen_eval_project_ZH.md\ndocs\\zh\\content_generation_eval_schema_ZH.md\ndocs\\zh\\independent_gen_eval_flow_ZH.md\ndocs\\文档\\20260312-o.pptx\ndocs\\文档\\智能编码评测任务数据集构建基本框架-0305.docx\nprompt_example.md\nsrc\\cases\\independent_generation\\independent_case_001.json\nsrc\\cases\\independent_generation\\model_input_template.json\nsrc\\cases\\independent_generation\\standard_answer_template.json\nsrc\\content_generation_eval_sample.json\nsrc\\data_process\\__pycache__\\build_tools.cpython-312.pyc\nsrc\\data_process\\__pycache__\\data_io.cpython-312.pyc\nsrc\\data_process\\__pycache__\\execution.cpython-312.pyc\nsrc\\data_process\\build_tools.py\nsrc\\data_process\\data_io.py\nsrc\\data_process\\execution.py\nsrc\\eval_core\\__init__.py\nsrc\\eval_core\\__pycache__\\__init__.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\metrics.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\model_client.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\models.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\pipeline.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\registry.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\runner.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_input.cpython-312.pyc\nsrc\\eval_core\\__pycache__\\steps_scoring.cpython-312.pyc\nsrc\\eval_core\\metrics.py\nsrc\\eval_core\\model_client.py\nsrc\\eval_core\\models.py\nsrc\\eval_core\\pipeline.py\nsrc\\eval_core\\registry.py\nsrc\\eval_core\\runner.py\nsrc\\eval_core\\steps_input.py\nsrc\\eval_core\\steps_scoring.py\nsrc\\prompts\\content_generation_prompt.txt\nsrc\\results\\independent_generation\\independent_case_001_result.json\nsrc\\run_evaluation.py"
+      },
+      {
+        "tool": "cat",
+        "input": "./src/cases/independent_generation/independent_case_001.json",
+        "output": "{\n  \"instance_id\": \"ind-001\",\n  \"repo\": \"independent/local\",\n  \"version\": \"v0.1.0\",\n  \"task_type\": \"independent_function_development\",\n  \"language\": \"Python\",\n  \"task_original_statement\": \"Write a program that reads a list of integers and outputs them in ascending order using bubble sort.\",\n  \"is_original_task\": true,\n  \"task_revision_statement\": \"\",\n  \"input_direct\": {\n    \"prompt\": \"Read N followed by N integers from stdin and output the sorted sequence separated by spaces.\",\n    \"provided_code\": [],\n    \"instructions\": [\n      \"Use bubble sort.\",\n      \"Output exactly one line.\"\n    ]\n  },\n  \"input_indirect\": {\n    \"repo_context\": [],\n    \"external_knowledge\": []\n  },\n  \"expected_output\": {},\n  \"tangling_level_input\": 0,\n  \"scattering_level_input\": 0,\n  \"scale_level_input\": 0,\n  \"domain_knowledge_dependence_input\": 0,\n  \"number_of_multimodal_input\": 0,\n  \"tangling_level_output\": 0,\n  \"scattering_level_output\": 0,\n  \"scale_level_output\": 0,\n  \"number_of_multimodal_output\": 0,\n  \"comprehensive_difficulty_level\": 1,\n  \"base_commit\": \"\",\n  \"patch\": \"\",\n  \"test_setup_id\": \"local-py\",\n  \"hints_text\": \"\",\n  \"model_input\": {\n    \"task_description\": \"Read N followed by N integers from stdin and output them in ascending order using bubble sort. Output exactly one line with numbers separated by spaces.\",\n    \"reference_samples\": [\n      {\n        \"input\": \"5\\n5 1 4 2 8\\n\",\n        \"expected_output\": \"1 2 4 5 8\"\n      },\n      {\n        \"input\": \"3\\n3 2 1\\n\",\n        \"expected_output\": \"1 2 3\"\n      }\n    ],\n    \"code_skeleton\": \"\"\n  },\n  \"tags\": [],\n  \"metrics_config\": {\n    \"build_weight\": 1.0,\n    \"sample_tests_weight\": 1.0,\n    \"process_weight\": 0.5,\n    \"max_response_time_ms\": 30000,\n    \"max_token_usage\": 2000,\n    \"max_cost_usd\": 0.5\n  },\n  \"metrics_inputs\": {\n    \"case_id\": \"001\",\n    \"build_workspace\": \"artifacts/independent_build\",\n    \"sample_test_timeout_seconds\": 5,\n    \"raw_output_path\": \"artifacts/independent_build/raw_output_001.txt\"\n  }\n}\n"
+      }
+    ],
+    "artifacts": {},
+    "build": {
+      "success": true,
+      "workspace": "D:\\AI Project\\code-generation-evaluation\\artifacts\\independent_build",
+      "language": "python",
+      "source_path": "D:\\AI Project\\code-generation-evaluation\\artifacts\\independent_build\\main_001.py",
+      "output_path": "",
+      "build_command": [
+        "C:\\Users\\曾涵彬\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+        "-m",
+        "py_compile",
+        "D:\\AI Project\\code-generation-evaluation\\artifacts\\independent_build\\main_001.py"
+      ],
+      "run_command": [
+        "C:\\Users\\曾涵彬\\AppData\\Local\\Programs\\Python\\Python312\\python.EXE",
+        "D:\\AI Project\\code-generation-evaluation\\artifacts\\independent_build\\main_001.py"
+      ],
+      "stdout": "",
+      "stderr": "",
+      "returncode": 0
+    },
+    "sample_tests": {
+      "passed": true,
+      "cases": [
+        {
+          "input": "5\n5 1 4 2 8",
+          "expected_output": "1 2 4 5 8",
+          "actual_output": "1 2 4 5 8",
+          "returncode": 0,
+          "stdout": "1 2 4 5 8\n",
+          "stderr": "",
+          "passed": true
+        },
+        {
+          "input": "3\n3 2 1",
+          "expected_output": "1 2 3",
+          "actual_output": "1 2 3",
+          "returncode": 0,
+          "stdout": "1 2 3\n",
+          "stderr": "",
+          "passed": true
+        }
+      ]
+    },
+    "raw_output_path": "artifacts\\raw_outputs\\independent_case_001.txt"
+  },
+  "evaluation_result": {
+    "scores": {
+      "build": 1.0,
+      "sample_tests": 1.0,
+      "process": 0.5
+    },
+    "final_score": 2.5,
+    "passed": true,
+    "review_notes": ""
+  }
+}

@@ -1,0 +1,32 @@
+ # 生成内容测评样例数据结构说明
+ 
+ ## 字段定义
+ - instance_id：评测样例唯一标识。
+ - repo：任务上下文来源代码仓名称。
+ - version：任务定义时的代码仓版本。
+ - task_type：independent_function_development | new_application_development | incremental_feature_development。
+ - language：任务主要编程语言。
+ - task_original_statement：原始任务描述，作为主要输入。
+ - is_original_task：是否为原始任务描述。
+ - task_revision_statement：当难度或范围调整时的修订描述。
+ - input_direct：提供给模型的直接输入，包含代码与指令。
+ - input_indirect：间接输入，包括代码仓上下文与外部知识。
+ - expected_output：正确完成任务的预期产物与验收标准。
+ - tangling_level_input：输入混杂系数。
+ - scattering_level_input：输入散布系数。
+ - scale_level_input：输入规模系数。
+ - domain_knowledge_dependence_input：输入领域知识依赖度。
+ - number_of_multimodal_input：输入多模态复杂度。
+ - tangling_level_output：输出混杂系数。
+ - scattering_level_output：输出散布系数。
+ - scale_level_output：输出规模系数。
+ - number_of_multimodal_output：输出多模态复杂度。
+ - comprehensive_difficulty_level：综合难度等级。
+ - base_commit：任务基线提交哈希。
+ - patch：预期代码变更的diff内容（若适用）。
+ - test_setup_id：评测环境配置标识。
+ - hints_text：可选提示信息。
+ - tags：可选标签，用于批量筛选。
+ - metrics_config：指标定义与权重配置。
+ - run_records：执行日志、输出与中间产物。
+ - evaluation_result：评分结果、通过性与评审记录。

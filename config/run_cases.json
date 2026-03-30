@@ -1,0 +1,6 @@
+{
+  "cases_dir": "src/cases/independent_generation",
+  "case_glob": "independent_case_*.json",
+  "results_dir": "src/results/independent_generation",
+  "raw_output_dir": "artifacts/raw_outputs"
+}

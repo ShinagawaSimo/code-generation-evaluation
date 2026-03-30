@@ -1,0 +1,12 @@
+{
+  "instance_id": "",
+  "task_type": "independent_function_development",
+  "language": "",
+  "model_input": {
+    "task_description": "",
+    "reference_samples": [],
+    "code_skeleton": ""
+  },
+  "expected_output": {},
+  "comprehensive_difficulty_level": 0
+}

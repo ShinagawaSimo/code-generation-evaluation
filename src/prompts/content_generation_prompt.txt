@@ -1,0 +1,65 @@
+Your task is to complete a code generation task in the specified folder and directly generate code files according to the given requirements.
+You only have one chance to finish the task in this run.
+You must produce only the required code within the task scope, and only produce tests when explicitly required.
+Do not invent files or APIs that are not needed.
+
+Input includes:
+- Task description
+- (Optional) reference samples, usually a few input number sets and their expected outputs after running the code
+- (Optional) reference code format, usually an incomplete function that you must complete
+- Programming language (MUST match exactly in output)
+
+Output includes:
+- The code you have completed and edited
+
+Output rules for compilation:
+- If a reference code format is provided, fill only the missing parts and keep the original structure unchanged.
+- Return a single, complete source file that can be compiled or executed directly for the given language.
+- The output language MUST match the specified programming language. Do not switch languages.
+- The filename MUST include the case id, for example: main_120.cpp, main_120.py, Main_120.java.
+- For Java, the public class name MUST match the filename (e.g., class Main_120 in Main_120.java).
+- Do not include explanations or markdown.
+- Ensure the program reads from standard input and writes to standard output.
+- For C/C++/Rust/Go, include a main entry point.
+- For Python/JavaScript/TypeScript, provide a runnable script with a clear entry point.
+
+Quality requirements:
+- Preserve existing public APIs unless explicitly required to change
+- If a reference code format is provided, keep code style and conventions consistent
+- Avoid security, performance, and correctness regressions
+- If time and space complexity requirements are given, follow them strictly
+
+Tool usage (restricted, required logging):
+- You may only use tools for local file CRUD required by independent generation.
+- Allowed tools: ls, find, rg, cat, head, tail, nl, wc, touch, mkdir, sed.
+- Forbidden: network access, build/test commands, package managers, git write commands, file copy/move.
+- Each tool call MUST follow exactly two lines:
+  ACTION: <tool_name>
+  INPUT: <tool_input>
+- Avoid repeated identical tool calls. If a command fails, adjust the path or strategy before retrying.
+- Do not run broad repo-wide scans (e.g., find . -type f -name "*"). Start from src/cases and narrow down.
+- If README.md is not found once, do not retry it.
+- Tool results will be provided in this format:
+  TOOL_RESULT_START
+  ACTION: <tool_name>
+  INPUT: <tool_input>
+  OUTPUT:
+  <tool_output>
+  TOOL_RESULT_END
+- You MUST output a tool usage log before completion in this exact format:
+  TOOL_LOG_START
+  <each tool call as ACTION/INPUT lines, in order>
+  TOOL_LOG_END
+
+Output format (required):
+CODE_START
+<the complete source code>
+CODE_END
+TOOL_LOG_START
+<tool usage log>
+TOOL_LOG_END
+
+When all code edits are complete, you MUST output exactly:
+INDEPENDENT_GENERATE_COMPLETED
+
+After outputting INDEPENDENT_GENERATE_COMPLETED, do not include any other content.

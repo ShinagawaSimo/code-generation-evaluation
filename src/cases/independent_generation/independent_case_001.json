@@ -1,0 +1,66 @@
+{
+  "instance_id": "ind-001",
+  "repo": "independent/local",
+  "version": "v0.1.0",
+  "task_type": "independent_function_development",
+  "language": "Python",
+  "task_original_statement": "Write a program that reads a list of integers and outputs them in ascending order using bubble sort.",
+  "is_original_task": true,
+  "task_revision_statement": "",
+  "input_direct": {
+    "prompt": "Read N followed by N integers from stdin and output the sorted sequence separated by spaces.",
+    "provided_code": [],
+    "instructions": [
+      "Use bubble sort.",
+      "Output exactly one line."
+    ]
+  },
+  "input_indirect": {
+    "repo_context": [],
+    "external_knowledge": []
+  },
+  "expected_output": {},
+  "tangling_level_input": 0,
+  "scattering_level_input": 0,
+  "scale_level_input": 0,
+  "domain_knowledge_dependence_input": 0,
+  "number_of_multimodal_input": 0,
+  "tangling_level_output": 0,
+  "scattering_level_output": 0,
+  "scale_level_output": 0,
+  "number_of_multimodal_output": 0,
+  "comprehensive_difficulty_level": 1,
+  "base_commit": "",
+  "patch": "",
+  "test_setup_id": "local-py",
+  "hints_text": "",
+  "model_input": {
+    "task_description": "Read N followed by N integers from stdin and output them in ascending order using bubble sort. Output exactly one line with numbers separated by spaces.",
+    "reference_samples": [
+      {
+        "input": "5\n5 1 4 2 8\n",
+        "expected_output": "1 2 4 5 8"
+      },
+      {
+        "input": "3\n3 2 1\n",
+        "expected_output": "1 2 3"
+      }
+    ],
+    "code_skeleton": ""
+  },
+  "tags": [],
+  "metrics_config": {
+    "build_weight": 1.0,
+    "sample_tests_weight": 1.0,
+    "process_weight": 0.5,
+    "max_response_time_ms": 30000,
+    "max_token_usage": 2000,
+    "max_cost_usd": 0.5
+  },
+  "metrics_inputs": {
+    "case_id": "001",
+    "build_workspace": "artifacts/independent_build",
+    "sample_test_timeout_seconds": 5,
+    "raw_output_path": "artifacts/independent_build/raw_output_001.txt"
+  }
+}
