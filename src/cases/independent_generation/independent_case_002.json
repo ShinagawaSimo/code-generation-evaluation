@@ -1,18 +1,19 @@
 {
-  "instance_id": "ind-001",
+  "instance_id": "ind-002",
   "repo": "independent/local",
   "version": "v0.1.0",
   "task_type": "independent_function_development",
   "language": "Python",
-  "task_original_statement": "Write a program that reads a list of integers and outputs them in ascending order using bubble sort.",
+  "task_original_statement": "Given a list of closed intervals, merge all overlapping intervals and output the merged intervals sorted by start.",
   "is_original_task": true,
   "task_revision_statement": "",
   "input_direct": {
-    "prompt": "Read N followed by N integers from stdin and output the sorted sequence separated by spaces.",
+    "prompt": "Read an integer N followed by N lines each containing two integers l r (l <= r). Intervals are closed. Merge any intervals that overlap or touch (i.e., next.start <= current.end). Output each merged interval as \"l r\" on its own line, sorted by l.",
     "provided_code": [],
     "instructions": [
-      "Use bubble sort.",
-      "Output exactly one line."
+      "Intervals are closed and inclusive.",
+      "If two intervals touch at a point, they must be merged.",
+      "Output one merged interval per line."
     ]
   },
   "input_indirect": {
@@ -44,24 +45,24 @@
     }
   },
   "difficulty_spec": {
-    "subtask_count": 2,
+    "subtask_count": 3,
     "algorithm_complexity_level": 1,
-    "ambiguity_score": 0.1
+    "ambiguity_score": 0.2
   },
   "base_commit": "",
   "patch": "",
   "test_setup_id": "local-py",
   "hints_text": "",
   "model_input": {
-    "task_description": "Read N followed by N integers from stdin and output them in ascending order using bubble sort. Output exactly one line with numbers separated by spaces.",
+    "task_description": "Read N closed intervals (l r). Merge intervals that overlap or touch (next.start <= current.end). Output merged intervals sorted by l, one per line as \"l r\".",
     "reference_samples": [
       {
-        "input": "5\n5 1 4 2 8\n",
-        "expected_output": "1 2 4 5 8"
+        "input": "4\n1 3\n2 6\n8 10\n15 18\n",
+        "expected_output": "1 6\n8 10\n15 18"
       },
       {
-        "input": "3\n3 2 1\n",
-        "expected_output": "1 2 3"
+        "input": "5\n1 4\n4 5\n0 0\n7 8\n6 7\n",
+        "expected_output": "0 0\n1 5\n6 8"
       }
     ],
     "code_skeleton": ""
@@ -76,13 +77,13 @@
     "max_cost_usd": 0.5
   },
   "metrics_inputs": {
-    "case_id": "001",
+    "case_id": "002",
     "build_workspace": "artifacts/independent_build",
     "sample_test_timeout_seconds": 5,
-    "raw_output_path": "artifacts/raw_outputs/independent_case_001.txt",
-    "case_path": "src/cases/independent_generation/independent_case_001.json",
-    "subtask_count": 2,
+    "raw_output_path": "artifacts/raw_outputs/independent_case_002.txt",
+    "case_path": "src/cases/independent_generation/independent_case_002.json",
+    "subtask_count": 3,
     "algorithm_complexity_level": 1,
-    "ambiguity_score": 0.1
+    "ambiguity_score": 0.2
   }
 }

@@ -1,6 +1,9 @@
 from data_process.build_tools import build_executable
 from data_process.execution import run_sample_tests
 from .metrics import (
+    compute_difficulty,
+    compute_independent_metrics,
+    compute_quality,
     compute_final_score,
     evaluate_build,
     evaluate_process_metrics,
@@ -79,7 +82,7 @@ def difficulty_confirmation(context: EvaluationContext) -> EvaluationContext:
     """
     override = context.metrics_inputs.get("difficulty_override")
     if override is not None:
-        context.comprehensive_difficulty_level = int(override)
+        context.metrics_inputs["difficulty_score_override"] = float(override)
     return context
 
 
@@ -88,6 +91,11 @@ def final_score(context: EvaluationContext) -> EvaluationContext:
     Aggregate scores and finalize pass/fail decision.
     context: evaluation context with accumulated scores and flags.
     """
+    context.evaluation_result["metrics"] = compute_independent_metrics(context)
+    context.evaluation_result["difficulty"] = compute_difficulty(context)
+    context.evaluation_result["quality"] = compute_quality(context)
+    context.evaluation_result["quality_score_q"] = context.evaluation_result["quality"]["comprehensive"]
+    context.evaluation_result["difficulty_score_d"] = context.evaluation_result["difficulty"]["comprehensive"]
     context.evaluation_result["scores"] = dict(context.scores)
     context.evaluation_result["final_score"] = compute_final_score(context)
     build_success = context.flags.get("build_success", True)

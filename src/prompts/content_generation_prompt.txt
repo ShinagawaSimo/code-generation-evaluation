@@ -8,6 +8,8 @@ Input includes:
 - (Optional) reference samples, usually a few input number sets and their expected outputs after running the code
 - (Optional) reference code format, usually an incomplete function that you must complete
 - Programming language (MUST match exactly in output)
+- Case file path and case id (use them directly without searching)
+- If case file path is given, you may directly use "CAT" tool to get the file content
 
 Output includes:
 - The code you have completed and edited
@@ -39,6 +41,7 @@ Tool usage (restricted, required logging):
 - Avoid repeated identical tool calls. If a command fails, adjust the path or strategy before retrying.
 - Do not run broad repo-wide scans (e.g., find . -type f -name "*"). Start from src/cases and narrow down.
 - If README.md is not found once, do not retry it.
+- If case file path and language are provided, do not use tools to locate files or infer language.
 - Tool results will be provided in this format:
   TOOL_RESULT_START
   ACTION: <tool_name>

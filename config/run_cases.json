@@ -1,6 +1,85 @@
 {
   "cases_dir": "src/cases/independent_generation",
   "case_glob": "independent_case_*.json",
-  "results_dir": "src/results/independent_generation",
-  "raw_output_dir": "artifacts/raw_outputs"
+  "results_dir": "artifacts/results/independent_generation",
+  "raw_output_dir": "artifacts/raw_outputs",
+  "default_metrics_inputs": {
+    "tool_enabled": true,
+    "tool_max_turns": 3,
+    "sample_test_timeout_seconds": 5,
+    "build_workspace": "artifacts/independent_build"
+  },
+  "default_metrics_config": {
+    "build_weight": 1.0,
+    "sample_tests_weight": 1.0,
+    "process_weight": 0.5,
+    "max_response_time_ms": 30000,
+    "max_token_usage": 2000,
+    "max_cost_usd": 0.5,
+    "difficulty_weight": 0.2,
+    "difficulty_metric_weights": {
+      "input_scale_complexity": 1.0,
+      "output_complexity": 1.0,
+      "subtask_count": 1.0,
+      "algorithm_complexity_level": 1.0,
+      "constraint_complexity": 1.0,
+      "ambiguity": 1.0,
+      "test_difficulty": 1.0
+    },
+    "quality_metric_weights": {
+      "correctness": 2.0,
+      "semantic_consistency": 1.0,
+      "structure_quality": 1.0,
+      "readability": 1.0,
+      "style_compliance": 1.0,
+      "performance": 1.0,
+      "robustness_security": 1.0
+    },
+    "input_scale_weights": {
+      "task_char_length": 1.0,
+      "reference_code_char_length": 1.0,
+      "reference_code_function_count": 1.0
+    },
+    "output_complexity_weights": {
+      "output_field_count": 1.0,
+      "output_function_count": 1.0,
+      "return_nesting_depth": 1.0,
+      "complex_object_involved": 1.0
+    },
+    "test_difficulty_weights": {
+      "sample_test_count": 1.0,
+      "boundary_case_ratio": 1.0,
+      "input_space_size": 1.0
+    },
+    "structure_quality_weights": {
+      "function_count": 1.0,
+      "avg_function_length": 1.0,
+      "max_nesting_depth": 1.0
+    },
+    "readability_weights": {
+      "identifier_avg_length": 1.0,
+      "identifier_long_ratio": 1.0,
+      "comment_density": 1.0
+    },
+    "difficulty_score_caps": {
+      "task_char_length": 2000,
+      "reference_code_char_length": 2000,
+      "reference_code_function_count": 10,
+      "output_field_count": 8,
+      "output_function_count": 12,
+      "return_nesting_depth": 6,
+      "subtask_count": 8,
+      "algorithm_complexity_level": 3,
+      "constraint_keyword_count": 10,
+      "sample_test_count": 10,
+      "input_space_size": 200
+    },
+    "quality_score_caps": {
+      "target_function_count": 4,
+      "target_avg_function_length": 20,
+      "target_max_nesting_depth": 4,
+      "target_identifier_avg_length": 12,
+      "target_comment_density": 0.2
+    }
+  }
 }

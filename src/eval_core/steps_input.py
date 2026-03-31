@@ -8,35 +8,6 @@ from .model_client import call_model
 from .models import EvaluationContext
 
 
-def task_intake_scope_lock(context: EvaluationContext) -> EvaluationContext:
-    """
-    Mark task intake completion and lock the evaluation scope.
-    context: evaluation context to update task intake flag.
-    """
-    context.set_flag("task_intake_done", True)
-    return context
-
-
-def input_assembly(context: EvaluationContext) -> EvaluationContext:
-    """
-    Freeze assembled inputs for the independent generation task.
-    context: evaluation context to update input assembly flag.
-    """
-    context.set_flag("inputs_frozen", True)
-    return context
-
-
-def context_validation(context: EvaluationContext) -> EvaluationContext:
-    """
-    Validate required metadata such as repo, version, task type, and language.
-    context: evaluation context containing task metadata.
-    """
-    required = ["repo", "version", "task_type", "language"]
-    missing = [key for key in required if not getattr(context, key)]
-    context.set_flag("context_missing", missing)
-    return context
-
-
 def _repo_root() -> Path:
     return Path.cwd().resolve()
 
@@ -278,6 +249,11 @@ def generate_output(context: EvaluationContext) -> EvaluationContext:
                     "input_indirect": context.input_indirect,
                     "expected_output": context.expected_output,
                 }
+                payload["case_metadata"] = {
+                    "case_id": context.metrics_inputs.get("case_id") or context.instance_id,
+                    "case_path": context.metrics_inputs.get("case_path", ""),
+                    "language": context.language,
+                }
                 payload["tool_context"] = {
                     "repo_root": ".",
                     "allowed_tools": [
@@ -296,6 +272,14 @@ def generate_output(context: EvaluationContext) -> EvaluationContext:
                 }
                 user_input = json.dumps(payload, ensure_ascii=False)
             elif isinstance(user_input, dict):
+                user_input.setdefault(
+                    "case_metadata",
+                    {
+                        "case_id": context.metrics_inputs.get("case_id") or context.instance_id,
+                        "case_path": context.metrics_inputs.get("case_path", ""),
+                        "language": context.language,
+                    },
+                )
                 user_input.setdefault(
                     "tool_context",
                     {
@@ -365,12 +349,3 @@ def generate_output(context: EvaluationContext) -> EvaluationContext:
         context.run_records.setdefault("model_error", "empty_model_output")
     return context
 
-
-def capture_artifacts(context: EvaluationContext) -> EvaluationContext:
-    """
-    Store artifacts generated during evaluation (logs, outputs).
-    context: evaluation context containing artifact metadata.
-    """
-    artifacts = context.metrics_inputs.get("artifacts", {})
-    context.run_records["artifacts"] = artifacts
-    return context

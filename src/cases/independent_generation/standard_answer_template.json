@@ -7,6 +7,33 @@
     "reference_samples": [],
     "code_skeleton": ""
   },
-  "expected_output": {},
-  "comprehensive_difficulty_level": 0
+  "difficulty_spec": {
+    "subtask_count": 0,
+    "algorithm_complexity_level": 0,
+    "ambiguity_score": 0.0
+  },
+  "expected_output": {
+    "format": {
+      "type": "single_source_file",
+      "read_from_stdin": true,
+      "write_to_stdout": true
+    },
+    "result_fields": {
+      "required_run_records": [
+        "build",
+        "sample_tests",
+        "raw_output_path"
+      ],
+      "required_evaluation_result": [
+        "difficulty",
+        "quality",
+        "quality_score_q",
+        "difficulty_score_d",
+        "metrics",
+        "scores",
+        "final_score",
+        "passed"
+      ]
+    }
+  }
 }

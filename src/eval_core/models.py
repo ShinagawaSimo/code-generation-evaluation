@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 
 @dataclass
@@ -15,20 +15,11 @@ class EvaluationContext:
     input_direct: Dict[str, Any]
     input_indirect: Dict[str, Any]
     expected_output: Dict[str, Any]
-    tangling_level_input: int
-    scattering_level_input: int
-    scale_level_input: int
-    domain_knowledge_dependence_input: int
-    number_of_multimodal_input: int
-    tangling_level_output: int
-    scattering_level_output: int
-    scale_level_output: int
-    number_of_multimodal_output: int
-    comprehensive_difficulty_level: int
-    base_commit: str
-    patch: str
-    test_setup_id: str
-    hints_text: str
+    difficulty_spec: Dict[str, Any] = field(default_factory=dict)
+    base_commit: str = ""
+    patch: str = ""
+    test_setup_id: str = ""
+    hints_text: str = ""
     model_input: Dict[str, Any] = field(default_factory=dict)
     tags: List[str] = field(default_factory=list)
     metrics_config: Dict[str, Any] = field(default_factory=dict)
@@ -70,16 +61,7 @@ class EvaluationContext:
             "input_direct": self.input_direct,
             "input_indirect": self.input_indirect,
             "expected_output": self.expected_output,
-            "tangling_level_input": self.tangling_level_input,
-            "scattering_level_input": self.scattering_level_input,
-            "scale_level_input": self.scale_level_input,
-            "domain_knowledge_dependence_input": self.domain_knowledge_dependence_input,
-            "number_of_multimodal_input": self.number_of_multimodal_input,
-            "tangling_level_output": self.tangling_level_output,
-            "scattering_level_output": self.scattering_level_output,
-            "scale_level_output": self.scale_level_output,
-            "number_of_multimodal_output": self.number_of_multimodal_output,
-            "comprehensive_difficulty_level": self.comprehensive_difficulty_level,
+            "difficulty_spec": self.difficulty_spec,
             "base_commit": self.base_commit,
             "patch": self.patch,
             "test_setup_id": self.test_setup_id,

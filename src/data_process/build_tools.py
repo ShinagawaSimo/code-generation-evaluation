@@ -2,11 +2,16 @@ from __future__ import annotations
 
 import os
 import re
-import shutil
 import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from .build_c_cpp import build_c, build_cpp
+from .build_go import build_go
+from .build_java import build_java
+from .build_python import build_python
+from .build_rust import build_rust
+from .build_ts_js import build_javascript, build_typescript
 
 LANGUAGE_ALIASES = {
     "c": "c",
@@ -137,12 +142,26 @@ def write_source_file(workspace: Path, filename: str, code: str) -> Path:
     return source_path
 
 
-def _require_tool(tool_name: str) -> Optional[str]:
-    """
-    Resolve a required build tool path or return None.
-    tool_name: executable name to locate in PATH.
-    """
-    return shutil.which(tool_name)
+def _build_env() -> Dict[str, str]:
+    return {
+        "PATH": os.environ.get("PATH", ""),
+        "SYSTEMROOT": os.environ.get("SYSTEMROOT", ""),
+        "TEMP": os.environ.get("TEMP", ""),
+        "TMP": os.environ.get("TMP", ""),
+    }
+
+
+def _select_builder(language: str):
+    return {
+        "c": build_c,
+        "cpp": build_cpp,
+        "rust": build_rust,
+        "go": build_go,
+        "java": build_java,
+        "python": build_python,
+        "javascript": build_javascript,
+        "typescript": build_typescript,
+    }.get(language)
 
 
 def build_executable(
@@ -176,79 +195,44 @@ def build_executable(
     source_path = write_source_file(work_dir, src_name, code)
     output_path = work_dir / out_name
 
-    build_command: List[str] = []
-    run_command: List[str] = []
-
-    if normalized == "c":
-        tool = _require_tool("gcc")
-        if not tool:
-            return {"success": False, "error": "gcc_not_found", "source_path": str(source_path)}
-        build_command = [tool, str(source_path), "-o", str(output_path)]
-        run_command = [str(output_path)]
-    elif normalized == "cpp":
-        tool = _require_tool("g++")
-        if not tool:
-            return {"success": False, "error": "g++_not_found", "source_path": str(source_path)}
-        build_command = [tool, str(source_path), "-o", str(output_path)]
-        run_command = [str(output_path)]
-    elif normalized == "rust":
-        tool = _require_tool("rustc")
-        if not tool:
-            return {"success": False, "error": "rustc_not_found", "source_path": str(source_path)}
-        build_command = [tool, str(source_path), "-o", str(output_path)]
-        run_command = [str(output_path)]
-    elif normalized == "go":
-        tool = _require_tool("go")
-        if not tool:
-            return {"success": False, "error": "go_not_found", "source_path": str(source_path)}
-        build_command = [tool, "build", "-o", str(output_path), str(source_path)]
-        run_command = [str(output_path)]
-    elif normalized == "java":
-        tool = _require_tool("javac")
-        if not tool:
-            return {"success": False, "error": "javac_not_found", "source_path": str(source_path)}
-        build_command = [tool, str(source_path)]
-        class_name = source_path.stem
-        run_command = ["java", "-cp", str(work_dir), class_name]
-        output_path = work_dir / f"{class_name}.class"
-    elif normalized == "python":
-        tool = _require_tool("python")
-        if not tool:
-            return {"success": False, "error": "python_not_found", "source_path": str(source_path)}
-        build_command = [tool, "-m", "py_compile", str(source_path)]
-        run_command = [tool, str(source_path)]
-    elif normalized == "javascript":
-        tool = _require_tool("node")
-        if not tool:
-            return {"success": False, "error": "node_not_found", "source_path": str(source_path)}
-        build_command = [tool, "--check", str(source_path)]
-        run_command = [tool, str(source_path)]
-    elif normalized == "typescript":
-        tsc = _require_tool("tsc")
-        node = _require_tool("node")
-        if not tsc or not node:
-            return {
-                "success": False,
-                "error": "tsc_or_node_not_found",
-                "source_path": str(source_path),
-            }
-        build_command = [tsc, "--outDir", str(work_dir), str(source_path)]
-        compiled_js = work_dir / f"{source_path.stem}.js"
-        run_command = [node, str(compiled_js)]
-    else:
+    builder = _select_builder(normalized)
+    if not builder:
         return {
             "success": False,
             "error": "unsupported_language",
             "language": normalized,
             "source_path": str(source_path),
         }
+    plan = builder(source_path, output_path, work_dir)
+    if "error" in plan:
+        return {"success": False, "error": plan["error"], "source_path": str(source_path)}
+    build_command = plan.get("build_command", [])
+    run_command = plan.get("run_command", [])
+    planned_output = plan.get("output_path")
+    if planned_output:
+        output_path = Path(planned_output)
 
-    result = subprocess.run(
-        build_command,
-        cwd=str(work_dir),
-        capture_output=True,
-        text=True,
-    )
+    build_timeout = int(os.getenv("BUILD_TIMEOUT_SECONDS", "30"))
+    try:
+        result = subprocess.run(
+            build_command,
+            cwd=str(work_dir),
+            capture_output=True,
+            text=True,
+            timeout=build_timeout,
+            env=_build_env(),
+        )
+    except subprocess.TimeoutExpired:
+        return {
+            "success": False,
+            "error": "build_timeout",
+            "workspace": str(work_dir),
+            "language": normalized,
+            "source_path": str(source_path),
+            "output_path": "",
+            "build_command": build_command,
+            "run_command": run_command,
+        }
     success = result.returncode == 0
     return {
         "success": success,

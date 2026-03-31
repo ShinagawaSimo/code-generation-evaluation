@@ -12,21 +12,13 @@
  - input_direct：提供给模型的直接输入，包含代码与指令。
  - input_indirect：间接输入，包括代码仓上下文与外部知识。
  - expected_output：正确完成任务的预期产物与验收标准。
- - tangling_level_input：输入混杂系数。
- - scattering_level_input：输入散布系数。
- - scale_level_input：输入规模系数。
- - domain_knowledge_dependence_input：输入领域知识依赖度。
- - number_of_multimodal_input：输入多模态复杂度。
- - tangling_level_output：输出混杂系数。
- - scattering_level_output：输出散布系数。
- - scale_level_output：输出规模系数。
- - number_of_multimodal_output：输出多模态复杂度。
- - comprehensive_difficulty_level：综合难度等级。
+ - difficulty_spec：案例级难度覆盖值（subtask_count、algorithm_complexity_level、ambiguity_score）。
  - base_commit：任务基线提交哈希。
  - patch：预期代码变更的diff内容（若适用）。
  - test_setup_id：评测环境配置标识。
  - hints_text：可选提示信息。
  - tags：可选标签，用于批量筛选。
- - metrics_config：指标定义与权重配置。
+ - metrics_config：指标定义与权重配置（difficulty_metric_weights、quality_metric_weights、difficulty_score_caps、quality_score_caps、difficulty_weight）。
+ - metrics_inputs：运行参数与运行时输入（如样例超时、工具回合数、构建路径、raw_output_path，以及可选覆盖值 subtask_count、algorithm_complexity_level、ambiguity_score、semantic_consistency_score、style_score、performance_score、robustness_score）。
  - run_records：执行日志、输出与中间产物。
- - evaluation_result：评分结果、通过性与评审记录。
+ - evaluation_result：评分结果、通过性、评审记录与自动化指标汇总（metrics、difficulty、quality、quality_score_q、difficulty_score_d、final_score）。

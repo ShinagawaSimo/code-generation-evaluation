@@ -1,5 +1,21 @@
  # 代码生成评测项目文档
  
+## 项目结构
+- config：评测配置与运行参数（eval_pipeline.json、run_cases.json、model_api.json）。
+- src/cases：评测案例输入数据。
+- src/eval_core：评测流程与指标计算。
+- src/data_process：构建、执行与数据读写。
+- docs：项目说明与评测规范。
+- artifacts/raw_outputs：模型原始输出归档。
+- artifacts/results：评测结果归档。
+
+## 当前项目体系（已实现）
+- 任务范围：当前主流程聚焦 independent_function_development。
+- 目录分层：案例输入在 src/cases，运行结果与原始输出在 artifacts。
+- 批量运行：run_cases.json 统一管理案例路径、结果路径、默认指标参数。
+- 评测流水线：generate_output → compile_build_check → sample_tests_check → process_metrics_check → difficulty_confirmation → final_score。
+- 结果产物：每个案例输出独立 result.json 与 raw_output.txt，便于追溯。
+
  ## 生成内容测评规范
  
  ### 任务输入与输出
@@ -14,63 +30,37 @@
  - 代码质量：规范性、安全性、性能与可维护性。
  - 过程证据：中间结果与过程痕迹的可追溯性。
  
- ### 难度体系
- - 输入维度：混杂情况、散布情况、规模、领域知识、模态。
- - 输出维度：混杂情况、散布情况、规模、模态。
+### 难度体系
+- 当前 D 来源：完全由“代码难度指标”模块计算并加权汇总。
+- 代码难度指标模块：
+  - 输入规模复杂度：任务字符长度、参考代码长度、参考函数数。
+  - 输出复杂度：输出字段数、输出函数数、返回结构嵌套深度、复杂对象参与。
+  - 子任务数量：自动估计，可由案例 difficulty_spec 或 metrics_inputs 覆盖。
+  - 算法复杂度等级：自动估计，可由案例 difficulty_spec 或 metrics_inputs 覆盖。
+  - 约束复杂度：约束关键词计数。
+  - 歧义性：默认 0，可由 ambiguity_score 提供。
+  - 测试难度：样例数、边界比例、输入空间规模。
+- D 计算方式：各子指标先归一化，再按 difficulty_metric_weights 加权平均得到 difficulty_score_d。
  
- ### 指标体系
- - 过程通用指标：思考时间、回答时间、Token消耗、成本及自定义指标。
- - 代码输出指标：语法正确率、测试通过率、静态分析问题、安全问题、性能问题、相似性等。
- - 文本输出指标：语义准确性、语义覆盖度、语义相关性、事实错误及自定义指标。
- - 其他模态指标：格式正确性、内容正确性、内容覆盖度、内容相关度及自定义指标。
- - 指标规范化与权重：按任务类型设定默认指标集、权重配置及百分比/数量/布尔指标的归一化。
+### 质量体系
+- 代码质量模块：
+  - 正确性：基于 build_success 与 sample_tests_pass。
+  - 语义一致性：可由 semantic_consistency_score 传入。
+  - 结构质量：函数数量、平均函数长度、最大嵌套深度。
+  - 可读性：标识符长度统计、语义命名比例、注释密度。
+  - 风格规范：style_score。
+  - 性能：performance_score 或复杂度提示兜底。
+  - 健壮性与安全性：robustness_score。
+- Q 计算方式：各质量子指标归一化后按 quality_metric_weights 加权平均得到 quality_score_q。
+- 最终得分：Score = Q ⋅ (1 + λD)，其中 λ 为 difficulty_weight。
+
+## 配置说明
+- config/run_cases.json：案例路径、结果目录、原始输出目录，以及默认的 metrics_inputs/metrics_config。
+- config/eval_pipeline.json：评测步骤编排与提示词路径。
+- config/model_api.json：模型服务连接与超时配置。
  
- ## 阶段目标
- 
- ### 三月
- 
- #### 目标
- 定义并验证三月阶段的最小高质量评测流程，覆盖代表性任务、初步框架设计与报告形态。
- 
- #### 工作内容
- 1. 代表性样例流程（输入 → 输出 → 难度 → 指标）。
-    - 按任务类型选取来源材料并记录原始来源。
-    - 提取任务上下文（代码片段、文档、外部知识）并固定范围。
-    - 编写任务输入与预期输出，明确验收标准。
-    - 按既定维度打难度并给出分级依据。
-    - 定义任务级指标、评分规则与失败类型。
-    - 进行一致性与真实度复核后冻结样例集。
-    - 独立功能开发：明确函数边界、接口与单测，给出参考实现预期。
-    - 新应用开发：明确端到端功能范围、模块边界、部署目标与验收用例。
-    - 增量功能开发：明确基线版本、功能改动范围、回归范围与兼容约束。
- 
- 2. 基线评测流程（环境 → 运行 → 留痕 → 计分）。
-    - 准备可复现运行环境、依赖与日志规范。
-    - 以人工或脚本方式执行任务并控制提示输入。
-    - 采集原始输出、工具日志与中间产物。
-    - 计算指标并汇总结果，标注异常项。
-    - 归档运行配置与证据以便追溯。
-    - 独立功能开发：执行单测与基础质量检查。
-    - 新应用开发：执行构建、集成与端到端校验。
-    - 增量功能开发：执行回归、依赖与兼容性校验。
- 
- 3. 数据集与评测框架流程（结构 → 过程 → 汇总）。
-    - 定义数据集结构、必需元信息与难度标签格式。
-    - 规定任务打包、版本管理与校验规则。
-    - 设计评测流程并明确指标计算阶段。
-    - 定义结果汇总逻辑与可直接出报告的摘要。
-    - 形成最小架构图与接口契约。
-    - 定义独立功能、新应用与增量功能的任务模板。
- 
- 4. 报告结构流程（大纲 → 证据映射 → 呈现）。
-    - 产出报告大纲、章节责任人与所需表格。
-    - 将结论与支撑性指标、样例与产物建立映射。
-    - 统一图表与表格规范以保证可比性。
-    - 校验报告内容与数据集范围及框架输出一致。
-    - 分别呈现独立功能、新应用与增量功能的结论与证据。
- 
- #### 交付物
- - 完整的代表性任务样例（含输入、输出、难度与指标）。
- - 可复现的基线评测结果与产物。
- - 数据集与评测框架的初步设计说明。
- - 结论与证据对应的报告大纲。
+## 运行与配置约定（当前）
+- 案例文件：必须提供 difficulty_spec 与 model_input.reference_samples。
+- expected_output：需声明输出格式与 result 字段要求（run_records 与 evaluation_result 关键字段）。
+- metrics_inputs：建议提供 case_id、case_path、sample_test_timeout_seconds、raw_output_path；可选 subtask_count、algorithm_complexity_level、ambiguity_score、semantic_consistency_score、style_score、performance_score、robustness_score。
+- metrics_config：统一配置 difficulty_metric_weights、quality_metric_weights、difficulty_score_caps、quality_score_caps、difficulty_weight。

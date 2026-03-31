@@ -25,6 +25,8 @@ class EvaluationRunner:
         self,
         input_path: str,
         output_path: str,
+        default_metrics_inputs: Dict[str, Any] | None = None,
+        default_metrics_config: Dict[str, Any] | None = None,
         extra_metrics_inputs: Dict[str, Any] | None = None,
     ) -> Dict[str, Any]:
         """
@@ -34,6 +36,16 @@ class EvaluationRunner:
         extra_metrics_inputs: optional runtime metrics inputs.
         """
         data = load_json(input_path)
+        metrics_inputs = data.get("metrics_inputs") or {}
+        if default_metrics_inputs:
+            for key, value in default_metrics_inputs.items():
+                metrics_inputs.setdefault(key, value)
+        data["metrics_inputs"] = metrics_inputs
+        metrics_config = data.get("metrics_config") or {}
+        if default_metrics_config:
+            for key, value in default_metrics_config.items():
+                metrics_config.setdefault(key, value)
+        data["metrics_config"] = metrics_config
         context = EvaluationContext(**data)
         if extra_metrics_inputs:
             context.metrics_inputs.update(extra_metrics_inputs)

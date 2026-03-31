@@ -1,18 +1,19 @@
 {
-  "instance_id": "ind-001",
+  "instance_id": "ind-003",
   "repo": "independent/local",
   "version": "v0.1.0",
   "task_type": "independent_function_development",
   "language": "Python",
-  "task_original_statement": "Write a program that reads a list of integers and outputs them in ascending order using bubble sort.",
+  "task_original_statement": "Given a grid with walls, start S, and target T, compute the length of the shortest path using 4-directional moves.",
   "is_original_task": true,
   "task_revision_statement": "",
   "input_direct": {
-    "prompt": "Read N followed by N integers from stdin and output the sorted sequence separated by spaces.",
+    "prompt": "Read integers R C followed by R lines of a grid containing '.', '#', 'S', 'T'. You may move up/down/left/right to non-wall cells. Output the length of the shortest path from S to T, or -1 if unreachable.",
     "provided_code": [],
     "instructions": [
-      "Use bubble sort.",
-      "Output exactly one line."
+      "Use 4-directional movement only.",
+      "Walls are marked with '#'.",
+      "If T is unreachable, output -1."
     ]
   },
   "input_indirect": {
@@ -44,24 +45,24 @@
     }
   },
   "difficulty_spec": {
-    "subtask_count": 2,
-    "algorithm_complexity_level": 1,
-    "ambiguity_score": 0.1
+    "subtask_count": 3,
+    "algorithm_complexity_level": 2,
+    "ambiguity_score": 0.15
   },
   "base_commit": "",
   "patch": "",
   "test_setup_id": "local-py",
   "hints_text": "",
   "model_input": {
-    "task_description": "Read N followed by N integers from stdin and output them in ascending order using bubble sort. Output exactly one line with numbers separated by spaces.",
+    "task_description": "Read R C and a grid with '.', '#', 'S', 'T'. Move 4-directionally on non-wall cells. Output shortest path length from S to T, or -1 if unreachable.",
     "reference_samples": [
       {
-        "input": "5\n5 1 4 2 8\n",
-        "expected_output": "1 2 4 5 8"
+        "input": "3 4\nS..#\n.#.#\n...T\n",
+        "expected_output": "5"
       },
       {
-        "input": "3\n3 2 1\n",
-        "expected_output": "1 2 3"
+        "input": "2 3\nS#T\n###\n",
+        "expected_output": "-1"
       }
     ],
     "code_skeleton": ""
@@ -76,13 +77,13 @@
     "max_cost_usd": 0.5
   },
   "metrics_inputs": {
-    "case_id": "001",
+    "case_id": "003",
     "build_workspace": "artifacts/independent_build",
     "sample_test_timeout_seconds": 5,
-    "raw_output_path": "artifacts/raw_outputs/independent_case_001.txt",
-    "case_path": "src/cases/independent_generation/independent_case_001.json",
-    "subtask_count": 2,
-    "algorithm_complexity_level": 1,
-    "ambiguity_score": 0.1
+    "raw_output_path": "artifacts/raw_outputs/independent_case_003.txt",
+    "case_path": "src/cases/independent_generation/independent_case_003.json",
+    "subtask_count": 3,
+    "algorithm_complexity_level": 2,
+    "ambiguity_score": 0.15
   }
 }

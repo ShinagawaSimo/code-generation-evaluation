@@ -1,5 +1,14 @@
  # Code Generation Evaluation Project Document
  
+## Project Structure
+- config: evaluation configuration and runtime parameters (eval_pipeline.json, run_cases.json, model_api.json).
+- src/cases: evaluation case inputs.
+- src/eval_core: evaluation pipeline and metric computation.
+- src/data_process: build, execution, and data IO utilities.
+- docs: project documentation and evaluation specs.
+- artifacts/raw_outputs: archived raw model outputs.
+- artifacts/results: archived evaluation results.
+
  ## Content Generation Evaluation Specification
  
  ### Task Inputs and Outputs
@@ -15,62 +24,37 @@
  - Process evidence: intermediate results and decision traces when available.
  
  ### Difficulty System
- - Input dimensions: tangling, scattering, scale, domain knowledge, modality.
- - Output dimensions: tangling, scattering, scale, modality.
+ - tangling/scattering/scale/domain/modality fields are no longer used.
+ - D comes from the Code Difficulty module only.
+ - Code Difficulty module:
+   - Input scale complexity: task text length, reference code length, reference function count.
+   - Output complexity: output field count, output function count, return nesting depth, complex object involvement.
+   - Subtask count: auto-estimated, override via difficulty_spec or metrics_inputs.
+   - Algorithm complexity level: auto-estimated, override via difficulty_spec or metrics_inputs.
+   - Constraint complexity: constraint keyword count.
+   - Ambiguity: default 0, override via ambiguity_score.
+   - Test difficulty: sample count, boundary ratio, input-space size.
+ - D is the weighted average of normalized difficulty indicators using difficulty_metric_weights.
+
+ ### Quality System
+ - Code Quality module:
+   - Correctness: build_success and sample_tests_pass.
+   - Semantic consistency: semantic_consistency_score.
+   - Structural quality: function count, average function length, max nesting depth.
+   - Readability: identifier statistics and comment density.
+   - Style compliance: style_score.
+   - Performance: performance_score or complexity-hint fallback.
+   - Robustness and security: robustness_score.
+ - Q is the weighted average of normalized quality indicators using quality_metric_weights.
+ - Final score: Score = Q ⋅ (1 + λD), where λ is difficulty_weight.
+
+## Configuration Notes
+- config/run_cases.json: case paths, result directory, raw output directory, plus default metrics_inputs/metrics_config.
+- config/eval_pipeline.json: ordered evaluation steps and prompt path.
+- config/model_api.json: model service connection and timeout settings.
  
- ### Metrics System
- - Process metrics: thinking time, response time, token usage, cost, and custom metrics.
- - Output metrics for code: syntax correctness, test pass rate, static analysis issues, security issues, performance issues, and similarity.
- - Output metrics for text: semantic accuracy, semantic coverage, relevance, factual errors, and custom metrics.
- - Output metrics for other modalities: format correctness, content correctness, coverage, relevance, and custom metrics.
- - Normalization and weights: per task type defaults, weight definitions, and normalization across percentage, count, and boolean metrics.
- 
- ## Phase Goals
- 
- ### March
- 
- #### Goal
- Define and validate the minimal, high-quality evaluation workflow for March, covering representative tasks, preliminary framework design, and report outline.
- 
- #### Work Items
- 1. Representative samples process (inputs → outputs → difficulty → metrics).
-    - Select source material per task type and record provenance.
-    - Extract task context (codebase slice, docs, external knowledge) and fix scope.
-    - Draft task input and expected output with clear acceptance criteria.
-    - Assign difficulty across defined dimensions and justify the grade.
-    - Define per-task metrics, scoring rules, and failure categories.
-    - Review samples for realism and consistency, then freeze the sample set.
-    - Independent function development: define isolated function scope, required interfaces, unit tests, and reference outputs.
-    - New application development: define end-to-end app scope, module boundaries, deployment target, and acceptance tests.
-    - Incremental feature development: define baseline repo state, feature delta, regression scope, and compatibility constraints.
- 
- 2. Baseline evaluation process (setup → run → trace → score).
-    - Prepare a reproducible runtime, dependencies, and logging standard.
-    - Execute tasks via manual or scripted runs with controlled prompts.
-    - Capture raw outputs, tool logs, and intermediate artifacts.
-    - Compute metrics, summarize results, and flag anomalies.
-    - Archive run configurations and evidence for traceability.
-    - Independent function development: run unit tests and local checks for correctness and edge cases.
-    - New application development: run build, integration, and end-to-end checks with deployment validation.
-    - Incremental feature development: run regression suites, dependency checks, and backward compatibility validation.
- 
- 3. Dataset + evaluation framework process (schema → process → aggregation).
-    - Define dataset schema, required metadata, and difficulty label format.
-    - Specify task packaging, versioning, and validation rules.
-    - Design the evaluation workflow, including metric computation stages.
-    - Define result aggregation logic and reporting-ready summaries.
-    - Produce a minimal architecture diagram and interface contracts.
-    - Define task templates for independent function, new application, and incremental feature categories.
- 
- 4. Report structure process (outline → evidence mapping → presentation).
-    - Draft the report outline, section ownership, and required tables.
-    - Map each conclusion to supporting metrics, samples, and artifacts.
-    - Define chart and table standards for comparability.
-    - Ensure the report aligns with dataset scope and framework outputs.
-    - Separate result narratives for independent function, new application, and incremental feature tracks.
- 
- #### Deliverables
- - A set of representative tasks with complete inputs, outputs, difficulty, and metrics.
- - Baseline evaluation results with reproducible artifacts.
- - A preliminary dataset + evaluation framework design document.
- - A report outline with conclusion-to-evidence mapping.
+## Runtime Contract (Current)
+- Cases must include difficulty_spec and model_input.reference_samples.
+- expected_output must declare output format and required result fields.
+- metrics_inputs should include case_id, case_path, sample_test_timeout_seconds, raw_output_path; optional subtask_count, algorithm_complexity_level, ambiguity_score, semantic_consistency_score, style_score, performance_score, robustness_score.
+- metrics_config should define difficulty_metric_weights, quality_metric_weights, difficulty_score_caps, quality_score_caps, difficulty_weight.
