@@ -5,3 +5,4 @@ prompt_example.md
 **/__pycache__/**
 /related_project/
 /results/
+/config/model_api.json
