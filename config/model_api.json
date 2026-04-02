@@ -2,7 +2,7 @@
   "provider": "deepseek",
   "model": "deepseek-reasoner",
   "base_url": "https://api.deepseek.com",
-  "api_key_env": "sk-694aadbf2cc649018c7586ac7af0f050",
+  "api_key_env": "",
   "timeout_seconds": 60,
   "max_output_tokens": 16384
 }
