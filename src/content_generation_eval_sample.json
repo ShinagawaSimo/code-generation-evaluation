@@ -1,12 +1,8 @@
 {
   "instance_id": "sample-0001",
-  "repo": "example/repo",
-  "version": "v0.0.1",
   "task_type": "independent_function_development",
   "language": "Python",
   "task_original_statement": "Describe the task statement here.",
-  "is_original_task": true,
-  "task_revision_statement": "",
   "input_direct": {
     "prompt": "Describe the direct prompt here.",
     "provided_code": [],
@@ -45,80 +41,16 @@
     "algorithm_complexity_level": 0,
     "ambiguity_score": 0.0
   },
-  "base_commit": "",
-  "patch": "",
-  "test_setup_id": "",
-  "hints_text": "",
   "model_input": {
     "task_description": "",
     "reference_samples": [],
     "code_skeleton": ""
   },
-  "tags": [],
-  "metrics_config": {
-    "build_weight": 1.0,
-    "sample_tests_weight": 1.0,
-    "process_weight": 0.5,
-    "max_response_time_ms": 30000,
-    "max_token_usage": 2000,
-    "max_cost_usd": 0.5,
-    "difficulty_weight": 0.2,
-    "difficulty_metric_weights": {
-      "input_scale_complexity": 1.0,
-      "output_complexity": 1.0,
-      "subtask_count": 1.0,
-      "algorithm_complexity_level": 1.0,
-      "constraint_complexity": 1.0,
-      "ambiguity": 1.0,
-      "test_difficulty": 1.0
-    },
-    "quality_metric_weights": {
-      "correctness": 2.0,
-      "semantic_consistency": 1.0,
-      "structure_quality": 1.0,
-      "readability": 1.0,
-      "style_compliance": 1.0,
-      "performance": 1.0,
-      "robustness_security": 1.0
-    },
-    "input_scale_weights": {
-      "task_char_length": 1.0,
-      "reference_code_char_length": 1.0,
-      "reference_code_function_count": 1.0
-    },
-    "output_complexity_weights": {
-      "output_field_count": 1.0,
-      "output_function_count": 1.0,
-      "return_nesting_depth": 1.0,
-      "complex_object_involved": 1.0
-    },
-    "test_difficulty_weights": {
-      "sample_test_count": 1.0,
-      "boundary_case_ratio": 1.0,
-      "input_space_size": 1.0
-    },
-    "structure_quality_weights": {
-      "function_count": 1.0,
-      "avg_function_length": 1.0,
-      "max_nesting_depth": 1.0
-    },
-    "readability_weights": {
-      "identifier_avg_length": 1.0,
-      "identifier_long_ratio": 1.0,
-      "comment_density": 1.0
-    }
-  },
   "metrics_inputs": {
     "case_id": "",
-    "build_workspace": "artifacts/independent_build",
-    "sample_test_timeout_seconds": 5,
-    "raw_output_path": "artifacts/raw_outputs/independent_case_sample.txt",
-    "tool_enabled": true,
-    "tool_max_turns": 3,
+    "case_path": "src/content_generation_eval_sample.json",
     "subtask_count": 1,
     "algorithm_complexity_level": 0,
     "ambiguity_score": 0.0
-  },
-  "run_records": {},
-  "evaluation_result": {}
+  }
 }

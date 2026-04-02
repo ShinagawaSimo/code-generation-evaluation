@@ -4,17 +4,17 @@ from typing import Any, Dict, List
 
 @dataclass
 class EvaluationContext:
-    instance_id: str
-    repo: str
-    version: str
-    task_type: str
-    language: str
-    task_original_statement: str
-    is_original_task: bool
-    task_revision_statement: str
-    input_direct: Dict[str, Any]
-    input_indirect: Dict[str, Any]
-    expected_output: Dict[str, Any]
+    instance_id: str = ""
+    repo: str = ""
+    version: str = ""
+    task_type: str = ""
+    language: str = ""
+    task_original_statement: str = ""
+    is_original_task: bool = True
+    task_revision_statement: str = ""
+    input_direct: Dict[str, Any] = field(default_factory=dict)
+    input_indirect: Dict[str, Any] = field(default_factory=dict)
+    expected_output: Dict[str, Any] = field(default_factory=dict)
     difficulty_spec: Dict[str, Any] = field(default_factory=dict)
     base_commit: str = ""
     patch: str = ""

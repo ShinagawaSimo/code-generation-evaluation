@@ -1,111 +1,94 @@
 # Independent Generation Metrics
 
-## Code Difficulty Metrics
+## Field Definitions
+- evaluation_result.metrics.difficulty.input_scale.task_char_length: character length of task text.
+- evaluation_result.metrics.difficulty.input_scale.reference_code_char_length: character length of provided reference code and skeleton.
+- evaluation_result.metrics.difficulty.input_scale.reference_code_function_count: number of functions in reference code.
+- evaluation_result.metrics.difficulty.output_complexity.output_field_count: estimated returned object/dict field count.
+- evaluation_result.metrics.difficulty.output_complexity.output_function_count: number of functions in generated output.
+- evaluation_result.metrics.difficulty.output_complexity.return_nesting_depth: nesting depth of return structures.
+- evaluation_result.metrics.difficulty.output_complexity.complex_object_involved: whether complex object keywords appear in output.
+- evaluation_result.metrics.difficulty.subtask_count: estimated or overridden count of logical subtasks.
+- evaluation_result.metrics.difficulty.algorithm_complexity_level: estimated or overridden algorithm level (0-3).
+- evaluation_result.metrics.difficulty.constraint_complexity.keyword_count: count of constraint-related keywords in task text.
+- evaluation_result.metrics.difficulty.ambiguity: ambiguity score from runtime input or case profile.
+- evaluation_result.metrics.difficulty.test_difficulty.sample_test_count: number of sample tests.
+- evaluation_result.metrics.difficulty.test_difficulty.boundary_case_ratio: ratio of boundary-like samples.
+- evaluation_result.metrics.difficulty.test_difficulty.input_space_size: tokenized size proxy of sample inputs.
+- evaluation_result.metrics.quality.correctness.build_success: whether build step succeeded.
+- evaluation_result.metrics.quality.correctness.sample_tests_pass: whether sample tests passed.
+- evaluation_result.metrics.quality.correctness.pass: combined correctness flag from build and tests.
+- evaluation_result.metrics.quality.structure.function_count: function count in generated output.
+- evaluation_result.metrics.quality.structure.avg_function_length: average non-empty length of functions.
+- evaluation_result.metrics.quality.structure.max_nesting_depth: maximum nesting depth in generated output.
+- evaluation_result.metrics.quality.readability.identifier_avg_length: average identifier length.
+- evaluation_result.metrics.quality.readability.identifier_long_ratio: ratio of identifiers with length threshold.
+- evaluation_result.metrics.quality.readability.comment_density: comment-to-code density estimate.
+- evaluation_result.metrics.quality.style.score: optional style score provided from runtime input.
+- evaluation_result.metrics.quality.performance.complexity_hints: extracted complexity hints such as O(...).
+- evaluation_result.metrics.quality.robustness_security.score: optional robustness/security score from runtime input.
+- evaluation_result.difficulty.modules.input_scale_complexity: normalized module score for input scale complexity.
+- evaluation_result.difficulty.modules.output_complexity: normalized module score for output complexity.
+- evaluation_result.difficulty.modules.subtask_count: normalized module score for subtask count.
+- evaluation_result.difficulty.modules.algorithm_complexity_level: normalized module score for algorithm complexity level.
+- evaluation_result.difficulty.modules.constraint_complexity: normalized module score for constraint complexity.
+- evaluation_result.difficulty.modules.ambiguity: normalized module score for ambiguity.
+- evaluation_result.difficulty.modules.test_difficulty: normalized module score for test difficulty.
+- evaluation_result.difficulty.comprehensive: weighted average difficulty score D.
+- evaluation_result.quality.modules.correctness: normalized module score for correctness.
+- evaluation_result.quality.modules.semantic_consistency: normalized module score for semantic consistency.
+- evaluation_result.quality.modules.structure_quality: normalized module score for structure quality.
+- evaluation_result.quality.modules.readability: normalized module score for readability.
+- evaluation_result.quality.modules.style_compliance: normalized module score for style compliance.
+- evaluation_result.quality.modules.performance: normalized module score for performance.
+- evaluation_result.quality.modules.robustness_security: normalized module score for robustness and security.
+- evaluation_result.quality.comprehensive: weighted average quality score Q.
+- evaluation_result.quality_score_q: copied quality comprehensive score Q.
+- evaluation_result.difficulty_score_d: copied difficulty comprehensive score D.
+- evaluation_result.scores.build: step score contribution from build check.
+- evaluation_result.scores.sample_tests: step score contribution from sample tests check.
+- evaluation_result.scores.process: step score contribution from process metrics check.
+- evaluation_result.final_score: final score computed by Q * (1 + λD).
+- evaluation_result.passed: pass/fail flag based on score and mandatory checks.
+- evaluation_result.review_notes: runtime review note, usually error or manual note.
 
-### Input Scale Complexity (Auto)
-* Task character length
-* Reference code character length
-* Reference code function count
-* Fields: metrics.difficulty.input_scale.task_char_length / reference_code_char_length / reference_code_function_count
-* Function: compute_independent_metrics
-
-### Output Complexity (Auto)
-* Output field count
-* Output function count
-* Return structure nesting depth
-* Complex object involvement: class, graph, tree, etc.
-* Fields: metrics.difficulty.output_complexity.output_field_count / output_function_count / return_nesting_depth / complex_object_involved
-* Function: compute_independent_metrics
-
-### Subtask Count (Estimated, Override Allowed)
-* Whether the task can be decomposed into multiple logical steps
-* Field: metrics.difficulty.subtask_count
-* Function: compute_independent_metrics (override from metrics_inputs.subtask_count or difficulty_spec.subtask_count)
-
-### Algorithm Complexity Level (Estimated, Override Allowed)
-* 0: No algorithm, CRUD
-* 1: Sorting, traversal, simple recursion
-* 2: DP, graph
-* 3: Search optimization, NP problems
-* Field: metrics.difficulty.algorithm_complexity_level
-* Function: compute_independent_metrics (override from metrics_inputs.algorithm_complexity_level or difficulty_spec.algorithm_complexity_level)
-
-### Constraint Complexity (Auto)
-* Performance or resource constraints
-* Constraint keyword occurrences
-* Field: metrics.difficulty.constraint_complexity.keyword_count
-* Function: compute_independent_metrics
-
-### Ambiguity
-* Multiple possible interpretations or implementations
-* Requires additional context or external info
-* Needs handling of exceptions or edge cases
-* Output variability across multiple LLM runs
-* Field: metrics.difficulty.ambiguity
-* Function: compute_independent_metrics (override from metrics_inputs.ambiguity_score or difficulty_spec.ambiguity_score)
-
-### Test Difficulty (Auto)
-* Sample test count
-* Boundary-case ratio
-* Fields: metrics.difficulty.test_difficulty.sample_test_count / boundary_case_ratio / input_space_size
-* Function: compute_independent_metrics
-
-## Code Quality
-
-### Correctness (Auto)
-* Meets functional requirements
-* Syntax or logic errors
-* Unhandled exceptions or edge cases
-* Field: metrics.quality.correctness.build_success / sample_tests_pass / pass
-* Function: compute_independent_metrics
-
-### Semantic Consistency
-* Future consideration
-* LLM-based scoring
-* Field: quality.modules.semantic_consistency
-* Function: compute_quality (input from metrics_inputs.semantic_consistency_score)
-
-### Structural Quality (Auto)
-* Function count penalty
-* Average function length
-* Maximum nesting depth
-* Field: metrics.quality.structure.function_count / avg_function_length / max_nesting_depth
-* Function: compute_independent_metrics (raw), compute_quality (module score)
-
-### Readability (Auto)
-* Identifier length distribution
-* Semantic naming ratio
-* Comment density
-* Field: metrics.quality.readability.identifier_avg_length / identifier_long_ratio / comment_density
-* Function: compute_independent_metrics (raw), compute_quality (module score)
-
-### Style Compliance
-* Tool-based or manual scoring
-* Field: quality.modules.style_compliance
-* Function: compute_quality (input from metrics_inputs.style_score)
-
-### Performance (Hint Extraction)
-* Time complexity
-* Space complexity
-* Fields: metrics.quality.performance.complexity_hints, quality.modules.performance
-* Function: compute_independent_metrics (raw hints), compute_quality (score from metrics_inputs.performance_score or hints fallback)
-
-### Robustness and Security
-* Future implementation
-* Field: quality.modules.robustness_security
-* Function: compute_quality (input from metrics_inputs.robustness_score)
-
-## Composite Metrics
-### Weighted Score
-Score = Q ⋅ (1 + λD)
-* D: weighted average of normalized Code Difficulty indicators using difficulty_metric_weights
-* Q: weighted average of normalized Code Quality indicators using quality_metric_weights
-* λ: difficulty_weight
-* Fields: difficulty.comprehensive, quality.comprehensive, final_score
-* Functions: compute_difficulty, compute_quality, compute_final_score
-
-### Normalized Quality
-Q_norm = Q / Expected(Q | D)
-
-### Bucketed Metrics
-* Group by difficulty level and compute pass@K and average Q
+## Field-Function Mapping
+- evaluation_result.metrics - compute_independent_metrics
+- evaluation_result.metrics.difficulty.input_scale.task_char_length - compute_independent_metrics
+- evaluation_result.metrics.difficulty.input_scale.reference_code_char_length - compute_independent_metrics
+- evaluation_result.metrics.difficulty.input_scale.reference_code_function_count - compute_independent_metrics
+- evaluation_result.metrics.difficulty.output_complexity.output_field_count - compute_independent_metrics
+- evaluation_result.metrics.difficulty.output_complexity.output_function_count - compute_independent_metrics
+- evaluation_result.metrics.difficulty.output_complexity.return_nesting_depth - compute_independent_metrics
+- evaluation_result.metrics.difficulty.output_complexity.complex_object_involved - compute_independent_metrics
+- evaluation_result.metrics.difficulty.subtask_count - compute_independent_metrics
+- evaluation_result.metrics.difficulty.algorithm_complexity_level - compute_independent_metrics
+- evaluation_result.metrics.difficulty.constraint_complexity.keyword_count - compute_independent_metrics
+- evaluation_result.metrics.difficulty.ambiguity - compute_independent_metrics
+- evaluation_result.metrics.difficulty.test_difficulty.sample_test_count - compute_independent_metrics
+- evaluation_result.metrics.difficulty.test_difficulty.boundary_case_ratio - compute_independent_metrics
+- evaluation_result.metrics.difficulty.test_difficulty.input_space_size - compute_independent_metrics
+- evaluation_result.metrics.quality.correctness.build_success - compute_independent_metrics
+- evaluation_result.metrics.quality.correctness.sample_tests_pass - compute_independent_metrics
+- evaluation_result.metrics.quality.correctness.pass - compute_independent_metrics
+- evaluation_result.metrics.quality.structure.function_count - compute_independent_metrics
+- evaluation_result.metrics.quality.structure.avg_function_length - compute_independent_metrics
+- evaluation_result.metrics.quality.structure.max_nesting_depth - compute_independent_metrics
+- evaluation_result.metrics.quality.readability.identifier_avg_length - compute_independent_metrics
+- evaluation_result.metrics.quality.readability.identifier_long_ratio - compute_independent_metrics
+- evaluation_result.metrics.quality.readability.comment_density - compute_independent_metrics
+- evaluation_result.metrics.quality.style.score - compute_independent_metrics
+- evaluation_result.metrics.quality.performance.complexity_hints - compute_independent_metrics
+- evaluation_result.metrics.quality.robustness_security.score - compute_independent_metrics
+- evaluation_result.difficulty - compute_difficulty
+- evaluation_result.difficulty.modules.* - compute_difficulty
+- evaluation_result.difficulty.comprehensive - compute_difficulty
+- evaluation_result.quality - compute_quality
+- evaluation_result.quality.modules.* - compute_quality
+- evaluation_result.quality.comprehensive - compute_quality
+- evaluation_result.quality_score_q - final_score
+- evaluation_result.difficulty_score_d - final_score
+- evaluation_result.scores - final_score
+- evaluation_result.final_score - compute_final_score
+- evaluation_result.passed - final_score
+- evaluation_result.review_notes - final_score

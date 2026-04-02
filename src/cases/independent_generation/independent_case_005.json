@@ -1,12 +1,8 @@
 {
   "instance_id": "ind-005",
-  "repo": "independent/local",
-  "version": "v0.1.0",
   "task_type": "independent_function_development",
   "language": "Python",
   "task_original_statement": "Count the number of subarrays whose sum is divisible by K.",
-  "is_original_task": true,
-  "task_revision_statement": "",
   "input_direct": {
     "prompt": "Read integers N and K followed by N integers. Count how many contiguous subarrays have sum divisible by K. Output the count.",
     "provided_code": [],
@@ -48,10 +44,6 @@
     "algorithm_complexity_level": 2,
     "ambiguity_score": 0.1
   },
-  "base_commit": "",
-  "patch": "",
-  "test_setup_id": "local-py",
-  "hints_text": "",
   "model_input": {
     "task_description": "Given N, K and an array of N integers, count the number of contiguous subarrays whose sum is divisible by K. Output the count as an integer.",
     "reference_samples": [
@@ -66,20 +58,8 @@
     ],
     "code_skeleton": ""
   },
-  "tags": [],
-  "metrics_config": {
-    "build_weight": 1.0,
-    "sample_tests_weight": 1.0,
-    "process_weight": 0.5,
-    "max_response_time_ms": 30000,
-    "max_token_usage": 2000,
-    "max_cost_usd": 0.5
-  },
   "metrics_inputs": {
     "case_id": "005",
-    "build_workspace": "artifacts/independent_build",
-    "sample_test_timeout_seconds": 5,
-    "raw_output_path": "artifacts/raw_outputs/independent_case_005.txt",
     "case_path": "src/cases/independent_generation/independent_case_005.json",
     "subtask_count": 2,
     "algorithm_complexity_level": 2,

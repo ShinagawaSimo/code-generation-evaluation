@@ -1,112 +1,94 @@
 # 独立生成测评指标
 
-## 代码难度指标
+## 字段定义
+- task_char_length：任务文本字符长度。
+- reference_code_char_length：提供的参考代码与骨架代码字符长度。
+- reference_code_function_count：参考代码中的函数数量。
+- output_field_count：返回对象或字典的字段数估计值。
+- output_function_count：生成代码中的函数数量。
+- return_nesting_depth：返回结构的嵌套深度。
+- complex_object_involved：输出中是否出现复杂对象关键词。
+- subtask_count：子任务数量（估计值或覆盖值）。
+- algorithm_complexity_level：算法复杂度等级（0-3，估计值或覆盖值）。
+- keyword_count：任务文本中约束关键词计数。
+- ambiguity：歧义分值（来自运行时输入或案例配置）。
+- sample_test_count：样例测试数量。
+- boundary_case_ratio：边界样例比例。
+- input_space_size：样例输入空间规模代理值。
+- build_success：构建是否成功。
+- sample_tests_pass：样例测试是否通过。
+- pass：正确性综合标记（构建与测试）。
+- function_count：生成代码函数数量。
+- avg_function_length：函数平均长度。
+- max_nesting_depth：最大嵌套深度。
+- identifier_avg_length：标识符平均长度。
+- identifier_long_ratio：长标识符比例。
+- comment_density：注释密度估计。
+- score：风格分（可选运行时输入）。
+- complexity_hints：复杂度提示提取结果（如 O(...)）。
+- score：健壮性与安全性分值（可选运行时输入）。
+- input_scale_complexity：输入规模复杂度归一化模块分。
+- output_complexity：输出复杂度归一化模块分。
+- subtask_count：子任务数量归一化模块分。
+- algorithm_complexity_level：算法复杂度归一化模块分。
+- constraint_complexity：约束复杂度归一化模块分。
+- ambiguity：歧义归一化模块分。
+- test_difficulty：测试难度归一化模块分。
+- comprehensive：难度综合分 D（加权平均）。
+- correctness：正确性归一化模块分。
+- semantic_consistency：语义一致性归一化模块分。
+- structure_quality：结构质量归一化模块分。
+- readability：可读性归一化模块分。
+- style_compliance：风格规范归一化模块分。
+- performance：性能归一化模块分。
+- robustness_security：健壮性与安全性归一化模块分。
+- comprehensive：质量综合分 Q（加权平均）。
+- quality_score_q：质量综合分 Q 的拷贝字段。
+- difficulty_score_d：难度综合分 D 的拷贝字段。
+- build：构建检查步骤得分。
+- sample_tests：样例测试步骤得分。
+- process：过程指标步骤得分。
+- final_score：最终得分，计算公式为 Q * (1 + λD)。
+- passed：最终通过标记。
+- review_notes：评审备注或运行错误说明。
 
-### 输入规模复杂度（自动）
-* 任务的字符长度
-* 参考代码的字符长度
-* 参考代码的函数数量
-* 字段：metrics.difficulty.input_scale.task_char_length / reference_code_char_length / reference_code_function_count
-* 计算函数：compute_independent_metrics
-
-### 输出复杂度（自动）
-* 输出字段数
-* 输出函数数
-* 返回结构的嵌套深度
-* 是否涉及复杂对象：类、图、树等
-* 字段：metrics.difficulty.output_complexity.output_field_count / output_function_count / return_nesting_depth / complex_object_involved
-* 计算函数：compute_independent_metrics
-
-### 子任务数量（自动估计，可人工覆盖）
-* 任务是否可分解为多个逻辑步骤
-* 字段：metrics.difficulty.subtask_count
-* 计算函数：compute_independent_metrics（可由 metrics_inputs.subtask_count 或 difficulty_spec.subtask_count 覆盖）
-
-### 算法复杂度等级（自动估计，可人工覆盖）
-* 0: 无算法 CRUD
-* 1: 排序、遍历、简单递归等
-* 2: DP、图等
-* 3: 搜索优化、NP问题等
-* 字段：metrics.difficulty.algorithm_complexity_level
-* 计算函数：compute_independent_metrics（可由 metrics_inputs.algorithm_complexity_level 或 difficulty_spec.algorithm_complexity_level 覆盖）
-
-### 约束复杂度（自动）
-* 是否存在性能或资源约束
-* 出现时间复杂度、memory limit、real_time等关键词约束
-* 约束关键词计数
-* 字段：metrics.difficulty.constraint_complexity.keyword_count
-* 计算函数：compute_independent_metrics
-
-### 歧义性
-* 是否存在多个可能的解析或实现
-* 是否需要考虑上下文或外部信息
-* 是否需要处理异常情况或边界条件
-* 多次LLM解析任务->输出差异
-* 字段：metrics.difficulty.ambiguity
-* 计算函数：compute_independent_metrics（可由 metrics_inputs.ambiguity_score 或 difficulty_spec.ambiguity_score 覆盖）
-
-### 测试难度（自动）
-* 测试用例数量
-* 边界情况比例
-* 字段：metrics.difficulty.test_difficulty.sample_test_count / boundary_case_ratio / input_space_size
-* 计算函数：compute_independent_metrics
-
-## 代码质量
-
-### 正确性（自动）
-* 代码是否符合功能需求
-* 是否存在语法错误或逻辑错误
-* 是否存在未处理的异常情况或边界条件
-* 字段：metrics.quality.correctness.build_success / sample_tests_pass / pass
-* 计算函数：compute_independent_metrics
-
-### 语义一致性
-* 后续考虑
-* 经由特定LLM评分
-* 字段：quality.modules.semantic_consistency
-* 计算函数：compute_quality（来源 metrics_inputs.semantic_consistency_score）
-
-### 结构质量（自动）
-* 函数数量，过多/过少惩罚
-* 平均函数长度
-* 最大嵌套深度
-* 字段：metrics.quality.structure.function_count / avg_function_length / max_nesting_depth
-* 计算函数：compute_independent_metrics（原始值），compute_quality（模块分数）
-
-### 可读性（自动）
-* 命名长度分布
-* 是否存在语义命名
-* 注释密度
-* 字段：metrics.quality.readability.identifier_avg_length / identifier_long_ratio / comment_density
-* 计算函数：compute_independent_metrics（原始值），compute_quality（模块分数）
-
-### 风格规范
-* 工具评分或人工补充
-* 字段：quality.modules.style_compliance
-* 计算函数：compute_quality（来源 metrics_inputs.style_score）
-
-### 性能（自动提取提示）
-* 时间复杂度
-* 空间复杂度
-* 字段：metrics.quality.performance.complexity_hints，quality.modules.performance
-* 计算函数：compute_independent_metrics（提示抽取），compute_quality（来源 metrics_inputs.performance_score 或提示兜底）
-
-### 健壮性 安全性
-* 后续实现
-* 字段：quality.modules.robustness_security
-* 计算函数：compute_quality（来源 metrics_inputs.robustness_score）
-
-## 综合指标
-### 加权得分
-Score=Q⋅(1+λD)
-* D：代码难度模块各指标归一化后按 difficulty_metric_weights 加权平均
-* Q：代码质量模块各指标归一化后按 quality_metric_weights 加权平均
-* λ：difficulty_weight
-* 字段：difficulty.comprehensive、quality.comprehensive、final_score
-* 计算函数：compute_difficulty、compute_quality、compute_final_score
-
-### 归一化质量
-Q_{norm}​=Q/Expected(Q∣D)
-
-### 分桶指标
-* 按难度等级分组，分别计算pass@K和平均的Q等。
+## 字段-函数映射
+- metrics - compute_independent_metrics
+- task_char_length - compute_independent_metrics
+- reference_code_char_length - compute_independent_metrics
+- reference_code_function_count - compute_independent_metrics
+- output_field_count - compute_independent_metrics
+- output_function_count - compute_independent_metrics
+- return_nesting_depth - compute_independent_metrics
+- complex_object_involved - compute_independent_metrics
+- subtask_count - compute_independent_metrics
+- algorithm_complexity_level - compute_independent_metrics
+- keyword_count - compute_independent_metrics
+- ambiguity - compute_independent_metrics
+- sample_test_count - compute_independent_metrics
+- boundary_case_ratio - compute_independent_metrics
+- input_space_size - compute_independent_metrics
+- build_success - compute_independent_metrics
+- sample_tests_pass - compute_independent_metrics
+- pass - compute_independent_metrics
+- function_count - compute_independent_metrics
+- avg_function_length - compute_independent_metrics
+- max_nesting_depth - compute_independent_metrics
+- identifier_avg_length - compute_independent_metrics
+- identifier_long_ratio - compute_independent_metrics
+- comment_density - compute_independent_metrics
+- score - compute_independent_metrics
+- complexity_hints - compute_independent_metrics
+- score - compute_independent_metrics
+- difficulty - compute_difficulty
+- modules - compute_difficulty
+- comprehensive - compute_difficulty
+- quality - compute_quality
+- modules - compute_quality
+- comprehensive - compute_quality
+- quality_score_q - final_score
+- difficulty_score_d - final_score
+- scores - final_score
+- final_score - compute_final_score
+- passed - final_score
+- review_notes - final_score

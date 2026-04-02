@@ -1,12 +1,8 @@
 {
   "instance_id": "ind-002",
-  "repo": "independent/local",
-  "version": "v0.1.0",
   "task_type": "independent_function_development",
   "language": "Python",
   "task_original_statement": "Given a list of closed intervals, merge all overlapping intervals and output the merged intervals sorted by start.",
-  "is_original_task": true,
-  "task_revision_statement": "",
   "input_direct": {
     "prompt": "Read an integer N followed by N lines each containing two integers l r (l <= r). Intervals are closed. Merge any intervals that overlap or touch (i.e., next.start <= current.end). Output each merged interval as \"l r\" on its own line, sorted by l.",
     "provided_code": [],
@@ -49,10 +45,6 @@
     "algorithm_complexity_level": 1,
     "ambiguity_score": 0.2
   },
-  "base_commit": "",
-  "patch": "",
-  "test_setup_id": "local-py",
-  "hints_text": "",
   "model_input": {
     "task_description": "Read N closed intervals (l r). Merge intervals that overlap or touch (next.start <= current.end). Output merged intervals sorted by l, one per line as \"l r\".",
     "reference_samples": [
@@ -67,20 +59,8 @@
     ],
     "code_skeleton": ""
   },
-  "tags": [],
-  "metrics_config": {
-    "build_weight": 1.0,
-    "sample_tests_weight": 1.0,
-    "process_weight": 0.5,
-    "max_response_time_ms": 30000,
-    "max_token_usage": 2000,
-    "max_cost_usd": 0.5
-  },
   "metrics_inputs": {
     "case_id": "002",
-    "build_workspace": "artifacts/independent_build",
-    "sample_test_timeout_seconds": 5,
-    "raw_output_path": "artifacts/raw_outputs/independent_case_002.txt",
     "case_path": "src/cases/independent_generation/independent_case_002.json",
     "subtask_count": 3,
     "algorithm_complexity_level": 1,

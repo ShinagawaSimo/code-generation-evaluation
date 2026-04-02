@@ -1,12 +1,8 @@
 {
   "instance_id": "ind-004",
-  "repo": "independent/local",
-  "version": "v0.1.0",
   "task_type": "independent_function_development",
   "language": "Python",
   "task_original_statement": "Find the longest substring without repeating characters and output the smallest lexicographic substring among those with maximal length.",
-  "is_original_task": true,
-  "task_revision_statement": "",
   "input_direct": {
     "prompt": "Read a single line string S. Find the maximum length of a substring with all distinct characters. If multiple substrings share the maximal length, choose the lexicographically smallest one. Output the length on the first line and the chosen substring on the second line.",
     "provided_code": [],
@@ -48,10 +44,6 @@
     "algorithm_complexity_level": 2,
     "ambiguity_score": 0.35
   },
-  "base_commit": "",
-  "patch": "",
-  "test_setup_id": "local-py",
-  "hints_text": "",
   "model_input": {
     "task_description": "Given string S, find the maximum length of a substring with all distinct characters. If multiple substrings have that length, output the lexicographically smallest. Print length then substring on the next line.",
     "reference_samples": [
@@ -66,20 +58,8 @@
     ],
     "code_skeleton": ""
   },
-  "tags": [],
-  "metrics_config": {
-    "build_weight": 1.0,
-    "sample_tests_weight": 1.0,
-    "process_weight": 0.5,
-    "max_response_time_ms": 30000,
-    "max_token_usage": 2000,
-    "max_cost_usd": 0.5
-  },
   "metrics_inputs": {
     "case_id": "004",
-    "build_workspace": "artifacts/independent_build",
-    "sample_test_timeout_seconds": 5,
-    "raw_output_path": "artifacts/raw_outputs/independent_case_004.txt",
     "case_path": "src/cases/independent_generation/independent_case_004.json",
     "subtask_count": 3,
     "algorithm_complexity_level": 2,
