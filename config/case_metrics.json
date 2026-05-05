@@ -1,0 +1,12 @@
+{
+  "requirement_expansion_results_dir": "artifacts/requirement_expansion/results",
+  "requirement_expansion_result_glob": "*.json",
+  "results_dir": "artifacts/case_metrics/results",
+  "metric_config": {
+    "tokenizer_backend": "tiktoken",
+    "tokenizer_model": "gpt-4o-mini",
+    "tokenizer_encoding": "",
+    "private_knowledge_dependency_prompt_path": "src/prompts/private_knowledge_dependency_prompt.txt",
+    "expression_quality_prompt_path": "src/prompts/expression_quality_prompt.txt"
+  }
+}

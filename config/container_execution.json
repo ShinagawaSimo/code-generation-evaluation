@@ -1,0 +1,13 @@
+{
+  "container_packaging_results_dir": "artifacts/container_packaging/results",
+  "container_packaging_result_glob": "*.json",
+  "results_dir": "artifacts/container_execution/results",
+  "logs_dir": "artifacts/container_execution/logs",
+  "artifacts_dir": "artifacts/container_execution/artifacts",
+  "execution_config": {
+    "docker_command": "docker",
+    "image_tag_prefix": "code-generation-eval",
+    "build_timeout_seconds": 600,
+    "run_timeout_seconds": 600
+  }
+}

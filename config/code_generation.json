@@ -1,0 +1,20 @@
+{
+  "cases_dir": "cases",
+  "case_glob": "*.txt",
+  "results_dir": "artifacts/code_generation/results",
+  "code_output_dir": "artifacts/code_generation/generated_code",
+  "raw_output_dir": "artifacts/code_generation/raw_outputs",
+  "implemented_interface_dir": "artifacts/code_generation/implemented_interfaces",
+  "source_tests_dir": "artifacts/test_generation/generated_tests",
+  "adapted_tests_dir": "artifacts/code_generation/adapted_tests",
+  "case_defaults": {
+    "acceptance_standard": {}
+  },
+  "generation_config": {
+    "prompt_path": "src/prompts/code_generation_prompt.txt",
+    "max_rounds": 1,
+    "implemented_interface_dir": "artifacts/code_generation/implemented_interfaces",
+    "source_tests_dir": "artifacts/test_generation/generated_tests",
+    "adapted_tests_dir": "artifacts/code_generation/adapted_tests"
+  }
+}

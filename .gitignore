@@ -1,8 +1,9 @@
-/docs/文档
-prompt_example.md
-/artifacts/
+
 **/__pycache__/
 **/__pycache__/**
 /related_project/
-/results/
-/config/model_api.json
+/.trae/
+old_src/
+/docs/
+.env
+/artifacts/

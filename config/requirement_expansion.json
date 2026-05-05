@@ -1,0 +1,21 @@
+{
+  "cases_dir": "cases",
+  "case_glob": "*.txt",
+  "results_dir": "artifacts/requirement_expansion/results",
+  "raw_output_dir": "artifacts/requirement_expansion/raw_outputs",
+  "prompt_path": "src/prompts/requirement_expansion_prompt.txt",
+  "case_defaults": {
+    "language": "zh-CN",
+    "extra_context": {},
+    "allow_optional_features": true,
+    "preserve_user_constraints": true,
+    "output_language": "zh-CN",
+    "classification_labels": [
+      "basic_function",
+      "implicit_function",
+      "optional_function",
+      "basic_non_function",
+      "optional_non_function"
+    ]
+  }
+}

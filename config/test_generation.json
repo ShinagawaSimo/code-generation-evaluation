@@ -1,0 +1,9 @@
+{
+  "requirement_expansion_results_dir": "artifacts/requirement_expansion/results",
+  "requirement_expansion_result_glob": "*.json",
+  "results_dir": "artifacts/test_generation/results",
+  "generated_tests_dir": "artifacts/test_generation/generated_tests",
+  "generation_config": {
+    "prompt_path": "src/prompts/test_generation_prompt.txt"
+  }
+}

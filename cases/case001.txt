@@ -1,0 +1,2 @@
+Language: Python
+Implement a sort function that takes an integer list as input and returns a new list in ascending order. The function should not modify the original list and retain all duplicate numbers. An empty list input should return an empty list.
