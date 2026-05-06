@@ -1,6 +1,6 @@
 {
-  "requirement_expansion_results_dir": "artifacts/requirement_expansion/results",
-  "requirement_expansion_result_glob": "*.json",
+  "case_spec_generation_results_dir": "artifacts/case_spec_generation/results",
+  "case_spec_generation_result_glob": "*.json",
   "results_dir": "artifacts/case_metrics/results",
   "metric_config": {
     "tokenizer_backend": "tiktoken",

@@ -20,8 +20,8 @@ def run_test_generation() -> None:
     api_config = load_json(str(project_root / "config" / "model_api.json"))
 
     source_result_paths = list_result_paths(
-        str(project_root / stage_config["requirement_expansion_results_dir"]),
-        str(stage_config["requirement_expansion_result_glob"]),
+        str(project_root / stage_config["case_spec_generation_results_dir"]),
+        str(stage_config["case_spec_generation_result_glob"]),
     )
     results_dir = str(project_root / stage_config["results_dir"])
     generated_root_dir = str(project_root / stage_config["generated_tests_dir"])

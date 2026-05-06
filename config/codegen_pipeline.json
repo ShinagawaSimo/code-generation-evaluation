@@ -1,8 +1,5 @@
 {
   "stages": [
-    "requirement_expansion",
-    "case_metrics",
-    "test_generation",
     "code_generation",
     "container_packaging",
     "container_execution"

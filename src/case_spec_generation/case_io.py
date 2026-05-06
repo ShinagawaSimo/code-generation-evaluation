@@ -4,7 +4,7 @@ from typing import Any, Dict, List
 
 from shared.case_text import parse_case_text
 
-from .models import RequirementExpansionRequest, RequirementExpansionResult
+from .models import CaseSpecRequest, CaseSpecResult
 
 
 def load_json(path: str) -> Dict[str, Any]:
@@ -29,14 +29,14 @@ def _load_sidecar_defaults(case_path: Path) -> Dict[str, Any]:
     return json.loads(sidecar_path.read_text(encoding="utf-8"))
 
 
-def load_case_request(case_path: str, defaults: Dict[str, Any] | None = None) -> RequirementExpansionRequest:
+def load_case_spec_request(case_path: str, defaults: Dict[str, Any] | None = None) -> CaseSpecRequest:
     path = Path(case_path)
     defaults = {**(defaults or {}), **_load_sidecar_defaults(path)}
     parsed_case = parse_case_text(
         path.read_text(encoding="utf-8"),
         str(defaults.get("language", "")),
     )
-    return RequirementExpansionRequest(
+    return CaseSpecRequest(
         task_id=str(defaults.get("task_id") or path.stem),
         original_requirement_text=parsed_case["body"],
         language=parsed_case["language"],
@@ -59,5 +59,5 @@ def build_result_path(results_dir: str, task_id: str) -> Path:
     return Path(results_dir) / f"{task_id}.json"
 
 
-def save_result(result_path: str, result: RequirementExpansionResult) -> None:
+def save_result(result_path: str, result: CaseSpecResult) -> None:
     save_json(result_path, result.to_dict())

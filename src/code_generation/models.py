@@ -40,7 +40,6 @@ class CodeGenerationResult:
             "case_basename": self.case_basename,
             "language": self.language,
             "code_file_path": self.code_file_path,
-            "raw_output_path": self.raw_output_path,
             "implemented_interface_path": self.implemented_interface_path,
             "adapted_tests_dir": self.adapted_tests_dir,
             "rounds_used": self.rounds_used,

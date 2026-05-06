@@ -38,11 +38,11 @@ def _split_sentences(text: str) -> List[str]:
 
 def _build_sentence_point_map(expansion_result: Dict[str, Any]) -> Dict[str, List[str]]:
     sentence_map: Dict[str, List[str]] = {}
-    for point in expansion_result.get("requirement_points", []):
-        if not point.get("is_explicit_in_original"):
+    for point in expansion_result["requirement_points"]:
+        if not point["is_explicit_in_original"]:
             continue
-        point_id = str(point.get("point_id", ""))
-        for fragment in point.get("original_source_texts", []):
+        point_id = str(point["point_id"])
+        for fragment in point["original_source_texts"]:
             for sentence in _split_sentences(str(fragment)):
                 sentence_map.setdefault(sentence, []).append(point_id)
     return sentence_map
@@ -50,7 +50,7 @@ def _build_sentence_point_map(expansion_result: Dict[str, Any]) -> Dict[str, Lis
 
 def _evaluate_atomicity(expansion_result: Dict[str, Any]) -> Dict[str, Any]:
     explicit_points = [
-        point for point in expansion_result.get("requirement_points", []) if point.get("is_explicit_in_original")
+        point for point in expansion_result["requirement_points"] if point["is_explicit_in_original"]
     ]
     sentence_map = _build_sentence_point_map(expansion_result)
     standalone_point_ids = sorted(
@@ -84,13 +84,13 @@ def _evaluate_atomicity(expansion_result: Dict[str, Any]) -> Dict[str, Any]:
 def _build_llm_input(original_requirement_text: str, expansion_result: Dict[str, Any]) -> str:
     explicit_points = [
         {
-            "point_id": point.get("point_id"),
-            "point_text": point.get("point_text"),
-            "category": point.get("category"),
-            "original_source_texts": point.get("original_source_texts", []),
+            "point_id": point["point_id"],
+            "point_text": point["point_text"],
+            "category": point["category"],
+            "original_source_texts": point["original_source_texts"],
         }
-        for point in expansion_result.get("requirement_points", [])
-        if point.get("is_explicit_in_original")
+        for point in expansion_result["requirement_points"]
+        if point["is_explicit_in_original"]
     ]
     return json.dumps(
         {
@@ -119,7 +119,6 @@ def evaluate_expression_quality(
     consistency_issues = list(parsed.get("consistency_issues", []))
     understandability_issues = list(parsed.get("understandability_issues", []))
     return MetricResult(
-        name="expression_quality",
         values={
             "atomicity": atomicity,
             "consistency": {
@@ -131,5 +130,4 @@ def evaluate_expression_quality(
                 "issues": understandability_issues,
             },
         },
-        raw_response=raw_output,
     )

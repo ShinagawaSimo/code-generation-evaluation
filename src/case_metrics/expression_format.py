@@ -16,21 +16,20 @@ def _matches_ears(text: str) -> bool:
 
 
 def evaluate_expression_format(expansion_result: Dict[str, Any]) -> MetricResult:
-    points = expansion_result.get("requirement_points", [])
-    explicit_points = [point for point in points if point.get("is_explicit_in_original")]
+    points = expansion_result["requirement_points"]
+    explicit_points = [point for point in points if point["is_explicit_in_original"]]
     matched_point_ids: List[str] = []
     unmatched_point_ids: List[str] = []
     for point in explicit_points:
-        fragments = [str(text) for text in point.get("original_source_texts", []) if str(text).strip()]
+        fragments = [str(text) for text in point["original_source_texts"] if str(text).strip()]
         if fragments and any(_matches_ears(fragment) for fragment in fragments):
-            matched_point_ids.append(str(point.get("point_id", "")))
+            matched_point_ids.append(str(point["point_id"]))
         else:
-            unmatched_point_ids.append(str(point.get("point_id", "")))
+            unmatched_point_ids.append(str(point["point_id"]))
     explicit_requirement_point_count = len(explicit_points)
     ears_match_count = len(matched_point_ids)
     ears_ratio = ears_match_count / explicit_requirement_point_count if explicit_requirement_point_count else 0.0
     return MetricResult(
-        name="expression_format",
         values={
             "explicit_requirement_point_count": explicit_requirement_point_count,
             "ears_match_count": ears_match_count,

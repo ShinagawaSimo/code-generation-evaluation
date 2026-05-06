@@ -29,3 +29,6 @@ Input/output rules:
 
 Output:
 - one JSON object following caller-provided output_contract
+- If task is function-style, code_text in your output must implement the entry_name from implemented_interface exactly.
+- If task is stdin/stdout style, set interface_type to "program_io" and entry_name to an empty string.
+- Do not describe one interface in output_contract and implement a different one in code_text -- they must match exactly.

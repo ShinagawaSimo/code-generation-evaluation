@@ -28,7 +28,6 @@ class RequirementPointTestSpec:
     environment: Dict[str, Any] = field(default_factory=dict)
     artifact_hints: Dict[str, Any] = field(default_factory=dict)
     test_skeleton: Dict[str, Any] = field(default_factory=dict)
-    raw_response: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return {

@@ -47,7 +47,6 @@ def build_test_generation_input(
     task_id: str,
     language: str,
     original_requirement_text: str,
-    expanded_requirement_text: str,
     requirement_point: Dict[str, Any],
 ) -> str:
     return json.dumps(
@@ -55,7 +54,6 @@ def build_test_generation_input(
             "task_id": task_id,
             "language": language,
             "original_requirement_text": original_requirement_text,
-            "expanded_requirement_text": expanded_requirement_text,
             "requirement_point": requirement_point,
             "focus_guidance": _build_focus_guidance(requirement_point),
             "output_contract": {
@@ -117,28 +115,7 @@ def build_test_generation_input(
                     "runner_pseudocode": "string"
                 }
             },
-            "rules": [
-                "Return JSON only.",
-                "Use strict JSON literals only: strings in double quotes, booleans as true/false, null as null. Never output Python literals like None, True, or False.",
-                "Do not use null for object or array fields. Use {} or [] only when schema permits empty value.",
-                "If a test input needs Python None semantics, encode it as JSON null.",
-                "For program_io, io_cases must use plain text input and plain text expected output.",
-                "Generate tests for the current requirement point only. Do not verify other requirement points in the same spec.",
-                "If the current point does not mention duplicates, empty input, reverse ordering, mutation, naming, or error handling, do not add assertions for them.",
-                "Use at least 3 executable cases for each functional point whenever logically possible. Use at least 4 cases for exception/error-handling points when possible.",
-                "For function_call, target_signature must describe one callable entry and assertions must be directly executable without free-form code snippets.",
-                "When exact callable name or parameter names are unknown, use placeholders like @@ENTRY_NAME@@ and @@PARAM_NAME@@ instead of leaving fields empty.",
-                "For function_call, use positional arguments in call.args whenever possible. Avoid parameter-name-dependent assertions.",
-                "For function_call, do not output test_code, pre_call, post_call_check, setup, call_args, input, params, checks, or other custom assertion schemas.",
-                "For function_call, every assertion must use only the fixed keys: assertion_id, description, kind, call, expectation.",
-                "For function_call, use expectation.kind=raises for exception requirements and put the expected exception type in expectation.expected.",
-                "If current point only constrains function naming, execution_mode must be function_call, target_signature.entry_name must equal required name, and assertions should be an empty array.",
-                "Add discovery_hint text inside function_contract.notes when callable name is unknown.",
-                "Add test_skeleton.import_placeholder and test_skeleton.runner_pseudocode for function_call specs.",
-                "For non_functional points, provide environment and assertions even if io_cases is empty.",
-                "Do not generate markdown fences.",
-                "For function_call, if requirement text names callable entry then use it; otherwise generate suggested_entry_name and also put same name into target_signature.entry_name.",
-            ],
+            "rule_reference": "See prompt for full rule set",
         },
         ensure_ascii=False,
         indent=2,

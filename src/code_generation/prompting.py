@@ -35,16 +35,7 @@ def build_code_generation_input(request: CodeGenerationRequest) -> str:
             "notes": ["string"],
         },
     }
-    payload["rules"] = [
-        "Use only input content provided here.",
-        "Do not assume access to local files, tests, tools, or previous stage outputs.",
-        "Return JSON only.",
-        "Do not use markdown fences.",
-        "Try to solve correctly in one round.",
-        "implemented_interface must describe actual code you output, not an idealized interface.",
-        "If task is function-style, code_text must implement implemented_interface.entry_name exactly.",
-        "If task is stdin/stdout style, set interface_type to program_io and entry_name to empty string.",
-    ]
+    payload["rule_reference"] = "See prompt for full rule set"
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
@@ -71,14 +62,7 @@ def build_self_review_input(request: CodeGenerationRequest, previous_code: str) 
             "notes": ["string"],
         },
     }
-    payload["rules"] = [
-        "Revise previous code.",
-        "Keep same language.",
-        "Return improved JSON only.",
-        "Do not use markdown fences.",
-        "Do not assume any external files or tests.",
-        "implemented_interface must match revised code_text exactly.",
-    ]
+    payload["rule_reference"] = "See prompt for full rule set"
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 

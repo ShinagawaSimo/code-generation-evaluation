@@ -43,16 +43,17 @@ def _render_manifest(
     packaged_tests_dir: str,
     packaged_point_count: int,
 ) -> str:
+    point_specs = testgen_result["point_specs"]
     return json.dumps(
         {
-            "task_id": codegen_result.get("task_id", ""),
-            "language": codegen_result.get("language", ""),
-            "code_file_path": codegen_result.get("code_file_path", ""),
-            "code_filename": Path(str(codegen_result.get("code_file_path", ""))).name,
-            "test_point_count": len(testgen_result.get("point_specs", [])),
+            "task_id": codegen_result["task_id"],
+            "language": codegen_result["language"],
+            "code_file_path": codegen_result["code_file_path"],
+            "code_filename": Path(str(codegen_result["code_file_path"])).name,
+            "test_point_count": len(point_specs),
             "packaged_point_count": packaged_point_count,
-            "test_modes": [point.get("execution_mode", "") for point in testgen_result.get("point_specs", [])],
-            "generated_test_files": testgen_result.get("generated_files", []),
+            "test_modes": [point["execution_mode"] for point in point_specs],
+            "generated_test_files": testgen_result["generated_files"],
             "packaged_tests_dir": packaged_tests_dir,
         },
         ensure_ascii=False,

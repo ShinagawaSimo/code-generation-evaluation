@@ -15,20 +15,20 @@ def _render_program_io_files(spec: RequirementPointTestSpec) -> List[GeneratedTe
         artifacts.append(
             GeneratedTestArtifact(
                 f"io_cases/input_{index:03d}.txt",
-                str(case.get("input_text", "")),
+                str(case["input_text"]),
             )
         )
         artifacts.append(
             GeneratedTestArtifact(
                 f"io_cases/expected_output_{index:03d}.txt",
-                str(case.get("expected_output_text", "")),
+                str(case["expected_output_text"]),
             )
         )
     return artifacts
 
 
 def _render_function_call_files(spec: RequirementPointTestSpec) -> List[GeneratedTestArtifact]:
-    entry_name = str(spec.target_signature.get("entry_name", "target"))
+    entry_name = str(spec.target_signature["entry_name"])
     harness_templates = {
         "python": f"from solution import {entry_name}\n\n# Fill assertion execution using function_cases.json\n",
         "javascript": f"const {{ {entry_name} }} = require('./solution');\n\n// Fill assertion execution using function_cases.json\n",

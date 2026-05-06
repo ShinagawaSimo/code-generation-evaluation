@@ -27,8 +27,6 @@ def _format_command(command: list[str]) -> str:
 
 
 def _read_execution_summary(summary_path: Path) -> Dict[str, Any]:
-    if not summary_path.exists():
-        return {}
     return json.loads(summary_path.read_text(encoding="utf-8"))
 
 
@@ -59,9 +57,9 @@ def execute_container(
     logs_dir: str,
     artifacts_dir: str,
 ) -> ContainerExecutionResult:
-    task_id = str(packaging_result.get("task_id", ""))
-    language = str(packaging_result.get("language", ""))
-    container_dir = Path(str(packaging_result.get("container_dir", ""))).resolve()
+    task_id = str(packaging_result["task_id"])
+    language = str(packaging_result["language"])
+    container_dir = Path(str(packaging_result["container_dir"])).resolve()
     docker_command = str(execution_config.get("docker_command", "docker"))
     image_tag_prefix = str(execution_config.get("image_tag_prefix", "code-generation-eval"))
     build_timeout_seconds = int(execution_config.get("build_timeout_seconds", 600))
@@ -247,14 +245,14 @@ def execute_container(
     run_log = (run_result.stdout or "") + ("\n" + run_result.stderr if run_result.stderr else "")
     _write_log(run_log_path, run_log)
     execution_summary = _read_execution_summary(execution_summary_path)
-    compile_success = bool(execution_summary.get("compile_success", False))
-    tests_success = bool(execution_summary.get("tests_success", False))
-    has_skipped_tests = bool(execution_summary.get("has_skipped_tests", False))
-    skipped_count = int(execution_summary.get("skipped_count", 0) or 0)
-    passed_test_count = int(execution_summary.get("passed_test_count", 0) or 0)
-    failed_test_count = int(execution_summary.get("failed_test_count", 0) or 0)
+    compile_success = bool(execution_summary["compile_success"])
+    tests_success = bool(execution_summary["tests_success"])
+    has_skipped_tests = bool(execution_summary["has_skipped_tests"])
+    skipped_count = int(execution_summary["skipped_count"])
+    passed_test_count = int(execution_summary["passed_test_count"])
+    failed_test_count = int(execution_summary["failed_test_count"])
     run_success = bool(execution_summary) or run_result.returncode == 0
-    failure_message = str(execution_summary.get("failure_message", "")).strip()
+    failure_message = str(execution_summary["failure_message"]).strip()
     if not execution_summary and run_result.returncode != 0:
         failure_message = _summarize_missing_execution(run_result)
     elif not failure_message and run_result.returncode in {125, 126, 127}:

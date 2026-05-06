@@ -71,12 +71,10 @@ def evaluate_private_knowledge_dependency(
         private_knowledge_token_count / total_token_count if total_token_count else 0.0
     )
     return MetricResult(
-        name="private_knowledge_dependency",
         values={
             "private_knowledge_spans": spans,
             "private_knowledge_token_count": private_knowledge_token_count,
             "total_token_count": total_token_count,
             "dependency_ratio": dependency_ratio,
         },
-        raw_response=raw_output,
     )
