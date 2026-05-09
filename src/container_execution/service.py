@@ -251,8 +251,9 @@ def execute_container(
         failure_message = "packaged tests failed"
 
     if test_report_path.exists():
-        test_report = json.loads(test_report_path.read_text(encoding="utf-8"))
-        test_results = test_report.get("results", [])
+        test_results = json.loads(test_report_path.read_text(encoding="utf-8"))
+        if not isinstance(test_results, list):
+            test_results = test_results.get("results", [])
         print(f"[container_execution] {task_id} test point results:")
         for tr in test_results:
             pid = tr.get("point_id", "")

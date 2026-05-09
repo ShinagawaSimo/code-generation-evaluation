@@ -23,9 +23,10 @@ def _compute_comment_ratio_python(code_text: str) -> float:
     try:
         tree = ast.parse(code_text)
         for node in ast.walk(tree):
-            docstring = ast.get_docstring(node)
-            if docstring:
-                comment_lines += len(docstring.splitlines())
+            if isinstance(node, (ast.Module, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                docstring = ast.get_docstring(node)
+                if docstring:
+                    comment_lines += len(docstring.splitlines())
     except SyntaxError:
         pass
     total = max(total_lines, 1)
@@ -83,6 +84,8 @@ def _compute_codebleu(reference_text: str, generated_text: str, language: str) -
         }
         lang = lang_map.get(language.lower(), "python")
         result = calc_codebleu([reference_text], [generated_text], lang=lang)
+        if isinstance(result, dict):
+            return float(result.get("codebleu", 0.0))
         return float(result.codebleu)
     except ImportError:
         return 0.0
@@ -95,7 +98,10 @@ def _load_test_report(artifacts_dir: str, task_id: str) -> List[Dict[str, Any]]:
     if not report_path.exists():
         return []
     import json
-    return json.loads(report_path.read_text(encoding="utf-8")).get("results", [])
+    data = json.loads(report_path.read_text(encoding="utf-8"))
+    if isinstance(data, list):
+        return data
+    return data.get("results", [])
 
 
 def _build_category_map(spec_result: Dict[str, Any], test_result: Dict[str, Any]) -> Dict[str, str]:

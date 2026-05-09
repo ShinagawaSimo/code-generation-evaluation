@@ -2,6 +2,7 @@
   "stages": [
     "code_generation",
     "container_packaging",
-    "container_execution"
+    "container_execution",
+    "code_metrics"
   ]
 }

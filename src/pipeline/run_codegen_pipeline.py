@@ -8,6 +8,7 @@ from case_metrics.case_io import load_json
 from code_generation.run_code_generation import run_code_generation
 from container_execution.run_container_execution import run_container_execution
 from container_packaging.run_container_packaging import run_container_packaging
+from code_metrics.run_code_metrics import run_code_metrics
 
 
 def run_codegen_pipeline() -> None:
@@ -24,6 +25,8 @@ def run_codegen_pipeline() -> None:
             run_container_packaging()
         elif stage_name == "container_execution":
             run_container_execution()
+        elif stage_name == "code_metrics":
+            run_code_metrics()
         else:
             raise ValueError(f"Unsupported codegen pipeline stage: {stage_name}")
         print(f"[codegen_pipeline] stage done name={stage_name}")

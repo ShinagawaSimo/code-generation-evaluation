@@ -30,10 +30,10 @@ def build_test_generation_input(
                 "language": "string",
                 "suggested_entry_name": "string",
                 "target_signature": {
-                    "entry_name": "@@ENTRY_NAME@@ or string",
+                    "entry_name": "sort",
                     "parameters": [
                         {
-                            "name": "@@PARAM_NAME@@ or string",
+                            "name": "numbers",
                             "type": "string",
                             "required": "boolean"
                         }

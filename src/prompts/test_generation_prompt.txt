@@ -27,7 +27,7 @@ Rules:
   - Also fill `function_contract`.
   - Use stable machine-executable assertions only.
   - Do not output free-form test code or custom mini-languages.
-  - When exact callable name or parameter names are unknown, use placeholders like `@@ENTRY_NAME@@` and `@@PARAM_NAME@@` instead of leaving fields empty.
+  - When exact callable name or parameter names are unknown, infer the entry name from the original requirement text context (e.g., the main function name like 'sort' for a sorting task).
   - Prefer positional arguments in `call.args`.
   - Avoid parameter-name-dependent checks unless the requirement explicitly constrains parameter names.
   - Use `expectation.kind = "raises"` for exception requirements.
@@ -66,10 +66,10 @@ Rules:
   "execution_mode": "program_io",
   "language": "python",
   "target_signature": {
-    "entry_name": "@@ENTRY_NAME@@ or string",
+    "entry_name": "sort",
     "parameters": [
       {
-        "name": "@@PARAM_NAME@@ or string",
+        "name": "numbers",
         "type": "string",
         "required": true
       }

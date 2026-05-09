@@ -696,21 +696,28 @@ def main() -> int:
     results = []
     failed = False
     for spec_path in sorted(TESTS_DIR.rglob("spec.json")):
-        spec = _read_json(spec_path)
-        point_id = str(spec.get("point_id", spec_path.parent.name))
-        mode = str(spec.get("execution_mode", ""))
-        language = str(spec.get("language", ""))
-        print(f"[point] {point_id} mode={mode} language={language}")
-        if mode == "program_io":
-            result = _run_program_io(spec_path)
-        elif mode == "function_call":
-            result = _run_function_call(spec_path)
-        else:
-            result = _run_non_functional(spec_path)
-        print(f"[{result['status']}] {point_id}")
-        if result["status"] == "failed":
+        point_id = spec_path.parent.name
+        mode = "unknown"
+        try:
+            spec = _read_json(spec_path)
+            point_id = str(spec.get("point_id", point_id))
+            mode = str(spec.get("execution_mode", ""))
+            language = str(spec.get("language", ""))
+            print(f"[point] {point_id} mode={mode} language={language}")
+            if mode == "program_io":
+                result = _run_program_io(spec_path)
+            elif mode == "function_call":
+                result = _run_function_call(spec_path)
+            else:
+                result = _run_non_functional(spec_path)
+            print(f"[{result['status']}] {point_id}")
+            if result["status"] == "failed":
+                failed = True
+            results.append({"point_id": point_id, "mode": mode, "language": language, **result})
+        except Exception as e:
+            print(f"[error] {point_id} exception={e}")
             failed = True
-        results.append({"point_id": point_id, "mode": mode, "language": language, **result})
+            results.append({"point_id": point_id, "mode": mode, "status": "failed", "passed": False, "details": [{"reason": f"runner_exception: {e}"}]})
     REPORT_PATH.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     return 1 if failed else 0
 
