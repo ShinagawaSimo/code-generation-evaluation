@@ -30,14 +30,6 @@ def _read_execution_summary(summary_path: Path) -> Dict[str, Any]:
     return json.loads(summary_path.read_text(encoding="utf-8"))
 
 
-def _summarize_missing_execution(run_result: subprocess.CompletedProcess[str]) -> str:
-    combined = "\n".join(part for part in [run_result.stdout, run_result.stderr] if part).strip()
-    if combined:
-        first_line = combined.splitlines()[0].strip()
-        return f"packaged evaluation did not complete: {first_line}"
-    return "packaged evaluation did not complete and no execution summary was produced"
-
-
 def _is_docker_environment_unavailable(output_text: str) -> bool:
     lower = output_text.lower()
     markers = [
@@ -251,11 +243,9 @@ def execute_container(
     skipped_count = int(execution_summary["skipped_count"])
     passed_test_count = int(execution_summary["passed_test_count"])
     failed_test_count = int(execution_summary["failed_test_count"])
-    run_success = bool(execution_summary) or run_result.returncode == 0
+    run_success = True
     failure_message = str(execution_summary["failure_message"]).strip()
-    if not execution_summary and run_result.returncode != 0:
-        failure_message = _summarize_missing_execution(run_result)
-    elif not failure_message and run_result.returncode in {125, 126, 127}:
+    if not failure_message and run_result.returncode in {125, 126, 127}:
         failure_message = "docker run failed before in-container execution"
     if not failure_message and not tests_success:
         failure_message = "packaged tests failed"

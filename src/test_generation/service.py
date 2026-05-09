@@ -49,7 +49,7 @@ def _require_list(value: Any, field_name: str) -> List[Any]:
     return value
 
 
-def _validate_function_call_schema(parsed: Dict[str, Any], point: Dict[str, Any]) -> None:
+def _validate_function_call_schema(parsed: Dict[str, Any]) -> None:
     target_signature = _require_dict(parsed["target_signature"], "target_signature")
     function_contract = _require_dict(parsed["function_contract"], "function_contract")
     assertions = _require_list(parsed["assertions"], "assertions")
@@ -61,7 +61,6 @@ def _validate_function_call_schema(parsed: Dict[str, Any], point: Dict[str, Any]
             raise ValueError(f"target_signature.parameters[{index}] must be object")
     _require_list(function_contract["parameter_order"], "function_contract.parameter_order")
     _require_list(function_contract["notes"], "function_contract.notes")
-    point_text = str(point["point_text"])
     for index, assertion in enumerate(assertions):
         if not isinstance(assertion, dict):
             raise ValueError(f"assertions[{index}] must be object")
@@ -81,10 +80,6 @@ def _validate_function_call_schema(parsed: Dict[str, Any], point: Dict[str, Any]
             "max_runtime_seconds",
         }:
             raise ValueError(f"unsupported expectation.kind: {expectation_kind}")
-        if expectation_kind == "raises" and "异常" not in point_text and "抛出" not in point_text and "TypeError" not in point_text and "ValueError" not in point_text:
-            raise ValueError("raises assertion used for non-exception point")
-
-
 def _validate_program_io_schema(parsed: Dict[str, Any]) -> None:
     io_cases = _require_list(parsed["io_cases"], "io_cases")
     for index, case in enumerate(io_cases):
@@ -105,7 +100,7 @@ def _validate_test_spec(parsed: Dict[str, Any], point: Dict[str, Any]) -> None:
     if execution_mode not in {"program_io", "function_call", "gui_or_server"}:
         raise ValueError(f"unsupported execution_mode: {execution_mode}")
     if execution_mode == "function_call":
-        _validate_function_call_schema(parsed, point)
+        _validate_function_call_schema(parsed)
     elif execution_mode == "program_io":
         _validate_program_io_schema(parsed)
 

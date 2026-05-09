@@ -78,7 +78,7 @@ def _render_compile_script(language: str, code_filename: str) -> str:
         return f"python3 -m py_compile code/{code_filename}\n"
     if language == "javascript":
         return f"node --check code/{code_filename}\n"
-    return ""
+    raise ValueError(f"Unsupported compile language: {language}")
 
 
 def _render_run_all_tests(language: str, code_filename: str) -> str:

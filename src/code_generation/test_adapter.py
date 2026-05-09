@@ -14,8 +14,6 @@ def _save_json(path: Path, data: Dict[str, Any]) -> None:
 
 
 def _rewrite_checker(path: Path, language: str, entry_name: str) -> None:
-    if not path.exists():
-        return
     templates = {
         ".py": f"from solution import {entry_name}\n\n# Auto-adapted checker placeholder\n",
         ".js": f"const {{ {entry_name} }} = require('./solution');\n\n// Auto-adapted checker placeholder\n",

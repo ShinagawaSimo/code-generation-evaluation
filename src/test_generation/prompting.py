@@ -11,38 +11,6 @@ def load_test_generation_prompt(prompt_path: str | None = None) -> str:
     return target.read_text(encoding="utf-8")
 
 
-def _build_focus_guidance(requirement_point: Dict[str, Any]) -> Dict[str, Any]:
-    point_text = str(requirement_point.get("point_text", ""))
-    focus_tags = []
-    forbidden_topics = []
-    if "命名" in point_text:
-        focus_tags.append("function_naming")
-        forbidden_topics.extend(["sorting_behavior", "mutation", "duplicates", "empty_input", "reverse", "error_handling"])
-    if any(token in point_text for token in ["不得修改", "不修改", "原始输入列表", "原始列表"]):
-        focus_tags.append("input_immutability")
-        forbidden_topics.extend(["duplicates", "empty_input", "reverse", "error_handling", "new_object"])
-    if "重复" in point_text:
-        focus_tags.append("duplicate_retention")
-        forbidden_topics.extend(["mutation", "empty_input", "reverse", "error_handling"])
-    if "空列表" in point_text or ("为空" in point_text and "列表" in point_text):
-        focus_tags.append("empty_input")
-        forbidden_topics.extend(["duplicates", "mutation", "reverse", "error_handling"])
-    if "reverse" in point_text.lower() or "降序" in point_text:
-        focus_tags.append("reverse_order")
-        forbidden_topics.extend(["default_ascending", "mutation", "duplicates", "error_handling"])
-    if "TypeError" in point_text or "ValueError" in point_text or "抛出" in point_text or "异常" in point_text:
-        focus_tags.append("exception_behavior")
-        forbidden_topics.extend(["normal_sorting", "mutation", "duplicates", "empty_input", "reverse"])
-    if "升序" in point_text or "排序" in point_text:
-        focus_tags.append("sorting_behavior")
-    if "新的列表" in point_text or "新列表" in point_text:
-        focus_tags.append("new_object_return")
-    return {
-        "focus_tags": list(dict.fromkeys(focus_tags)),
-        "forbidden_topics": list(dict.fromkeys(forbidden_topics)),
-    }
-
-
 def build_test_generation_input(
     task_id: str,
     language: str,
@@ -55,7 +23,6 @@ def build_test_generation_input(
             "language": language,
             "original_requirement_text": original_requirement_text,
             "requirement_point": requirement_point,
-            "focus_guidance": _build_focus_guidance(requirement_point),
             "output_contract": {
                 "point_id": "string",
                 "test_kind": "functional | non_functional",
@@ -92,7 +59,7 @@ def build_test_generation_input(
                         "description": "string",
                         "kind": "behavior | performance | type_hint",
                         "call": {
-                            "args": [],
+                            "args": [3, 5],
                             "kwargs": {}
                         },
                         "expectation": {

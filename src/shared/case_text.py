@@ -23,8 +23,6 @@ def normalize_programming_language(language_text: str) -> str:
 
 def parse_case_text(case_text: str, fallback_language: str) -> Dict[str, str]:
     stripped = case_text.strip()
-    if not stripped:
-        return {"language": fallback_language, "body": ""}
     lines = stripped.splitlines()
     first_line = lines[0].strip()
     if first_line.lower().startswith("language:"):

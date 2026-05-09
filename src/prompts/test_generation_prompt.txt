@@ -13,11 +13,8 @@ Task:
   - non_functional
 
 Rules:
-- Return JSON only.
-- Do not use markdown fences.
-- Use strict JSON literals only: strings in double quotes, booleans as `true`/`false`, null as `null`. Never output `None`, `True`, or `False`.
-- Do not use `null` for object or array fields. Use `{}` or `[]` only when schema permits empty value.
-- Generate tests for the current requirement point only.
+
+=== Test Design Rules ===
 - Do not verify other requirement points in the same spec.
 - If the current point does not mention duplicates, empty input, reverse ordering, mutation, naming, new-object behavior, or error handling, do not add assertions for them.
 - Use at least 3 executable cases for each functional point whenever logically possible.
@@ -47,7 +44,22 @@ Rules:
 - If original text does not name callable entry, you may suggest one, but keep all assertions independent from exact parameter names.
 - Add `test_skeleton.import_placeholder` and `test_skeleton.runner_pseudocode` for function_call specs.
 
-Return schema:
+=== JSON Rules — STRICT JSON ONLY ===
+- Return ONLY a valid JSON object. No markdown fences (```), no extra text before or after.
+- All keys and string values MUST use double quotes `"`. Single quotes `'` are INVALID.
+- JSON has NO tuple type and NO set type — only arrays `[...]` for ordered collections.
+  The single most common mistake is writing Python argument tuples inside JSON arrays:
+  ❌ WRONG:  "args": [(1, 2, 3)]    ← Python tuple (1, 2, 3) embedded in array
+  ✅ CORRECT: "args": [1, 2, 3]      ← flat array of individual numbers
+  ❌ WRONG:  "args": [(3, 5)]       ← tuple wrapping two values
+  ✅ CORRECT: "args": [3, 5]         ← flat array
+  ❌ WRONG:  "args": {1, 2, 3}      ← Python set using braces
+  ✅ CORRECT: "args": [1, 2, 3]      ← JSON array
+- Boolean → true/false. Null → null. Never use None/True/False.
+- Empty objects → `{}`. Empty arrays → `[]`. Never `null` for objects/arrays.
+- call.args contains JSON-only values. Do NOT design test cases that require Python-specific types (tuple, set, bytes, complex). Python has no JSON representation for these. Instead of "args": [(1, 2, 3)] (tuple), write "args": ["hello"] (JSON string) or "args": [42] (JSON number).
+
+=== Return Schema (must be valid JSON) ===
 {
   "point_id": "string",
   "test_kind": "functional",
@@ -83,7 +95,7 @@ Return schema:
       "description": "string",
       "kind": "behavior | performance | type_hint",
       "call": {
-        "args": [],
+        "args": [3, 5],
         "kwargs": {}
       },
       "expectation": {
