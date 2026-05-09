@@ -13,7 +13,6 @@ Rules:
 - Match requested language exactly.
 - Solve as correctly as possible in one round.
 - If acceptance_standard is empty, do not invent extra acceptance criteria.
-- Prefer correct, runnable, minimal implementation over unnecessary abstraction.
 - `implemented_interface` must describe actual code you output.
 - If task is function-style, function name and callable interface in code must match `implemented_interface` exactly.
 - Do not describe one interface and implement another.
@@ -26,6 +25,7 @@ Language rules:
 Input/output rules:
 - If requirement implies stdin/stdout program, code must read standard input and write standard output.
 - If requirement implies function-style task, produce one clear callable entry.
+- For function-style tasks, output only the function definition — do not include `if __name__ == '__main__':` blocks, example usage, or self-test output.
 
 Output:
 - one JSON object following caller-provided output_contract

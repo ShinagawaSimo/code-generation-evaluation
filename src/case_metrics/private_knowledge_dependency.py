@@ -58,7 +58,7 @@ def evaluate_private_knowledge_dependency(
     api_config: Dict[str, Any],
     metric_config: Dict[str, Any],
 ) -> MetricResult:
-    raw_output = call_model(
+    raw_output, *_ = call_model(
         api_config,
         _load_prompt(metric_config.get("private_knowledge_dependency_prompt_path")),
         _build_input(original_requirement_text),

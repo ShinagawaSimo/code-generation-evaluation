@@ -76,7 +76,9 @@ def build_api_url(api_config: Dict[str, Any]) -> str:
     return f"{base_url}/v1/chat/completions"
 
 
-def call_model(api_config: Dict[str, Any], prompt: str, user_input: str) -> str:
+def call_model(
+    api_config: Dict[str, Any], prompt: str, user_input: str
+) -> tuple[str, float, int, int]:
     payload = {
         "model": api_config.get("model", "gpt-4.1"),
         "messages": build_messages(prompt, user_input),
@@ -94,6 +96,9 @@ def call_model(api_config: Dict[str, Any], prompt: str, user_input: str) -> str:
     request.add_header("Content-Type", "application/json")
     request.add_header("Authorization", f"Bearer {resolve_api_key(api_config)}")
 
+    elapsed_seconds = 0.0
+    prompt_tokens = 0
+    completion_tokens = 0
     timeout = int(api_config.get("timeout_seconds", 60))
     retries = int(api_config.get("timeout_retries", 0))
     backoff_seconds = float(api_config.get("timeout_backoff_seconds", 2))
@@ -101,8 +106,10 @@ def call_model(api_config: Dict[str, Any], prompt: str, user_input: str) -> str:
     response_body = ""
     for attempt in range(retries + 1):
         try:
+            start = time.perf_counter()
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 response_body = response.read().decode("utf-8")
+            elapsed_seconds = time.perf_counter() - start
             last_error = None
             break
         except urllib.error.HTTPError as error:
@@ -119,4 +126,10 @@ def call_model(api_config: Dict[str, Any], prompt: str, user_input: str) -> str:
         raise ValueError(f"Model API timeout after {retries + 1} attempt(s): {last_error}")
 
     response_json = json.loads(response_body)
-    return response_json["choices"][0]["message"]["content"]
+    try:
+        prompt_tokens = response_json.get("usage", {}).get("prompt_tokens", 0)
+        completion_tokens = response_json.get("usage", {}).get("completion_tokens", 0)
+    except Exception:
+        pass
+    text = response_json["choices"][0]["message"]["content"]
+    return text, elapsed_seconds, prompt_tokens, completion_tokens

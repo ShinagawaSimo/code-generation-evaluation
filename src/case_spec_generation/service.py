@@ -58,7 +58,7 @@ def generate_case_spec(
 ) -> CaseSpecResult:
     prompt = prompt_text or get_case_spec_generation_prompt()
     user_input = build_case_spec_input(request)
-    raw_output = call_model(api_config, prompt, user_input)
+    raw_output, *_ = call_model(api_config, prompt, user_input)
     parsed = json.loads(_extract_json_block(raw_output))
     requirement_points = _parse_requirement_points(parsed.get("requirement_points", []))
     summary = dict(parsed.get("summary", {}))

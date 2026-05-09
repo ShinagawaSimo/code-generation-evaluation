@@ -25,7 +25,7 @@ def run_reference_code_generation() -> None:
         str(stage_config["case_spec_generation_result_glob"]),
     )
     results_dir = str(project_root / stage_config["results_dir"])
-    raw_output_dir = str(project_root / stage_config["raw_output_dir"])
+    code_output_dir = str(project_root / stage_config["code_output_dir"])
     total_cases = len(source_paths)
     print(f"[reference_code_generation] start total_cases={total_cases}")
 
@@ -42,6 +42,7 @@ def run_reference_code_generation() -> None:
             language=language,
             original_requirement_text=original_requirement_text,
             api_config=api_config,
+            code_output_dir=code_output_dir,
             prompt_text=prompt_text,
         )
         save_result(str(build_result_path(results_dir, task_id)), result)

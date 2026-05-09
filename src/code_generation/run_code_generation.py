@@ -28,7 +28,7 @@ def run_code_generation() -> None:
     code_output_dir = str(project_root / stage_config["code_output_dir"])
     raw_output_dir = str(project_root / stage_config["raw_output_dir"])
     generation_config = dict(stage_config.get("generation_config", {}))
-    for path_key in ["implemented_interface_dir", "source_tests_dir", "adapted_tests_dir"]:
+    for path_key in ["implemented_interface_dir"]:
         if generation_config.get(path_key):
             generation_config[path_key] = str(project_root / str(generation_config[path_key]))
     total_cases = len(case_paths)
@@ -43,9 +43,7 @@ def run_code_generation() -> None:
         print(
             f"[code_generation] done task={request.task_id} "
             f"code={result.code_file_path} "
-            f"interface={result.implemented_interface_path} "
-            f"adapted_points={result.adaptation_summary.get('updated_point_count', 0)} "
-            f"adapted_total={result.adaptation_summary.get('total_point_count', 0)}"
+            f"interface={result.implemented_interface_path}"
         )
     print("[code_generation] complete")
 

@@ -3,7 +3,6 @@
     "case_spec_generation",
     "case_metrics",
     "test_generation",
-    "reference_code_generation",
-    "case_summary"
+    "reference_code_generation"
   ]
 }

@@ -1,4 +1,5 @@
-import json
+import re
+from pathlib import Path
 from typing import Any, Dict, List
 
 from shared.model_client import call_model
@@ -7,30 +8,38 @@ from .models import ReferenceCodeResult, ReferenceImplementation
 from .prompting import build_reference_code_input, load_reference_code_prompt
 
 
-def _extract_json_block(raw_output: str) -> str:
-    stripped = raw_output.strip()
-    if stripped.startswith("```"):
-        lines = stripped.splitlines()
-        if len(lines) >= 3:
-            stripped = "\n".join(lines[1:-1]).strip()
-    start = stripped.find("{")
-    end = stripped.rfind("}")
-    if start == -1 or end == -1 or end < start:
-        raise ValueError("Model output does not contain a JSON object")
-    return stripped[start : end + 1]
-
-
-def _parse_implementations(items: List[Dict[str, Any]]) -> List[ReferenceImplementation]:
-    impls: List[ReferenceImplementation] = []
-    for item in items:
-        impls.append(
-            ReferenceImplementation(
-                code_text=str(item["code_text"]),
-                implemented_interface=dict(item["implemented_interface"]),
-                approach_metadata=dict(item["approach_metadata"]),
-            )
-        )
-    return impls
+def _parse_approach_blocks(raw_output: str) -> List[Dict[str, Any]]:
+    blocks: List[Dict[str, Any]] = []
+    pattern = re.compile(
+        r"^=== approach ===$\n(?P<header>.*?)^--- code ---$\n(?P<code>.*?)^--- end approach ===",
+        re.MULTILINE | re.DOTALL,
+    )
+    for match in pattern.finditer(raw_output):
+        header_text = match.group("header").strip()
+        code_text = match.group("code").strip()
+        metadata: Dict[str, Any] = {}
+        parameters: List[Dict[str, Any]] = []
+        for line in header_text.splitlines():
+            line = line.strip()
+            if line.startswith("parameters:"):
+                continue
+            if line.startswith("- name:"):
+                param = {}
+                for part in line.strip("- ").split(","):
+                    kv = part.split(":", 1)
+                    if len(kv) == 2:
+                        param[kv[0].strip()] = kv[1].strip()
+                if param:
+                    parameters.append(param)
+                continue
+            if ":" in line:
+                key, value = line.split(":", 1)
+                metadata[key.strip()] = value.strip()
+        if "approach_id" in metadata or code_text:
+            metadata["parameters"] = parameters
+            metadata["code_text"] = code_text
+            blocks.append(metadata)
+    return blocks
 
 
 def generate_reference_code(
@@ -38,24 +47,56 @@ def generate_reference_code(
     language: str,
     original_requirement_text: str,
     api_config: Dict[str, Any],
+    code_output_dir: str,
     prompt_text: str | None = None,
 ) -> ReferenceCodeResult:
     prompt = prompt_text or load_reference_code_prompt()
-    user_input = build_reference_code_input(
-        task_id=task_id,
-        language=language,
-        original_requirement_text=original_requirement_text,
-    )
-    raw_output = call_model(api_config, prompt, user_input)
-    parsed = json.loads(_extract_json_block(raw_output))
-    implementations = _parse_implementations(parsed["implementations"])
+    user_input = build_reference_code_input(language, original_requirement_text)
+    raw_output, *_ = call_model(api_config, prompt, user_input)
+
+    raw_output_dir = Path(code_output_dir).parent / "raw_outputs"
+    raw_output_dir.mkdir(parents=True, exist_ok=True)
+    (raw_output_dir / f"{task_id}_raw.txt").write_text(raw_output, encoding="utf-8")
+
+    approach_blocks = _parse_approach_blocks(raw_output)
+    output_dir = Path(code_output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    implementations: List[ReferenceImplementation] = []
+    for block in approach_blocks:
+        approach_id = str(block.get("approach_id", ""))
+        code_text = str(block.get("code_text", ""))
+        file_name = f"{task_id}_{approach_id}.py" if approach_id else f"{task_id}_{len(implementations)+1:03d}.py"
+        file_path = output_dir / file_name
+        file_path.write_text(code_text, encoding="utf-8")
+
+        implementations.append(
+            ReferenceImplementation(
+                approach_id=approach_id,
+                approach_name=str(block.get("approach_name", "")),
+                description=str(block.get("description", "")),
+                code_file_path=str(file_path),
+                interface_type=str(block.get("interface_type", "function_call")),
+                entry_name=str(block.get("entry_name", "")),
+                parameters=block.get("parameters", []),
+                return_type=str(block.get("return_type", "")),
+                approach_metadata={
+                    "algorithm_type": block.get("algorithm_type", ""),
+                    "time_complexity": block.get("time_complexity", ""),
+                    "space_complexity": block.get("space_complexity", ""),
+                    "key_characteristics": block.get("key_characteristics", ""),
+                },
+            )
+        )
+
     print(
         f"[reference_code_generation] task={task_id} "
-        f"approaches={len(parsed['approach_enumeration'])} "
-        f"implementations={len(implementations)}"
+        f"implementations={len(implementations)} "
+        f"output_dir={code_output_dir}"
     )
     return ReferenceCodeResult(
         task_id=task_id,
         language=language,
-        reference_implementations=implementations,
+        code_output_dir=code_output_dir,
+        implementations=implementations,
     )

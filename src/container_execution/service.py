@@ -250,6 +250,18 @@ def execute_container(
     if not failure_message and not tests_success:
         failure_message = "packaged tests failed"
 
+    if test_report_path.exists():
+        test_report = json.loads(test_report_path.read_text(encoding="utf-8"))
+        test_results = test_report.get("results", [])
+        print(f"[container_execution] {task_id} test point results:")
+        for tr in test_results:
+            pid = tr.get("point_id", "")
+            passed = tr.get("passed", False)
+            status = "PASS" if passed else "FAIL"
+            print(f"  [container_execution]   [{status}] {pid}")
+    else:
+        print(f"[container_execution] {task_id} test report not found at {test_report_path}")
+
     return ContainerExecutionResult(
         task_id=task_id,
         language=language,

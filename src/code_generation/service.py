@@ -13,7 +13,6 @@ from .prompting import (
     build_self_review_input,
     load_code_generation_prompt,
 )
-from .test_adapter import adapt_tests_for_interface
 
 
 def _strip_code_fence(text: str) -> str:
@@ -105,13 +104,27 @@ def generate_code(
 ) -> CodeGenerationResult:
     prompt = load_code_generation_prompt(generation_config.get("prompt_path"))
     max_rounds = int(generation_config.get("max_rounds", 1))
-    raw_output = call_model(api_config, prompt, build_code_generation_input(request))
+    inference_time_seconds = 0.0
+    prompt_tokens = 0
+    completion_tokens = 0
+
+    raw_output, inf_time, pt, ct = call_model(
+        api_config, prompt, build_code_generation_input(request)
+    )
+    inference_time_seconds += inf_time
+    prompt_tokens += pt
+    completion_tokens += ct
     code_text, implemented_interface = _extract_code_and_interface(raw_output)
     rounds_used = 1
 
     while rounds_used < max_rounds:
         rounds_used += 1
-        raw_output = call_model(api_config, prompt, build_self_review_input(request, code_text))
+        raw_output, inf_time, pt, ct = call_model(
+            api_config, prompt, build_self_review_input(request, code_text)
+        )
+        inference_time_seconds += inf_time
+        prompt_tokens += pt
+        completion_tokens += ct
         code_text, implemented_interface = _extract_code_and_interface(raw_output)
 
     is_valid_interface, validation_message = _validate_implemented_interface(
@@ -126,8 +139,6 @@ def generate_code(
     code_path = Path(code_output_dir) / request.task_id / code_filename
     raw_output_path = Path(raw_output_dir) / f"{request.task_id}.txt"
     implemented_interface_dir = str(generation_config.get("implemented_interface_dir", ""))
-    adapted_tests_root = str(generation_config.get("adapted_tests_dir", ""))
-    source_tests_root = str(generation_config.get("source_tests_dir", ""))
     implemented_interface_path = (
         Path(implemented_interface_dir) / f"{request.task_id}.json"
         if implemented_interface_dir
@@ -143,21 +154,6 @@ def generate_code(
         encoding="utf-8",
     )
 
-    adaptation_summary: Dict[str, Any] = {
-        "adapted_tests_dir": "",
-        "updated_point_count": 0,
-        "adapted_files": [],
-        "warnings": [],
-    }
-    if adapted_tests_root and source_tests_root:
-        adaptation_summary = adapt_tests_for_interface(
-            task_id=request.task_id,
-            language=request.language,
-            implemented_interface=implemented_interface,
-            source_tests_root=source_tests_root,
-            adapted_tests_root=adapted_tests_root,
-        )
-
     return CodeGenerationResult(
         task_id=request.task_id,
         case_basename=request.case_basename,
@@ -165,9 +161,10 @@ def generate_code(
         code_file_path=str(code_path),
         raw_output_path=str(raw_output_path),
         implemented_interface_path=str(implemented_interface_path),
-        adapted_tests_dir=str(adaptation_summary.get("adapted_tests_dir", "")),
         rounds_used=rounds_used,
+        inference_time_seconds=inference_time_seconds,
+        prompt_tokens=prompt_tokens,
+        completion_tokens=completion_tokens,
         code_text=code_text,
         implemented_interface=implemented_interface,
-        adaptation_summary=adaptation_summary,
     )

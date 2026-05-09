@@ -2,6 +2,7 @@
   "case_spec_generation_results_dir": "artifacts/case_spec_generation/results",
   "case_spec_generation_result_glob": "*.json",
   "results_dir": "artifacts/reference_code_generation/results",
+  "code_output_dir": "artifacts/reference_code_generation/code",
   "raw_output_dir": "artifacts/reference_code_generation/raw_outputs",
   "prompt_path": "src/prompts/reference_code_generation_prompt.txt"
 }

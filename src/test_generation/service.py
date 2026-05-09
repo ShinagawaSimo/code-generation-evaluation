@@ -152,7 +152,7 @@ def generate_tests_for_case(
             original_requirement_text=original_requirement_text,
             requirement_point=point,
         )
-        raw_output = call_model(api_config, prompt, user_input)
+        raw_output, *_ = call_model(api_config, prompt, user_input)
         raw_output_path = raw_output_dir / f"{point_id}.txt"
         raw_output_path.write_text(raw_output, encoding="utf-8")
         try:

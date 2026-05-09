@@ -110,7 +110,7 @@ def evaluate_expression_quality(
     metric_config: Dict[str, Any],
 ) -> MetricResult:
     atomicity = _evaluate_atomicity(expansion_result)
-    raw_output = call_model(
+    raw_output, *_ = call_model(
         api_config,
         _load_prompt(metric_config.get("expression_quality_prompt_path")),
         _build_llm_input(original_requirement_text, expansion_result),

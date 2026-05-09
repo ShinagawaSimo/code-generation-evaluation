@@ -7,7 +7,6 @@ if __package__ in {None, ""}:
 from case_metrics.case_io import load_json
 from case_metrics.run_case_metrics import run_case_metrics
 from case_spec_generation.run_case_spec_generation import run_case_spec_generation
-from pipeline.run_case_summary import run_case_summary
 from reference_code_generation.run_reference_code_generation import run_reference_code_generation
 from test_generation.run_test_generation import run_test_generation
 
@@ -28,8 +27,6 @@ def run_case_pipeline() -> None:
             run_test_generation()
         elif stage_name == "reference_code_generation":
             run_reference_code_generation()
-        elif stage_name == "case_summary":
-            run_case_summary()
         else:
             raise ValueError(f"Unsupported case pipeline stage: {stage_name}")
         print(f"[case_pipeline] stage done name={stage_name}")

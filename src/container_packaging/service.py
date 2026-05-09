@@ -821,8 +821,7 @@ def package_case_container(
     shutil.copy2(code_source_path, code_target_path)
     generated_files.append(str(code_target_path))
 
-    adapted_tests_dir = str(codegen_result.get("adapted_tests_dir", "")).strip()
-    test_source_dir = Path(adapted_tests_dir) if adapted_tests_dir else Path(generated_tests_dir) / task_id
+    test_source_dir = Path(generated_tests_dir) / task_id
     if test_source_dir.exists():
         for path in test_source_dir.rglob("*"):
             if path.is_dir():
