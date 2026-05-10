@@ -1,0 +1,42 @@
+{
+  "task_id": "case001",
+  "language": "python",
+  "image_tag": "code-generation-eval:case001",
+  "container_dir": "D:\\AI Project\\code-generation-evaluation\\artifacts\\container_packaging\\contexts\\case001",
+  "environment_ready": true,
+  "image_build_success": true,
+  "compile_success": true,
+  "run_success": true,
+  "tests_success": false,
+  "has_skipped_tests": true,
+  "skipped_count": 1,
+  "passed_test_count": 5,
+  "failed_test_count": 1,
+  "build_log_path": "D:\\AI Project\\code-generation-evaluation\\artifacts\\container_execution\\logs\\case001\\docker_build.log",
+  "run_log_path": "D:\\AI Project\\code-generation-evaluation\\artifacts\\container_execution\\logs\\case001\\docker_run.log",
+  "execution_summary_path": "D:\\AI Project\\code-generation-evaluation\\artifacts\\container_execution\\artifacts\\case001\\execution_summary.json",
+  "failure_message": "packaged tests failed",
+  "summary": {
+    "build_returncode": 0,
+    "run_returncode": 1,
+    "test_report_path": "D:\\AI Project\\code-generation-evaluation\\artifacts\\container_execution\\artifacts\\case001\\test_report.json",
+    "manual_build_command": "docker build -t code-generation-eval:case001 \"D:\\AI Project\\code-generation-evaluation\\artifacts\\container_packaging\\contexts\\case001\"",
+    "manual_run_command": "docker run --rm -v \"D:\\AI Project\\code-generation-evaluation\\artifacts\\container_execution\\artifacts\\case001:/workspace/execution_artifacts\" code-generation-eval:case001 sh -lc \"status=0; mkdir -p /workspace/execution_artifacts; python3 /workspace/scripts/run_packaged_evaluation.py || status=$?; if [ -f /workspace/test_report.json ]; then cp /workspace/test_report.json /workspace/execution_artifacts/test_report.json; fi; if [ -f /workspace/execution_summary.json ]; then cp /workspace/execution_summary.json /workspace/execution_artifacts/execution_summary.json; fi; exit $status\"",
+    "execution_summary": {
+      "compile_success": true,
+      "tests_success": false,
+      "has_skipped_tests": true,
+      "skipped_count": 1,
+      "failed_test_count": 1,
+      "passed_test_count": 5,
+      "compile_returncode": 0,
+      "tests_returncode": 1,
+      "failure_stage": "tests",
+      "failure_message": "packaged tests failed",
+      "compile_stdout": "",
+      "compile_stderr": "",
+      "tests_stdout": "[point] point_001 mode=function_call language=python\n[skipped] point_001\n[point] point_002 mode=function_call language=python\n[passed] point_002\n[point] point_003 mode=function_call language=python\n[passed] point_003\n[point] point_004 mode=function_call language=python\n[passed] point_004\n[point] point_005 mode=function_call language=python\n[passed] point_005\n[point] point_006 mode=function_call language=python\n[passed] point_006\n[point] point_007 mode=function_call language=python\n[failed] point_007\n",
+      "tests_stderr": ""
+    }
+  }
+}

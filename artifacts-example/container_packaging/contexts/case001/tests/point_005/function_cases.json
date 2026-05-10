@@ -1,0 +1,133 @@
+{
+  "language": "python",
+  "target_signature": {
+    "entry_name": "sort",
+    "parameters": [
+      {
+        "name": "numbers",
+        "type": "list[int]",
+        "required": true
+      }
+    ],
+    "return_type": "list[int]"
+  },
+  "function_contract": {
+    "call_style": "positional_only",
+    "parameter_order": [
+      "numbers"
+    ],
+    "notes": [
+      "Function should not mutate the input list.",
+      "Duplicate values must be preserved in the sorted output."
+    ]
+  },
+  "test_skeleton": {
+    "import_placeholder": "from solution import sort",
+    "runner_pseudocode": "input_list = [3,1,2,3]\nresult = sort(input_list)\nassert result == [1,2,3,3], f'Expected [1,2,3,3], got {result}'\nassert input_list == [3,1,2,3], 'Input was mutated'\n\ninput_list2 = [5,5,5]\nresult2 = sort(input_list2)\nassert result2 == [5,5,5], f'Expected [5,5,5], got {result2}'\n\ninput_list3 = [1,2,3]\nresult3 = sort(input_list3)\nassert result3 == [1,2,3], f'Expected [1,2,3], got {result3}'"
+  },
+  "assertions": [
+    {
+      "assertion_id": "behavior_duplicates_preserved",
+      "description": "Input with duplicates: sort([3,1,2,3]) returns [1,2,3,3]",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          [
+            3,
+            1,
+            2,
+            3
+          ]
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "equals",
+        "expected": [
+          1,
+          2,
+          3,
+          3
+        ],
+        "metadata": {}
+      }
+    },
+    {
+      "assertion_id": "behavior_all_same",
+      "description": "Input with all identical values: sort([5,5,5]) returns [5,5,5]",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          [
+            5,
+            5,
+            5
+          ]
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "equals",
+        "expected": [
+          5,
+          5,
+          5
+        ],
+        "metadata": {}
+      }
+    },
+    {
+      "assertion_id": "behavior_no_duplicates",
+      "description": "Input without duplicates: sort([1,2,3]) returns [1,2,3]",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          [
+            1,
+            2,
+            3
+          ]
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "equals",
+        "expected": [
+          1,
+          2,
+          3
+        ],
+        "metadata": {}
+      }
+    },
+    {
+      "assertion_id": "input_unchanged",
+      "description": "The original input list remains unmodified after sort call",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          [
+            3,
+            1,
+            2,
+            3
+          ]
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "input_unchanged",
+        "expected": [],
+        "metadata": {
+          "input_arg_index": 0,
+          "original_value": [
+            3,
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    }
+  ]
+}

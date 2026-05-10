@@ -1,0 +1,15 @@
+{
+  "interface_type": "function_call",
+  "entry_name": "sort",
+  "parameters": [
+    {
+      "name": "arr",
+      "type": "list",
+      "required": true
+    }
+  ],
+  "return_type": "list",
+  "notes": [
+    "Returns a new list sorted in ascending order. The original list is not modified. Duplicate values are preserved. Returns an empty list if the input is empty."
+  ]
+}

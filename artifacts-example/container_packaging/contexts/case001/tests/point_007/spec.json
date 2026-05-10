@@ -1,0 +1,124 @@
+{
+  "point_id": "point_007",
+  "point_text": "如果输入参数不是列表类型，函数应引发 TypeError 异常",
+  "category": "implicit_function",
+  "test_kind": "functional",
+  "execution_mode": "function_call",
+  "language": "python",
+  "suggested_entry_name": "",
+  "target_signature": {
+    "entry_name": "sort",
+    "parameters": [
+      {
+        "name": "numbers",
+        "type": "list",
+        "required": true
+      }
+    ],
+    "return_type": "list"
+  },
+  "function_contract": {
+    "call_style": "positional_only",
+    "parameter_order": [
+      "numbers"
+    ],
+    "notes": [
+      "Function expects a single argument of type list. This test verifies that TypeError is raised for non-list inputs."
+    ]
+  },
+  "io_cases": [],
+  "assertions": [
+    {
+      "assertion_id": "assert_type_error_001",
+      "description": "Call sort with a string argument should raise TypeError",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          "hello"
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "raises",
+        "expected": {
+          "exception_type": "TypeError"
+        },
+        "metadata": {}
+      }
+    },
+    {
+      "assertion_id": "assert_type_error_002",
+      "description": "Call sort with an integer argument should raise TypeError",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          42
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "raises",
+        "expected": {
+          "exception_type": "TypeError"
+        },
+        "metadata": {}
+      }
+    },
+    {
+      "assertion_id": "assert_type_error_003",
+      "description": "Call sort with a tuple argument should raise TypeError",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          1,
+          2,
+          3
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "raises",
+        "expected": {
+          "exception_type": "TypeError"
+        },
+        "metadata": {}
+      }
+    },
+    {
+      "assertion_id": "assert_type_error_004",
+      "description": "Call sort with a dict argument should raise TypeError",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          {
+            "a": 1
+          }
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "raises",
+        "expected": {
+          "exception_type": "TypeError"
+        },
+        "metadata": {}
+      }
+    }
+  ],
+  "environment": {
+    "runtime": "python",
+    "limits": {},
+    "setup_steps": [
+      "Import the sort function from the module under test."
+    ]
+  },
+  "artifact_hints": {
+    "suggested_files": [
+      "test_sort.py"
+    ]
+  },
+  "test_skeleton": {
+    "import_placeholder": "from your_module import sort",
+    "runner_pseudocode": "# For each assertion, call sort with the given args inside a try/except block and verify that TypeError is raised."
+  }
+}
