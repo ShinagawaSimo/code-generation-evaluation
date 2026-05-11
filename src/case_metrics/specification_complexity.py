@@ -1,23 +1,24 @@
+import re
+from pathlib import Path
 from typing import Any, Dict
 
 from .models import MetricResult
 
 
-def evaluate_specification_complexity(expansion_result: Dict[str, Any]) -> MetricResult:
-    points = expansion_result["requirement_points"]
-    visible_count = sum(1 for point in points if point["is_explicit_in_original"])
-    implicit_total_count = sum(1 for point in points if point["category"] == "implicit_function")
-    implicit_missing_count = sum(
-        1
-        for point in points
-        if point["category"] == "implicit_function" and not point["is_explicit_in_original"]
-    )
-    total_complexity_count = visible_count + implicit_missing_count
+def evaluate_specification_complexity(
+    expansion_result: Dict[str, Any],
+    cases_dir: str,
+) -> MetricResult:
+    task_id = str(expansion_result["task_id"])
+    case_path = Path(cases_dir) / f"{task_id}.txt"
+    complexity_rating = 1
+    if case_path.exists():
+        text = case_path.read_text(encoding="utf-8")
+        match = re.search(r"Complexity:\s*(\d+)", text)
+        if match:
+            complexity_rating = max(1, min(5, int(match.group(1))))
     return MetricResult(
         values={
-            "visible_requirement_point_count": visible_count,
-            "implicit_function_total_count": implicit_total_count,
-            "implicit_function_missing_count": implicit_missing_count,
-            "total_complexity_count": total_complexity_count,
+            "complexity_rating": complexity_rating,
         },
     )

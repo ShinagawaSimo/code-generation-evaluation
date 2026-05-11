@@ -2,6 +2,7 @@
   "case_spec_generation_results_dir": "artifacts/case_spec_generation/results",
   "case_spec_generation_result_glob": "*.json",
   "results_dir": "artifacts/case_metrics/results",
+  "cases_dir": "cases",
   "metric_config": {
     "tokenizer_backend": "tiktoken",
     "tokenizer_model": "gpt-4o-mini",

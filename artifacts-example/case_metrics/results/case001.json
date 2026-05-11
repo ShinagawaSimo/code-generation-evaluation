@@ -3,10 +3,7 @@
   "original_requirement_text": "实现一个sort函数，该函数接受一个整数列表作为输入，并返回一个按升序排列的新列表。该函数不应修改原始列表，并应保留所有重复的数字。如果输入为空列表，则应返回一个空列表。",
   "metrics": {
     "specification_complexity": {
-      "visible_requirement_point_count": 6,
-      "implicit_function_total_count": 1,
-      "implicit_function_missing_count": 1,
-      "total_complexity_count": 7
+      "complexity_rating": 1
     },
     "specification_completeness": {
       "covered_basic_requirement_count": 5,
@@ -20,7 +17,8 @@
       "dependency_ratio": 0.0
     },
     "case_scale": {
-      "token_count": 49
+      "token_count": 49,
+      "requirement_point_count": 7
     },
     "expression_format": {
       "explicit_requirement_point_count": 6,
@@ -63,10 +61,13 @@
     }
   },
   "summary": {
-    "specification_complexity": 7,
+    "specification_complexity": 1,
     "specification_completeness": 0.8333333333333334,
     "private_knowledge_dependency": 0,
-    "case_scale": 49,
+    "case_scale": {
+      "token_count": 49,
+      "requirement_point_count": 7
+    },
     "expression_format": 0.5,
     "expression_quality": {
       "atomicity": 1.0,

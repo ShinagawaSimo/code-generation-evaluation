@@ -15,13 +15,14 @@ def evaluate_case_metrics(
     metric_config: Dict[str, Any],
 ) -> CaseMetricsResult:
     original_requirement_text = str(expansion_result["original_requirement_text"])
+    cases_dir = str(metric_config.get("cases_dir", "cases"))
 
-    spec_complexity = evaluate_specification_complexity(expansion_result)
+    spec_complexity = evaluate_specification_complexity(expansion_result, cases_dir)
     spec_completeness = evaluate_specification_completeness(expansion_result)
     priv_knowledge = evaluate_private_knowledge_dependency(
         original_requirement_text, api_config, metric_config
     )
-    scale = evaluate_case_scale(original_requirement_text, metric_config)
+    scale = evaluate_case_scale(original_requirement_text, expansion_result, metric_config)
     expr_format = evaluate_expression_format(expansion_result)
     expr_quality = evaluate_expression_quality(
         original_requirement_text, expansion_result, api_config, metric_config
@@ -43,10 +44,13 @@ def evaluate_case_metrics(
     ev = expr_format.values
     eqv = expr_quality.values
     summary = {
-        "specification_complexity": cv["total_complexity_count"],
+        "specification_complexity": cv["complexity_rating"],
         "specification_completeness": cv2["completeness_ratio"],
         "private_knowledge_dependency": pv["private_knowledge_token_count"],
-        "case_scale": sv["token_count"],
+        "case_scale": {
+            "token_count": sv["token_count"],
+            "requirement_point_count": sv["requirement_point_count"],
+        },
         "expression_format": ev["ears_ratio"],
         "expression_quality": {
             "atomicity": eqv["atomicity"]["atomicity_ratio"],
