@@ -1,14 +1,10 @@
 {
   "code_generation_results_dir": "artifacts/code_generation/results",
   "code_generation_result_glob": "*.json",
-  "container_execution_results_dir": "artifacts/container_execution/results",
-  "container_execution_result_glob": "*.json",
-  "container_execution_artifacts_dir": "artifacts/container_execution/artifacts",
+  "code_execution_results_dir": "artifacts/code_execution/results",
+  "code_execution_result_glob": "*.json",
+  "code_execution_artifacts_dir": "artifacts/code_execution/artifacts",
   "reference_code_generation_results_dir": "artifacts/reference_code_generation/results",
   "reference_code_generation_result_glob": "*.json",
-  "case_spec_generation_results_dir": "artifacts/case_spec_generation/results",
-  "case_spec_generation_result_glob": "*.json",
-  "test_generation_results_dir": "artifacts/test_generation/results",
-  "test_generation_result_glob": "*.json",
   "results_dir": "artifacts/code_metrics/results"
 }

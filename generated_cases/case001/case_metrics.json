@@ -1,0 +1,51 @@
+{
+  "task_id": "case001",
+  "original_requirement_text": "实现一个sort函数，需求如下：1. 该函数应接受一个整数列表作为输入，并返回一个按升序排列的新列表；2. 如果输入为空列表，则应返回一个空列表。\nComplexity: 1",
+  "metrics": {
+    "specification_complexity": {
+      "complexity_rating": 1
+    },
+    "specification_completeness": {
+      "completeness_ratio": 1.0
+    },
+    "private_knowledge_dependency": {
+      "private_knowledge_spans": [],
+      "private_knowledge_token_count": 0,
+      "total_token_count": 48,
+      "dependency_ratio": 0.0
+    },
+    "case_scale": {
+      "token_count": 48,
+      "requirement_point_count": 2
+    },
+    "expression_format": {
+      "total_sentence_count": 2,
+      "ears_match_count": 1,
+      "ears_ratio": 0.5
+    },
+    "expression_quality": {
+      "consistency": {
+        "issue_count": 0,
+        "issues": []
+      },
+      "understandability": {
+        "issue_count": 0,
+        "issues": []
+      }
+    }
+  },
+  "summary": {
+    "specification_complexity": 1,
+    "specification_completeness": 1.0,
+    "private_knowledge_dependency": 0,
+    "case_scale": {
+      "token_count": 48,
+      "requirement_point_count": 2
+    },
+    "expression_format": 0.5,
+    "expression_quality": {
+      "consistency": 0,
+      "understandability": 0
+    }
+  }
+}

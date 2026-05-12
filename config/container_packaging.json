@@ -1,9 +1,0 @@
-{
-  "code_generation_results_dir": "artifacts/code_generation/results",
-  "code_generation_result_glob": "*.json",
-  "test_generation_results_dir": "artifacts/test_generation/results",
-  "test_generation_result_glob": "*.json",
-  "generated_tests_dir": "artifacts/test_generation/generated_tests",
-  "results_dir": "artifacts/container_packaging/results",
-  "container_output_dir": "artifacts/container_packaging/contexts"
-}

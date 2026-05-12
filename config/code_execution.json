@@ -1,0 +1,15 @@
+{
+  "code_generation_results_dir": "artifacts/code_generation/results",
+  "code_generation_result_glob": "*.json",
+  "generated_tests_dir": "artifacts/test_generation/generated_tests",
+  "results_dir": "artifacts/code_execution/results",
+  "container_output_dir": "artifacts/code_execution/contexts",
+  "logs_dir": "artifacts/code_execution/logs",
+  "artifacts_dir": "artifacts/code_execution/artifacts",
+  "execution_config": {
+    "docker_command": "docker",
+    "image_tag_prefix": "code-generation-eval",
+    "build_timeout_seconds": 600,
+    "run_timeout_seconds": 600
+  }
+}

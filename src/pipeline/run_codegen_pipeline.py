@@ -6,8 +6,7 @@ if __package__ in {None, ""}:
 
 from case_metrics.case_io import load_json
 from code_generation.run_code_generation import run_code_generation
-from container_execution.run_container_execution import run_container_execution
-from container_packaging.run_container_packaging import run_container_packaging
+from code_execution.run_code_execution import run_code_execution
 from code_metrics.run_code_metrics import run_code_metrics
 
 
@@ -21,10 +20,8 @@ def run_codegen_pipeline() -> None:
         print(f"[codegen_pipeline] stage {stage_index}/{total_stages} name={stage_name}")
         if stage_name == "code_generation":
             run_code_generation()
-        elif stage_name == "container_packaging":
-            run_container_packaging()
-        elif stage_name == "container_execution":
-            run_container_execution()
+        elif stage_name == "code_execution":
+            run_code_execution()
         elif stage_name == "code_metrics":
             run_code_metrics()
         else:

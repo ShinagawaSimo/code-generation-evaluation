@@ -1,0 +1,17 @@
+{
+  "cases_dir": "cases",
+  "cases_glob": "*.txt",
+  "output_cases_dir": "generated_cases",
+  "metric_config": {
+    "tokenizer_backend": "tiktoken",
+    "tokenizer_model": "gpt-4o-mini",
+    "tokenizer_encoding": "",
+    "private_knowledge_dependency_prompt_path": "src/prompts/private_knowledge_dependency_prompt.txt",
+    "expression_quality_prompt_path": "src/prompts/expression_quality_prompt.txt"
+  },
+  "generation_config": {
+    "mode_analysis_prompt_path": "src/prompts/test_mode_analysis_prompt.txt",
+    "test_generation_prompt_path": "src/prompts/test_generation_prompt.txt"
+  },
+  "reference_code_prompt_path": "src/prompts/reference_code_generation_prompt.txt"
+}

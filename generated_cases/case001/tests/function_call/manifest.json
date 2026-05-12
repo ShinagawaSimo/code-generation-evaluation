@@ -1,0 +1,30 @@
+{
+  "execution_mode": "function_call",
+  "language": "python",
+  "tests": [
+    {
+      "test_id": "sort_unsorted",
+      "filename": "test_sort_unsorted.py"
+    },
+    {
+      "test_id": "sort_empty",
+      "filename": "test_sort_empty.py"
+    },
+    {
+      "test_id": "sort_single",
+      "filename": "test_sort_single.py"
+    },
+    {
+      "test_id": "sort_duplicates",
+      "filename": "test_sort_duplicates.py"
+    },
+    {
+      "test_id": "sort_input_unchanged",
+      "filename": "test_sort_input_unchanged.py"
+    },
+    {
+      "test_id": "sort_new_object",
+      "filename": "test_sort_new_object.py"
+    }
+  ]
+}

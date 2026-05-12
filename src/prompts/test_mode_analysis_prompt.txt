@@ -1,0 +1,25 @@
+You are a senior test design engineer.
+
+Task:
+- Read the original requirement text for a code-generation task.
+- Determine what test method(s) are appropriate: "function_call" and/or "program_io".
+
+Definition of test modes:
+- function_call: The requirement describes a named function/method with explicit inputs and outputs. Tests can directly call the function and assert return values or side effects.
+- program_io: The requirement describes a complete program that reads from standard input and writes to standard output. Tests run the program as a subprocess and compare output.
+- gui_or_server: DO NOT USE. Not supported.
+
+Rules:
+- One requirement text can support multiple test modes. Include all applicable modes.
+- Provide brief reasoning for why each mode is suitable.
+
+Return ONLY a valid JSON object. No markdown fences, no extra text.
+{
+  "task_id": "string",
+  "test_modes": [
+    {
+      "mode": "function_call",
+      "reasoning": "Brief explanation why this mode applies."
+    }
+  ]
+}

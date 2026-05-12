@@ -1,12 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, List
-
-
-@dataclass
-class PointTestResult:
-    point_id: str
-    category: str
-    passed: bool
+from typing import Any, Dict
 
 
 @dataclass
