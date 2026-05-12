@@ -1,0 +1,126 @@
+{
+  "task_id": "case001",
+  "compile_success": true,
+  "run_success": true,
+  "compile_runtime_success": true,
+  "test_results": {
+    "overall": {
+      "passed": 6,
+      "failed": 1,
+      "pass_rate": 0.8571
+    },
+    "functional": {
+      "passed": 5,
+      "failed": 1,
+      "pass_rate": 0.8333
+    },
+    "non_functional": {
+      "passed": 1,
+      "failed": 0,
+      "pass_rate": 1.0
+    },
+    "by_category": {
+      "basic": {
+        "passed": 5,
+        "failed": 0,
+        "pass_rate": 1.0
+      },
+      "implicit": {
+        "passed": 0,
+        "failed": 1,
+        "pass_rate": 0.0
+      },
+      "non": {
+        "passed": 1,
+        "failed": 0,
+        "pass_rate": 1.0
+      }
+    },
+    "points": [
+      {
+        "point_id": "point_001",
+        "category": "basic_function",
+        "passed": true
+      },
+      {
+        "point_id": "point_002",
+        "category": "basic_function",
+        "passed": true
+      },
+      {
+        "point_id": "point_003",
+        "category": "basic_function",
+        "passed": true
+      },
+      {
+        "point_id": "point_004",
+        "category": "basic_non_function",
+        "passed": true
+      },
+      {
+        "point_id": "point_005",
+        "category": "basic_function",
+        "passed": true
+      },
+      {
+        "point_id": "point_006",
+        "category": "basic_function",
+        "passed": true
+      },
+      {
+        "point_id": "point_007",
+        "category": "implicit_function",
+        "passed": false
+      }
+    ]
+  },
+  "codebleu": {
+    "max_score": 0.41863207298400873,
+    "best_approach_id": "approach_001",
+    "per_approach": [
+      {
+        "approach_id": "approach_001",
+        "approach_name": "Built-in Sort",
+        "codebleu_score": 0.41863207298400873
+      },
+      {
+        "approach_id": "approach_002",
+        "approach_name": "Bubble Sort",
+        "codebleu_score": 0.059877020929832256
+      },
+      {
+        "approach_id": "approach_003",
+        "approach_name": "Selection Sort",
+        "codebleu_score": 0.06828390120325148
+      },
+      {
+        "approach_id": "approach_004",
+        "approach_name": "Insertion Sort",
+        "codebleu_score": 0.05793490935115995
+      },
+      {
+        "approach_id": "approach_005",
+        "approach_name": "Merge Sort",
+        "codebleu_score": 0.05780136953558955
+      },
+      {
+        "approach_id": "approach_006",
+        "approach_name": "Quick Sort (Lomuto partition, on copy)",
+        "codebleu_score": 0.04929412638616701
+      },
+      {
+        "approach_id": "approach_007",
+        "approach_name": "Heap Sort",
+        "codebleu_score": 0.03605090196882349
+      },
+      {
+        "approach_id": "approach_008",
+        "approach_name": "Counting Sort (with offset for negatives)",
+        "codebleu_score": 0.05772350456474298
+      }
+    ]
+  },
+  "inference_time_seconds": 40.89971019999939,
+  "total_tokens": 1575,
+  "comment_ratio": 0.0
+}

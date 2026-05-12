@@ -1,7 +1,7 @@
 {
   "code_generation_results_dir": "artifacts/code_generation/results",
   "code_generation_result_glob": "*.json",
-  "generated_tests_dir": "artifacts/test_generation/generated_tests",
+  "generated_tests_dir": "generated_cases",
   "results_dir": "artifacts/code_execution/results",
   "container_output_dir": "artifacts/code_execution/contexts",
   "logs_dir": "artifacts/code_execution/logs",

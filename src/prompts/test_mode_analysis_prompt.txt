@@ -5,13 +5,21 @@ Task:
 - Determine what test method(s) are appropriate: "function_call" and/or "program_io".
 
 Definition of test modes:
-- function_call: The requirement describes a named function/method with explicit inputs and outputs. Tests can directly call the function and assert return values or side effects.
-- program_io: The requirement describes a complete program that reads from standard input and writes to standard output. Tests run the program as a subprocess and compare output.
+- program_io (PREFERRED — use by default): The required behavior can be verified by running a complete program that reads from stdin and writes to stdout. This is the primary mode — use it whenever correctness is observable through input/output comparison. Even if the requirement describes a "function", if its behavior can be tested via stdin/stdout, choose program_io.
+- function_call (FALLBACK — use only when necessary): Tests directly call a named function and assert return values, exceptions, or side effects. ONLY select this mode when the requirement demands verification of behaviors NOT observable through stdin/stdout. Specifically:
+  * Input immutability (function must not mutate arguments)
+  * Object identity (must return a new object, not the input reference)
+  * Type annotations (parameter/return type hints must be present)
+  * Specific exception classes (must raise TypeError, ValueError, etc. — not just "crash")
+  * Performance/time bounds (must complete within N seconds)
+  * Order-independent results (elements can be in any order)
+  * Internal state changes with no stdout output
 - gui_or_server: DO NOT USE. Not supported.
 
 Rules:
-- One requirement text can support multiple test modes. Include all applicable modes.
-- Provide brief reasoning for why each mode is suitable.
+- Default to program_io as the sole mode. Only add function_call as an additional mode when one or more of the specific conditions above apply.
+- Provide concise reasoning for why each selected mode is suitable. For program_io, state what input/output format is expected. For function_call, state which specific verification need (from the list above) requires it.
+- If program_io is NOT selected, explain why function_call is the only viable option.
 
 Return ONLY a valid JSON object. No markdown fences, no extra text.
 {

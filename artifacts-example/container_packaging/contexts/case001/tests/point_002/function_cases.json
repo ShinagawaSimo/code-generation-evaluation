@@ -1,0 +1,89 @@
+{
+  "language": "python",
+  "target_signature": {
+    "entry_name": "sort",
+    "parameters": [
+      {
+        "name": "numbers",
+        "type": "list[int]",
+        "required": true
+      }
+    ],
+    "return_type": "list[int]"
+  },
+  "function_contract": {
+    "call_style": "positional_only",
+    "parameter_order": [
+      "numbers"
+    ],
+    "notes": [
+      "The function should accept a list of integers as its only argument."
+    ]
+  },
+  "test_skeleton": {
+    "import_placeholder": "from sort import sort",
+    "runner_pseudocode": "For each assertion: call sort with args; assert result equals expected."
+  },
+  "assertions": [
+    {
+      "assertion_id": "accept_empty_list",
+      "description": "Function accepts an empty list and returns an empty list.",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          []
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "equals",
+        "expected": [],
+        "metadata": {}
+      }
+    },
+    {
+      "assertion_id": "accept_single_element",
+      "description": "Function accepts a single-element integer list.",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          [
+            5
+          ]
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "equals",
+        "expected": [
+          5
+        ],
+        "metadata": {}
+      }
+    },
+    {
+      "assertion_id": "accept_sorted_list",
+      "description": "Function accepts a pre-sorted integer list without error.",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          [
+            1,
+            2,
+            3
+          ]
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "equals",
+        "expected": [
+          1,
+          2,
+          3
+        ],
+        "metadata": {}
+      }
+    }
+  ]
+}

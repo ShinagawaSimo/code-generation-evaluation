@@ -8,9 +8,8 @@ from .base import (
 )
 
 
-def render(test: Dict[str, Any], entry_name: str) -> GeneratedTestArtifact:
+def render(test: Dict[str, Any], entry_name: str, index: int = 1) -> GeneratedTestArtifact:
     test_id = str(test["test_id"])
-    description = str(test.get("description", ""))
     call = test.get("call", {})
     args: List[Any] = list(call.get("args", []))
     kwargs: dict = dict(call.get("kwargs", {}))
@@ -20,7 +19,7 @@ def render(test: Dict[str, Any], entry_name: str) -> GeneratedTestArtifact:
 
     test_body = _build_test_body(kind, entry_name, args, kwargs, expected)
     full_source = make_python_test_file(test_id, test_body)
-    filename = f"test_{test_id}.py"
+    filename = f"test_{index:02d}.py"
     return GeneratedTestArtifact(filename, full_source)
 
 

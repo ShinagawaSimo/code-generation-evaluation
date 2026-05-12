@@ -1,16 +1,19 @@
-def merge_sort(lst: list) -> list:
-    """Return a new list sorted by merge sort (top-down, recursive)."""
+from typing import List
+
+def sort(lst: List[int]) -> List[int]:
+    """Return a new list sorted in ascending order using merge sort."""
     if not isinstance(lst, list):
         raise TypeError("Input must be a list")
+    if not all(isinstance(x, int) for x in lst):
+        raise ValueError("All elements must be integers")
     if len(lst) <= 1:
         return lst[:]
     mid = len(lst) // 2
-    left = merge_sort(lst[:mid])
-    right = merge_sort(lst[mid:])
+    left = sort(lst[:mid])
+    right = sort(lst[mid:])
     return _merge(left, right)
 
-def _merge(left: list, right: list) -> list:
-    """Merge two sorted lists into one sorted list."""
+def _merge(left: List[int], right: List[int]) -> List[int]:
     result = []
     i = j = 0
     while i < len(left) and j < len(right):

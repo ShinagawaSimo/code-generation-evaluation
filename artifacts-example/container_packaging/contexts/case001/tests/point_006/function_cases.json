@@ -1,0 +1,45 @@
+{
+  "language": "python",
+  "target_signature": {
+    "entry_name": "sort",
+    "parameters": [
+      {
+        "name": "numbers",
+        "type": "list[int]",
+        "required": true
+      }
+    ],
+    "return_type": "list[int]"
+  },
+  "function_contract": {
+    "call_style": "positional_only",
+    "parameter_order": [
+      "numbers"
+    ],
+    "notes": [
+      "empty input case"
+    ]
+  },
+  "test_skeleton": {
+    "import_placeholder": "from solution import sort",
+    "runner_pseudocode": "assert sort([]) == []"
+  },
+  "assertions": [
+    {
+      "assertion_id": "empty_input_returns_empty",
+      "description": "Calling sort with an empty list returns an empty list",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          []
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "equals",
+        "expected": [],
+        "metadata": {}
+      }
+    }
+  ]
+}

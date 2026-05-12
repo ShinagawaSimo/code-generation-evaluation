@@ -35,6 +35,8 @@ def render_tests(spec: Dict[str, Any], output_dir: str) -> List[str]:
     execution_mode = str(spec.get("execution_mode", ""))
     target_signature = dict(spec.get("target_signature") or {})
     entry_name = str(target_signature.get("entry_name", ""))
+    sig_parameters = list(target_signature.get("parameters", []))
+    sig_return_type = str(target_signature.get("return_type", "string"))
     tests = list(spec.get("tests", []))
 
     lang_renderers = _RENDERERS.get(language, {})
@@ -48,12 +50,12 @@ def render_tests(spec: Dict[str, Any], output_dir: str) -> List[str]:
     artifacts: List[GeneratedTestArtifact] = []
     manifest_entries: List[dict] = []
 
-    for test in tests:
-        test_id = str(test.get("test_id", "unknown"))
-        if execution_mode == "function_call":
-            artifact = render_func(test, entry_name)
-        else:
-            artifact = render_func(test)
+    for idx, test in enumerate(tests, start=1):
+        test_id = str(test.get("test_id", f"test_{idx:02d}"))
+        if execution_mode == "program_io":
+            test.setdefault("parameters", sig_parameters)
+            test.setdefault("return_type", sig_return_type)
+        artifact = render_func(test, entry_name, index=idx)
         artifacts.append(artifact)
         manifest_entries.append({"test_id": test_id, "filename": artifact.relative_path})
 

@@ -145,21 +145,51 @@ def execute_code(
     code_target_path = code_target_dir / code_source_path.name
     shutil.copy2(code_source_path, code_target_path)
 
-    test_source_dir = Path(generated_tests_dir) / task_id
+    packaged_point_count = 0
+
+    test_source_dir = Path(generated_tests_dir) / task_id / "tests"
     if test_source_dir.exists():
-        for path in test_source_dir.rglob("*"):
-            if path.is_dir():
-                continue
-            relative = path.relative_to(test_source_dir)
-            target = container_dir / "tests" / relative
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(path, target)
+        tests_target_dir = container_dir / "tests"
+        tests_target_dir.mkdir(parents=True, exist_ok=True)
+
+        all_test_entries: list = []
+        merged_execution_mode = ""
+        merged_language = ""
+        file_counter = 0
+
+        for manifest_path in sorted(test_source_dir.rglob("manifest.json")):
+            mode_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            mode_dir = manifest_path.parent
+            merged_execution_mode = str(mode_manifest.get("execution_mode", merged_execution_mode))
+            merged_language = str(mode_manifest.get("language", merged_language))
+
+            for test_entry in mode_manifest.get("tests", []):
+                original_filename = str(test_entry["filename"])
+                test_file = mode_dir / original_filename
+                if test_file.exists():
+                    file_counter += 1
+                    suffix = Path(original_filename).suffix
+                    new_filename = f"test_{file_counter:02d}{suffix}"
+                    shutil.copy2(test_file, tests_target_dir / new_filename)
+                    new_entry = dict(test_entry)
+                    new_entry["filename"] = new_filename
+                    all_test_entries.append(new_entry)
+
+        packaged_point_count = len(all_test_entries)
+        if all_test_entries:
+            merged_manifest = {
+                "execution_mode": merged_execution_mode,
+                "language": merged_language,
+                "tests": all_test_entries,
+            }
+            _write_text_file(tests_target_dir / "manifest.json",
+                             json.dumps(merged_manifest, ensure_ascii=False, indent=2))
 
     dockerfile_path = container_dir / "Dockerfile"
     _write_text_file(dockerfile_path, _render_dockerfile(language, code_source_path.name))
 
     manifest_path = container_dir / "manifest.json"
-    _write_text_file(manifest_path, _render_manifest(codegen_result, 0))
+    _write_text_file(manifest_path, _render_manifest(codegen_result, packaged_point_count))
 
     script_dir = container_dir / "scripts"
     script_dir.mkdir(parents=True, exist_ok=True)

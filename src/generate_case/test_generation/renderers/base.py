@@ -8,6 +8,7 @@ from ..models import GeneratedTestArtifact
 _PYTHON_HEADER = """\
 import json, sys, traceback
 from pathlib import Path
+from typing import Any
 
 _RESULTS_DIR = Path("/workspace/results")
 _RESULT_PATH = _RESULTS_DIR / "{test_id}.json"

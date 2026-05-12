@@ -1,0 +1,30 @@
+{
+  "execution_mode": "program_io",
+  "language": "python",
+  "tests": [
+    {
+      "test_id": "basic_normal",
+      "filename": "test_01.py"
+    },
+    {
+      "test_id": "boundary_empty",
+      "filename": "test_02.py"
+    },
+    {
+      "test_id": "boundary_single_element",
+      "filename": "test_03.py"
+    },
+    {
+      "test_id": "edge_duplicates",
+      "filename": "test_04.py"
+    },
+    {
+      "test_id": "edge_negative_and_zero",
+      "filename": "test_05.py"
+    },
+    {
+      "test_id": "complex_large",
+      "filename": "test_06.py"
+    }
+  ]
+}

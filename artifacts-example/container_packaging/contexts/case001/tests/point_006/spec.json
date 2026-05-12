@@ -1,0 +1,62 @@
+{
+  "point_id": "point_006",
+  "point_text": "如果输入列表为空，应返回一个空列表",
+  "category": "basic_function",
+  "test_kind": "functional",
+  "execution_mode": "function_call",
+  "language": "python",
+  "suggested_entry_name": "",
+  "target_signature": {
+    "entry_name": "sort",
+    "parameters": [
+      {
+        "name": "numbers",
+        "type": "list[int]",
+        "required": true
+      }
+    ],
+    "return_type": "list[int]"
+  },
+  "function_contract": {
+    "call_style": "positional_only",
+    "parameter_order": [
+      "numbers"
+    ],
+    "notes": [
+      "empty input case"
+    ]
+  },
+  "io_cases": [],
+  "assertions": [
+    {
+      "assertion_id": "empty_input_returns_empty",
+      "description": "Calling sort with an empty list returns an empty list",
+      "kind": "behavior",
+      "call": {
+        "args": [
+          []
+        ],
+        "kwargs": {}
+      },
+      "expectation": {
+        "kind": "equals",
+        "expected": [],
+        "metadata": {}
+      }
+    }
+  ],
+  "environment": {
+    "runtime": "python3",
+    "limits": {},
+    "setup_steps": []
+  },
+  "artifact_hints": {
+    "suggested_files": [
+      "solution.py"
+    ]
+  },
+  "test_skeleton": {
+    "import_placeholder": "from solution import sort",
+    "runner_pseudocode": "assert sort([]) == []"
+  }
+}

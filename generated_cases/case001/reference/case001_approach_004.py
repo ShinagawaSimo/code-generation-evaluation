@@ -1,13 +1,16 @@
-def insertion_sort(lst: list) -> list:
-    """Return a new list sorted by insertion sort (in-place on a copy)."""
+from typing import List
+
+def sort(lst: List[int]) -> List[int]:
+    """Return a new list sorted in ascending order using insertion sort."""
     if not isinstance(lst, list):
         raise TypeError("Input must be a list")
-    sorted_lst = lst[:]
-    for i in range(1, len(sorted_lst)):
-        key = sorted_lst[i]
-        j = i - 1
-        while j >= 0 and sorted_lst[j] > key:
-            sorted_lst[j + 1] = sorted_lst[j]
-            j -= 1
-        sorted_lst[j + 1] = key
-    return sorted_lst
+    if not all(isinstance(x, int) for x in lst):
+        raise ValueError("All elements must be integers")
+    result = []
+    for x in lst:
+        # find insertion point
+        i = 0
+        while i < len(result) and result[i] <= x:
+            i += 1
+        result.insert(i, x)
+    return result
