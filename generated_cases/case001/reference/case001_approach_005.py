@@ -1,19 +1,20 @@
-from typing import List
-
-def sort(lst: List[int]) -> List[int]:
-    """Return a new list sorted in ascending order using bubble sort."""
-    if not isinstance(lst, list):
-        raise TypeError("Input must be a list")
-    if not all(isinstance(x, int) for x in lst):
-        raise ValueError("All elements must be integers")
-    result = lst[:]  # work on a copy
-    n = len(result)
-    for i in range(n):
-        swapped = False
-        for j in range(0, n - i - 1):
-            if result[j] > result[j + 1]:
-                result[j], result[j + 1] = result[j + 1], result[j]
-                swapped = True
-        if not swapped:
-            break
-    return result
+def sort(lst: list[int]) -> list[int]:
+    if not lst:
+        return []
+    if len(lst) <= 1:
+        return lst[:]
+    mid = len(lst) // 2
+    left = sort(lst[:mid])
+    right = sort(lst[mid:])
+    i = j = 0
+    merged = []
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            merged.append(left[i])
+            i += 1
+        else:
+            merged.append(right[j])
+            j += 1
+    merged.extend(left[i:])
+    merged.extend(right[j:])
+    return merged

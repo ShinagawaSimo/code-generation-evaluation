@@ -1,14 +1,14 @@
-from typing import List
-
-def sort(lst: List[int]) -> List[int]:
-    """Return a new list sorted in ascending order using quicksort."""
-    if not isinstance(lst, list):
-        raise TypeError("Input must be a list")
-    if not all(isinstance(x, int) for x in lst):
-        raise ValueError("All elements must be integers")
-    if len(lst) <= 1:
-        return lst[:]  # return a copy for consistency
-    pivot = lst[0]
-    left = [x for x in lst[1:] if x <= pivot]
-    right = [x for x in lst[1:] if x > pivot]
-    return sort(left) + [pivot] + sort(right)
+def sort(lst: list[int]) -> list[int]:
+    if not lst:
+        return []
+    arr = lst[:]
+    n = len(arr)
+    for i in range(n):
+        swapped = False
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    return arr

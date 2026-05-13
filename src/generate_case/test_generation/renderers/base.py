@@ -1,8 +1,27 @@
 import json
+import re
 from pathlib import Path
-from typing import Any, Callable, List, Tuple
+from typing import Any, Callable, Dict, List, Tuple
 
 from ..models import GeneratedTestArtifact
+
+
+def _parse_class_defs(relevant_code: str) -> Dict[str, List[str]]:
+    """Parse class definitions from relevant_code. Returns {class_name: [field_names]}."""
+    if not relevant_code:
+        return {}
+    classes: Dict[str, List[str]] = {}
+    pattern = re.compile(
+        r'class\s+(\w+)\s*(?:\([^)]*\))?\s*:\s*\n((?:\s+\w+\s*:.*\n?)+)',
+        re.MULTILINE,
+    )
+    for match in pattern.finditer(relevant_code):
+        name = match.group(1)
+        body = match.group(2)
+        fields = re.findall(r'^\s+(\w+)\s*:', body, re.MULTILINE)
+        if fields:
+            classes[name] = fields
+    return classes
 
 
 _PYTHON_HEADER = """\
@@ -82,13 +101,21 @@ process.exit(passed ? 0 : 1);
 """
 
 
-def _format_python_value(value: Any) -> str:
+def _format_python_value(value: Any, class_defs: Dict[str, List[str]] | None = None) -> str:
+    if class_defs and isinstance(value, dict):
+        for cls_name, fields in class_defs.items():
+            if set(value.keys()) == set(fields):
+                args = ", ".join(
+                    f"{k}={_format_python_value(v, class_defs)}"
+                    for k, v in value.items()
+                )
+                return f"{cls_name}({args})"
     if isinstance(value, list):
-        items = ", ".join(_format_python_value(item) for item in value)
+        items = ", ".join(_format_python_value(item, class_defs) for item in value)
         return f"[{items}]"
     if isinstance(value, dict):
         items = ", ".join(
-            f"{_format_python_key(k)}: {_format_python_value(v)}"
+            f"{_format_python_key(k)}: {_format_python_value(v, class_defs)}"
             for k, v in value.items()
         )
         return f"{{{items}}}"
@@ -109,8 +136,11 @@ def _format_js_value(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
-def make_python_test_file(test_id: str, test_body: str) -> str:
-    return _PYTHON_HEADER.format(test_id=test_id, test_body=test_body)
+def make_python_test_file(test_id: str, test_body: str, preamble: str = "") -> str:
+    content = _PYTHON_HEADER.format(test_id=test_id, test_body=test_body)
+    if preamble:
+        content = preamble.strip() + "\n\n" + content
+    return content
 
 
 def make_javascript_test_file(test_id: str, test_body: str) -> str:
@@ -130,9 +160,9 @@ def build_python_import_expression(entry_name: str) -> str:
     )
 
 
-def build_python_call_expression(args: List[Any], kwargs: dict) -> str:
-    args_str = ", ".join(_format_python_value(a) for a in args)
-    kwargs_str = ", ".join(f"{k}={_format_python_value(v)}" for k, v in kwargs.items())
+def build_python_call_expression(args: List[Any], kwargs: dict, class_defs: Dict[str, List[str]] | None = None) -> str:
+    args_str = ", ".join(_format_python_value(a, class_defs) for a in args)
+    kwargs_str = ", ".join(f"{k}={_format_python_value(v, class_defs)}" for k, v in kwargs.items())
     parts = [p for p in [args_str, kwargs_str] if p]
     return ", ".join(parts)
 

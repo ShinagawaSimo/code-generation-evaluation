@@ -8,7 +8,7 @@ from .base import (
 )
 
 
-def render(test: Dict[str, Any], entry_name: str, index: int = 1) -> GeneratedTestArtifact:
+def render(test: Dict[str, Any], entry_name: str, index: int = 1, relevant_code: str = "", class_defs: Dict[str, List[str]] | None = None) -> GeneratedTestArtifact:
     test_id = str(test["test_id"])
     call = test.get("call", {})
     args: List[Any] = list(call.get("args", []))
@@ -17,15 +17,15 @@ def render(test: Dict[str, Any], entry_name: str, index: int = 1) -> GeneratedTe
     kind = str(expectation.get("kind", "equals"))
     expected = expectation.get("expected")
 
-    test_body = _build_test_body(kind, entry_name, args, kwargs, expected)
-    full_source = make_python_test_file(test_id, test_body)
+    test_body = _build_test_body(kind, entry_name, args, kwargs, expected, class_defs)
+    full_source = make_python_test_file(test_id, test_body, preamble=relevant_code)
     filename = f"test_{index:02d}.py"
     return GeneratedTestArtifact(filename, full_source)
 
 
-def _build_test_body(kind: str, entry_name: str, args: List[Any], kwargs: dict, expected: Any) -> str:
+def _build_test_body(kind: str, entry_name: str, args: List[Any], kwargs: dict, expected: Any, class_defs: Dict[str, List[str]] | None = None) -> str:
     import_expr = build_python_import_expression(entry_name)
-    call_expr = build_python_call_expression(args, kwargs)
+    call_expr = build_python_call_expression(args, kwargs, class_defs)
 
     if kind == "raises":
         return (
@@ -42,7 +42,7 @@ def _build_test_body(kind: str, entry_name: str, args: List[Any], kwargs: dict, 
         return (
             f"    import copy\n"
             f"    {import_expr}"
-            f"    _input = {_format_call_args(args, kwargs)}\n"
+            f"    _input = {_format_call_args(args, kwargs, class_defs)}\n"
             f"    _snapshot = copy.deepcopy(_input)\n"
             f"    _result = _fn({call_expr})\n"
             f"    _passed = _input == _snapshot\n"
@@ -52,7 +52,7 @@ def _build_test_body(kind: str, entry_name: str, args: List[Any], kwargs: dict, 
     if kind == "new_object":
         return (
             f"    {import_expr}"
-            f"    _input = {_format_call_args(args, kwargs)}\n"
+            f"    _input = {_format_call_args(args, kwargs, class_defs)}\n"
             f"    _result = _fn({call_expr})\n"
             f"    _passed = _result is not _input\n"
             f"    return _passed, id(_result), id(_input)\n"
@@ -96,7 +96,7 @@ def _build_test_body(kind: str, entry_name: str, args: List[Any], kwargs: dict, 
             f"    from collections import Counter\n"
             f"    {import_expr}"
             f"    _result = _fn({call_expr})\n"
-            f"    _expected = {_format_value(expected)}\n"
+            f"    _expected = {_format_value(expected, class_defs)}\n"
             f"    _passed = Counter(_result) == Counter(_expected)\n"
             f"    return _passed, list(_result) if hasattr(_result, '__iter__') else _result, _expected\n"
         )
@@ -104,24 +104,24 @@ def _build_test_body(kind: str, entry_name: str, args: List[Any], kwargs: dict, 
     return (
         f"    {import_expr}"
         f"    _result = _fn({call_expr})\n"
-        f"    _expected = {_format_value(expected)}\n"
+        f"    _expected = {_format_value(expected, class_defs)}\n"
         f"    _passed = _result == _expected\n"
         f"    return _passed, _result, _expected\n"
     )
 
 
-def _format_call_args(args: list, kwargs: dict) -> str:
+def _format_call_args(args: list, kwargs: dict, class_defs: Dict[str, List[str]] | None = None) -> str:
     from .base import _format_python_value
     if args:
-        return _format_python_value(args[0])
+        return _format_python_value(args[0], class_defs)
     if kwargs:
         first_key = next(iter(kwargs))
-        return _format_python_value(kwargs[first_key])
+        return _format_python_value(kwargs[first_key], class_defs)
     return "None"
 
 
-def _format_value(value) -> str:
+def _format_value(value, class_defs: Dict[str, List[str]] | None = None) -> str:
     from .base import _format_python_value
     if value is None:
         return "None"
-    return _format_python_value(value)
+    return _format_python_value(value, class_defs)

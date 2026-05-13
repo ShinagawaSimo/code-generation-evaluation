@@ -1,0 +1,7 @@
+{
+  "task_id": "case002",
+  "language": "python",
+  "requirement": "实现一个sort_people_by_unit函数，需求如下：1. 该函数应接受一个People对象列表作为输入，并返回一个按所属单位（unit）名称升序排列的新列表；2. 如果输入为空列表，则应返回一个空列表；3. 函数不得修改输入列表。",
+  "complexity": 2,
+  "relevant_code": "from typing import NamedTuple\n\nclass People(NamedTuple):\n    name: str\n    gender: str\n    age: int\n    unit: str\n"
+}

@@ -34,7 +34,7 @@ def _build_import_block(entry_name: str) -> str:
     )
 
 
-def render(test: Dict[str, Any], entry_name: str, index: int = 1) -> GeneratedTestArtifact:
+def render(test: Dict[str, Any], entry_name: str, index: int = 1, relevant_code: str = "", class_defs: Dict[str, List[str]] | None = None) -> GeneratedTestArtifact:
     test_id = str(test["test_id"])
     io_case = test.get("io_case", {})
     input_text = str(io_case.get("input_text", ""))

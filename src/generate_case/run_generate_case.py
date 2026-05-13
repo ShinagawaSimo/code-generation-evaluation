@@ -12,10 +12,10 @@ from generate_case.reference_code_generation.service import generate_reference_c
 from generate_case.test_generation.case_io import build_result_path as build_test_result_path
 from generate_case.test_generation.case_io import list_case_paths
 from generate_case.test_generation.service import generate_tests_for_case
-from shared.case_text import parse_case_text
+from shared.case_text import load_case
 
 
-def run_generate_case() -> None:
+def run_generate_case(task_id: str | None = None) -> None:
     project_root = Path(__file__).resolve().parents[2]
     stage_config = load_json(str(project_root / "config" / "generate_case.json"))
     api_config = load_json(str(project_root / "config" / "model_api.json"))
@@ -24,6 +24,10 @@ def run_generate_case() -> None:
         str(project_root / stage_config["cases_dir"]),
         str(stage_config["cases_glob"]),
     )
+    if task_id:
+        case_paths = [p for p in case_paths if p.stem == task_id]
+        if not case_paths:
+            raise ValueError(f"No case found for task_id: {task_id}")
     output_cases_dir = str(project_root / stage_config["output_cases_dir"])
     metric_config = dict(stage_config.get("metric_config", {}))
     generation_config = dict(stage_config.get("generation_config", {}))
@@ -38,16 +42,16 @@ def run_generate_case() -> None:
         task_id = case_path.stem
         print(f"[generate_case] case {case_index}/{total_cases} task={task_id}")
 
-        case_text = case_path.read_text(encoding="utf-8")
-        parsed = parse_case_text(case_text, "python")
-        original_requirement_text = parsed["body"]
-        language = str(parsed.get("language", "python"))
+        case_data = load_case(case_path)
+        original_requirement_text = case_data["body"]
+        language = case_data["language"]
+        relevant_code = str(case_data.get("relevant_code", ""))
 
         case_output_dir = Path(output_cases_dir) / task_id
         case_output_dir.mkdir(parents=True, exist_ok=True)
 
-        shutil.copy2(str(case_path), str(case_output_dir / "original.txt"))
-        print(f"[generate_case] task={task_id} original.txt saved")
+        shutil.copy2(str(case_path), str(case_output_dir / "original.json"))
+        print(f"[generate_case] task={task_id} original.json saved")
 
         metrics_result = evaluate_case_metrics(
             task_id=task_id,
@@ -68,6 +72,7 @@ def run_generate_case() -> None:
             api_config=api_config,
             generation_config=generation_config,
             tests_output_dir=str(case_output_dir / "tests"),
+            relevant_code=relevant_code,
         )
         print(f"[generate_case] task={task_id} tests done files={len(test_result.generated_files)}")
 
@@ -78,6 +83,7 @@ def run_generate_case() -> None:
             api_config=api_config,
             code_output_dir=str(case_output_dir / "reference"),
             prompt_text=reference_code_prompt_text,
+            relevant_code=relevant_code,
         )
         print(f"[generate_case] task={task_id} reference done implementations={len(reference_result.implementations)}")
 
@@ -87,4 +93,8 @@ def run_generate_case() -> None:
 
 
 if __name__ == "__main__":
-    run_generate_case()
+    import argparse
+    parser = argparse.ArgumentParser(description="Run full generate_case pipeline")
+    parser.add_argument("--task-id", help="Process a single case by task ID")
+    args = parser.parse_args()
+    run_generate_case(task_id=args.task_id)

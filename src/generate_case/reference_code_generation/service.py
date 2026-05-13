@@ -49,12 +49,20 @@ def generate_reference_code(
     api_config: Dict[str, Any],
     code_output_dir: str,
     prompt_text: str | None = None,
+    relevant_code: str = "",
 ) -> ReferenceCodeResult:
     prompt = prompt_text or load_reference_code_prompt()
-    user_input = build_reference_code_input(language, original_requirement_text)
+    user_input = build_reference_code_input(language, original_requirement_text, relevant_code)
     raw_output, *_ = call_model(api_config, prompt, user_input)
 
     approach_blocks = _parse_approach_blocks(raw_output)
+    if len(approach_blocks) > 5:
+        print(
+            f"[reference_code_generation] task={task_id} "
+            f"capping approaches from {len(approach_blocks)} to 5"
+        )
+        approach_blocks = approach_blocks[:5]
+
     output_dir = Path(code_output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 

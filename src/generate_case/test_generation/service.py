@@ -9,7 +9,7 @@ from .prompting import (
     build_mode_analysis_input,
     build_test_generation_input,
     load_mode_analysis_prompt,
-    load_test_generation_prompt,
+    load_test_generation_prompt_for_mode,
 )
 from .renderers import render_tests
 
@@ -98,15 +98,13 @@ def generate_tests_for_case(
     api_config: Dict[str, Any],
     generation_config: Dict[str, Any],
     tests_output_dir: str,
+    relevant_code: str = "",
 ) -> TestGenerationResult:
     mode_analysis_prompt = load_mode_analysis_prompt(
         generation_config.get("mode_analysis_prompt_path")
     )
-    test_generation_prompt = load_test_generation_prompt(
-        generation_config.get("test_generation_prompt_path")
-    )
     print(f"[test_generation] task={task_id} language={language} phase=1 mode_analysis")
-    mode_input = build_mode_analysis_input(task_id, language, original_requirement_text)
+    mode_input = build_mode_analysis_input(task_id, language, original_requirement_text, relevant_code)
     mode_raw_output, *_ = call_model(api_config, mode_analysis_prompt, mode_input)
     mode_parsed = _parse_model_json(mode_raw_output)
     test_modes = _validate_mode_analysis(mode_parsed)
@@ -116,15 +114,19 @@ def generate_tests_for_case(
     for mode_entry in test_modes:
         mode = str(mode_entry["mode"])
         reasoning = str(mode_entry.get("reasoning", ""))
+        test_generation_prompt = load_test_generation_prompt_for_mode(
+            mode,
+            generation_config.get("test_generation_prompt_path"),
+        )
         print(f"[test_generation] task={task_id} phase=2 mode={mode}")
         spec_input = build_test_generation_input(
-            task_id, language, original_requirement_text, mode, reasoning,
+            task_id, language, original_requirement_text, mode, reasoning, relevant_code,
         )
         spec_raw_output, *_ = call_model(api_config, test_generation_prompt, spec_input)
         spec_parsed = _parse_model_json(spec_raw_output)
         spec = _validate_test_spec(spec_parsed)
         mode_output_dir = str(Path(tests_output_dir) / mode)
-        mode_paths = render_tests(spec, mode_output_dir)
+        mode_paths = render_tests(spec, mode_output_dir, relevant_code)
         output_paths.extend(mode_paths)
         print(f"[test_generation] task={task_id} mode={mode} files={len(mode_paths)}")
 

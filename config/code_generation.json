@@ -1,6 +1,6 @@
 {
   "cases_dir": "cases",
-  "case_glob": "*.txt",
+  "case_glob": "*.json",
   "results_dir": "artifacts/code_generation/results",
   "code_output_dir": "artifacts/code_generation/generated_code",
   "raw_output_dir": "artifacts/code_generation/raw_outputs",

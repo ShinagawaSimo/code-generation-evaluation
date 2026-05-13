@@ -1,0 +1,117 @@
+{
+  "task_id": "case002",
+  "language": "python",
+  "code_output_dir": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case002\\reference",
+  "reference_implementations": [
+    {
+      "approach_id": "approach_001",
+      "approach_name": "Built-in Sorted",
+      "description": "使用 Python 内置的 sorted 函数，通过 key 参数按 unit 字段排序。最简洁、最符合 Python 习惯的实现。不修改输入列表。",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case002\\reference\\case002_approach_001.py",
+      "interface_type": "function_call",
+      "entry_name": "sort_people_by_unit",
+      "parameters": [
+        {
+          "name": "people_list",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Library Function",
+        "time_complexity": "O(n log n)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "内置、稳定、简洁"
+      }
+    },
+    {
+      "approach_id": "approach_002",
+      "approach_name": "Copy and Sort In-place",
+      "description": "先复制输入列表得到副本，再对副本调用 list.sort() 方法。避免修改原列表，利用标准库排序。",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case002\\reference\\case002_approach_002.py",
+      "interface_type": "function_call",
+      "entry_name": "sort_people_by_unit",
+      "parameters": [
+        {
+          "name": "people_list",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Library Function",
+        "time_complexity": "O(n log n)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "库函数、副本排序"
+      }
+    },
+    {
+      "approach_id": "approach_003",
+      "approach_name": "Merge Sort (Top-down)",
+      "description": "自己实现归并排序，通过分治递归完成。保证稳定排序，不修改原列表。",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case002\\reference\\case002_approach_003.py",
+      "interface_type": "function_call",
+      "entry_name": "sort_people_by_unit",
+      "parameters": [
+        {
+          "name": "people_list",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Divide and Conquer",
+        "time_complexity": "O(n log n)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "稳定、递归、分治"
+      }
+    },
+    {
+      "approach_id": "approach_004",
+      "approach_name": "Quick Sort (Lomuto Partition)",
+      "description": "自己实现快速排序，使用 Lomuto 划分方案。对副本排序，不修改原列表。递归由内部辅助函数处理。",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case002\\reference\\case002_approach_004.py",
+      "interface_type": "function_call",
+      "entry_name": "sort_people_by_unit",
+      "parameters": [
+        {
+          "name": "people_list",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Divide and Conquer",
+        "time_complexity": "O(n log n)",
+        "space_complexity": "O(log n)",
+        "key_characteristics": "不稳定、原地排序（但副本）、递归"
+      }
+    },
+    {
+      "approach_id": "approach_005",
+      "approach_name": "Heap Sort",
+      "description": "自己实现堆排序，先构建最大堆再依次取出堆顶构建有序列表。基于比较 unit 字段，不修改原列表。",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case002\\reference\\case002_approach_005.py",
+      "interface_type": "function_call",
+      "entry_name": "sort_people_by_unit",
+      "parameters": [
+        {
+          "name": "people_list",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Sorting",
+        "time_complexity": "O(n log n)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "原地算法（副本上）、不稳定、无额外递归"
+      }
+    }
+  ]
+}

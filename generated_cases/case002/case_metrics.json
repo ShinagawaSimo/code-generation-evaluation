@@ -1,0 +1,51 @@
+{
+  "task_id": "case002",
+  "original_requirement_text": "实现一个sort_people_by_unit函数，需求如下：1. 该函数应接受一个People对象列表作为输入，并返回一个按所属单位（unit）名称升序排列的新列表；2. 如果输入为空列表，则应返回一个空列表；3. 函数不得修改输入列表。",
+  "metrics": {
+    "specification_complexity": {
+      "complexity_rating": 2
+    },
+    "specification_completeness": {
+      "completeness_ratio": 1.0
+    },
+    "private_knowledge_dependency": {
+      "private_knowledge_spans": [],
+      "private_knowledge_token_count": 0,
+      "total_token_count": 63,
+      "dependency_ratio": 0.0
+    },
+    "case_scale": {
+      "token_count": 63,
+      "requirement_point_count": 3
+    },
+    "expression_format": {
+      "total_sentence_count": 1,
+      "ears_match_count": 1,
+      "ears_ratio": 1.0
+    },
+    "expression_quality": {
+      "consistency": {
+        "issue_count": 0,
+        "issues": []
+      },
+      "understandability": {
+        "issue_count": 0,
+        "issues": []
+      }
+    }
+  },
+  "summary": {
+    "specification_complexity": 2,
+    "specification_completeness": 1.0,
+    "private_knowledge_dependency": 0,
+    "case_scale": {
+      "token_count": 63,
+      "requirement_point_count": 3
+    },
+    "expression_format": 1.0,
+    "expression_quality": {
+      "consistency": 0,
+      "understandability": 0
+    }
+  }
+}

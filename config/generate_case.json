@@ -1,6 +1,6 @@
 {
   "cases_dir": "cases",
-  "cases_glob": "*.txt",
+  "cases_glob": "*.json",
   "output_cases_dir": "generated_cases",
   "metric_config": {
     "tokenizer_backend": "tiktoken",
@@ -10,8 +10,7 @@
     "expression_quality_prompt_path": "src/prompts/expression_quality_prompt.txt"
   },
   "generation_config": {
-    "mode_analysis_prompt_path": "src/prompts/test_mode_analysis_prompt.txt",
-    "test_generation_prompt_path": "src/prompts/test_generation_prompt.txt"
+    "mode_analysis_prompt_path": "src/prompts/test_mode_analysis_prompt.txt"
   },
   "reference_code_prompt_path": "src/prompts/reference_code_generation_prompt.txt"
 }

@@ -1,4 +1,6 @@
-from typing import Dict
+import json
+from pathlib import Path
+from typing import Any, Dict
 
 
 def normalize_programming_language(language_text: str) -> str:
@@ -21,17 +23,18 @@ def normalize_programming_language(language_text: str) -> str:
     return mapping[normalized]
 
 
-def parse_case_text(case_text: str, fallback_language: str) -> Dict[str, str]:
-    stripped = case_text.strip()
-    lines = stripped.splitlines()
-    first_line = lines[0].strip()
-    if first_line.lower().startswith("language:"):
-        language = normalize_programming_language(first_line.split(":", 1)[1].strip())
-        body_lines = lines[1:]
-    else:
-        language = fallback_language
-        body_lines = lines
-
-    body_lines = [line for line in body_lines if not line.strip().lower().startswith("complexity:")]
-    body = "\n".join(body_lines).strip()
-    return {"language": language, "body": body}
+def load_case(case_path: str | Path, fallback_language: str = "python") -> Dict[str, Any]:
+    """Load a case from a JSON file and return standardized fields."""
+    path = Path(case_path)
+    data = json.loads(path.read_text(encoding="utf-8"))
+    language = normalize_programming_language(
+        str(data.get("language", fallback_language))
+    )
+    return {
+        "task_id": data.get("task_id", path.stem),
+        "language": language,
+        "body": data["requirement"],
+        "complexity": data.get("complexity", 1),
+        "acceptance_standard": data.get("acceptance_standard", {}),
+        "relevant_code": data.get("relevant_code", ""),
+    }

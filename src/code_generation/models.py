@@ -9,6 +9,7 @@ class CodeGenerationRequest:
     language: str
     original_requirement_text: str
     acceptance_standard: Dict[str, Any] = field(default_factory=dict)
+    relevant_code: str = ""
 
     def to_prompt_payload(self) -> Dict[str, Any]:
         return {
@@ -17,6 +18,7 @@ class CodeGenerationRequest:
             "language": self.language,
             "original_requirement_text": self.original_requirement_text,
             "acceptance_standard": self.acceptance_standard,
+            "relevant_code": self.relevant_code,
         }
 
 

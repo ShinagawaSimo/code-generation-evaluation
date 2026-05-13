@@ -20,14 +20,14 @@ def test():
     _mod = importlib.util.module_from_spec(_spec)
     _spec.loader.exec_module(_mod)
     _fn = getattr(_mod, "sort")
-    _input_text = '9 4 7 2 6 1 8 3 5 0'
+    _input_text = '9 -4 7 2 6 1 8 3 5 0 2 -8 -9 1414'
     _output_lines = []
     for _line in _input_text.split("\n"):
         _parsed = [int(x) if x.lstrip('-').isdigit() else x for x in _line.split()]
         _result = _fn(_parsed)
         _output_lines.append(' '.join(str(x) for x in _result))
     _actual = "\n".join(_output_lines)
-    _expected = '0 1 2 3 4 5 6 7 8 9'
+    _expected = '-9 -8 -4 0 1 2 2 3 5 6 7 8 9 1414'
     _passed = _actual == _expected
     return _passed, _actual, _expected
 

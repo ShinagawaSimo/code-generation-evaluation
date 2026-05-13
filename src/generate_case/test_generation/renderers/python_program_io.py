@@ -35,7 +35,7 @@ def _build_import_block(entry_name: str) -> str:
     )
 
 
-def render(test: Dict[str, Any], entry_name: str, index: int = 1) -> GeneratedTestArtifact:
+def render(test: Dict[str, Any], entry_name: str, index: int = 1, relevant_code: str = "", class_defs: Dict[str, List[str]] | None = None) -> GeneratedTestArtifact:
     test_id = str(test["test_id"])
     io_case = test.get("io_case", {})
     input_text = str(io_case.get("input_text", ""))
@@ -64,6 +64,6 @@ def render(test: Dict[str, Any], entry_name: str, index: int = 1) -> GeneratedTe
         f'    return _passed, _actual, _expected\n'
     )
 
-    full_source = make_python_test_file(test_id, test_body)
+    full_source = make_python_test_file(test_id, test_body, preamble=relevant_code)
     filename = f"test_{index:02d}.py"
     return GeneratedTestArtifact(filename, full_source)

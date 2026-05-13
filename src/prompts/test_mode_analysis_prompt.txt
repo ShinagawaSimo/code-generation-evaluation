@@ -18,6 +18,7 @@ Definition of test modes:
 
 Rules:
 - Default to program_io as the sole mode. Only add function_call as an additional mode when one or more of the specific conditions above apply.
+- If "relevant_code" is present in the input, the task involves custom types. Consider whether type-dependent assertions (input_unchanged, new_object, type_hints) make function_call necessary.
 - Provide concise reasoning for why each selected mode is suitable. For program_io, state what input/output format is expected. For function_call, state which specific verification need (from the list above) requires it.
 - If program_io is NOT selected, explain why function_call is the only viable option.
 

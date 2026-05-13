@@ -1,0 +1,161 @@
+{
+  "task_id": "case001",
+  "language": "python",
+  "code_output_dir": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case001\\reference",
+  "reference_implementations": [
+    {
+      "approach_id": "approach_001",
+      "approach_name": "Built-in Sort",
+      "description": "Uses Python's built-in sorted() function. Minimal, idiomatic, no external dependencies.",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case001\\reference\\case001_approach_001.py",
+      "interface_type": "function_call",
+      "entry_name": "sort",
+      "parameters": [
+        {
+          "name": "lst",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Library Function",
+        "time_complexity": "O(n log n)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "built-in, stable, simple"
+      }
+    },
+    {
+      "approach_id": "approach_002",
+      "approach_name": "Bubble Sort",
+      "description": "Classic bubble sort. Repeatedly swaps adjacent elements if they are in the wrong order.",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case001\\reference\\case001_approach_002.py",
+      "interface_type": "function_call",
+      "entry_name": "sort",
+      "parameters": [
+        {
+          "name": "lst",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Bubble Sort",
+        "time_complexity": "O(n^2)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "stable, in-place, quadratic"
+      }
+    },
+    {
+      "approach_id": "approach_003",
+      "approach_name": "Insertion Sort",
+      "description": "Builds the sorted list one element at a time by inserting each element into its correct position.",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case001\\reference\\case001_approach_003.py",
+      "interface_type": "function_call",
+      "entry_name": "sort",
+      "parameters": [
+        {
+          "name": "lst",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Insertion Sort",
+        "time_complexity": "O(n^2)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "stable, in-place, adaptive"
+      }
+    },
+    {
+      "approach_id": "approach_004",
+      "approach_name": "Selection Sort",
+      "description": "Repeatedly selects the smallest element from the unsorted portion and swaps it to the front.",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case001\\reference\\case001_approach_004.py",
+      "interface_type": "function_call",
+      "entry_name": "sort",
+      "parameters": [
+        {
+          "name": "lst",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Selection Sort",
+        "time_complexity": "O(n^2)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "unstable, in-place"
+      }
+    },
+    {
+      "approach_id": "approach_005",
+      "approach_name": "Merge Sort",
+      "description": "Divides the list into halves, recursively sorts each half, then merges them.",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case001\\reference\\case001_approach_005.py",
+      "interface_type": "function_call",
+      "entry_name": "sort",
+      "parameters": [
+        {
+          "name": "lst",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Merge Sort",
+        "time_complexity": "O(n log n)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "stable, not in-place, divide-and-conquer"
+      }
+    },
+    {
+      "approach_id": "approach_006",
+      "approach_name": "Quick Sort (Lomuto Partition)",
+      "description": "Picks a pivot, partitions the array into elements smaller and larger than the pivot, then recursively sorts both partitions. Non-in-place version returns a new list.",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case001\\reference\\case001_approach_006.py",
+      "interface_type": "function_call",
+      "entry_name": "sort",
+      "parameters": [
+        {
+          "name": "lst",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Quick Sort",
+        "time_complexity": "O(n log n) average, O(n^2) worst",
+        "space_complexity": "O(n) (due to new list creation)",
+        "key_characteristics": "unstable, divide-and-conquer, average fast"
+      }
+    },
+    {
+      "approach_id": "approach_007",
+      "approach_name": "Heap Sort",
+      "description": "Builds a max-heap and repeatedly extracts the largest element to build the sorted list.",
+      "code_file_path": "D:\\AI Project\\code-generation-evaluation\\generated_cases\\case001\\reference\\case001_approach_007.py",
+      "interface_type": "function_call",
+      "entry_name": "sort",
+      "parameters": [
+        {
+          "name": "lst",
+          "type": "list",
+          "required": "true"
+        }
+      ],
+      "return_type": "list",
+      "approach_metadata": {
+        "algorithm_type": "Heap Sort",
+        "time_complexity": "O(n log n)",
+        "space_complexity": "O(n)",
+        "key_characteristics": "unstable, not adaptive"
+      }
+    }
+  ]
+}

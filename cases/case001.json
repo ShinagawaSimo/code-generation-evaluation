@@ -1,0 +1,7 @@
+{
+  "task_id": "case001",
+  "language": "python",
+  "requirement": "实现一个sort函数，需求如下：1. 该函数应接受一个整数列表作为输入，并返回一个按升序排列的新列表；2. 如果输入为空列表，则应返回一个空列表。",
+  "complexity": 1,
+  "acceptance_standard": {}
+}

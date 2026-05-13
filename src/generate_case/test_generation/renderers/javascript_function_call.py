@@ -5,7 +5,7 @@ from ..models import GeneratedTestArtifact
 from .base import make_javascript_test_file
 
 
-def render(test: Dict[str, Any], entry_name: str, index: int = 1) -> GeneratedTestArtifact:
+def render(test: Dict[str, Any], entry_name: str, index: int = 1, relevant_code: str = "", class_defs: Dict[str, List[str]] | None = None) -> GeneratedTestArtifact:
     test_id = str(test["test_id"])
     call = test.get("call", {})
     args: list = list(call.get("args", []))

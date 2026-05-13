@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from ..models import GeneratedTestArtifact
-from .base import build_manifest
+from .base import _parse_class_defs, build_manifest
 
 
 _RENDERERS = {}
@@ -29,7 +29,7 @@ def _import_renderers():
     }
 
 
-def render_tests(spec: Dict[str, Any], output_dir: str) -> List[str]:
+def render_tests(spec: Dict[str, Any], output_dir: str, relevant_code: str = "") -> List[str]:
     _import_renderers()
     language = str(spec.get("language", "python"))
     execution_mode = str(spec.get("execution_mode", ""))
@@ -44,6 +44,8 @@ def render_tests(spec: Dict[str, Any], output_dir: str) -> List[str]:
     if render_func is None:
         return []
 
+    class_defs = _parse_class_defs(relevant_code)
+
     output_dir_path = Path(output_dir)
     output_dir_path.mkdir(parents=True, exist_ok=True)
 
@@ -55,7 +57,7 @@ def render_tests(spec: Dict[str, Any], output_dir: str) -> List[str]:
         if execution_mode == "program_io":
             test.setdefault("parameters", sig_parameters)
             test.setdefault("return_type", sig_return_type)
-        artifact = render_func(test, entry_name, index=idx)
+        artifact = render_func(test, entry_name, index=idx, relevant_code=relevant_code, class_defs=class_defs)
         artifacts.append(artifact)
         manifest_entries.append({"test_id": test_id, "filename": artifact.relative_path})
 

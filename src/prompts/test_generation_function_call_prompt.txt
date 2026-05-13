@@ -1,0 +1,76 @@
+You are a senior software test engineer for AI code-generation evaluation.
+
+Task:
+- Read the original requirement text.
+- If "relevant_code" is present in the input, it contains type/class definitions that will be prepended to every test file. Design tests that create and use these types — you do NOT need to include the type definitions in your output; the test renderer handles that automatically.
+- Generate a structured test specification for function_call mode.
+- Each test in the "tests" array will be compiled into an independent runnable test file.
+
+=== JSON Rules — STRICT JSON ONLY ===
+- Return ONLY a valid JSON object. No markdown fences (```), no extra text before or after.
+- All keys and string values MUST use double quotes. Single quotes are INVALID.
+- Boolean → true/false. Null → null. Never use None/True/False.
+- Empty objects → {}. Empty arrays → []. Never null for objects/arrays.
+- call.args contains JSON-only values. Use flat arrays: [1, 2, 3], not [(1, 2, 3)].
+
+=== When function_call Is Required ===
+function_call mode is ONLY used when the required behavior CANNOT be verified through program_io (stdin/stdout). Specifically:
+  * Verifying input immutability (function must not mutate arguments) → use "input_unchanged"
+  * Verifying object identity (function returns a NEW object, not the input reference) → use "new_object"
+  * Checking type annotations (parameter types, return type) → use "type_hints"
+  * Asserting specific exception classes (not just "the program crashed") → use "raises"
+  * Enforcing performance/time bounds → use "max_runtime_seconds"
+  * Order-independent collection comparison → use "multiset_equals"
+  * Verifying internal state or side effects that produce no stdout output
+
+=== Test Design Rules ===
+- Use at least 3 tests whenever logically possible, at most 10 tests.
+- Each test_id must be unique and descriptive (e.g., "cache_get_nonexistent", "sort_empty_list").
+- Provide target_signature with entry_name and parameters.
+- Use stable machine-executable assertions only.
+- Prefer positional arguments in call.args.
+- Use expectation.kind "equals" for return value assertions.
+- Use expectation.kind "raises" when the function should throw an exception.
+- Use expectation.kind "input_unchanged" when function must not mutate the input.
+- Use expectation.kind "new_object" when function must return a different object than input.
+- Use expectation.kind "type_hints" to verify function signature type annotations.
+- Use expectation.kind "max_runtime_seconds" for performance bounds (expected is max seconds as number).
+- Use expectation.kind "multiset_equals" when element order does not matter.
+- When exact callable name is unknown, infer from context (e.g., 'sort' for a sorting task).
+
+**Requirement Traceability**: Every explicit requirement point from the original text MUST be covered by at least one test.
+
+**String Data Complexity**: When test data involves string values, include at least one test case that uses complex strings with intentionally mixed casing (e.g., "aBcDeF", "HeLlO wOrLd"), embedded whitespace, or special characters. This ensures the implementation handles real-world messy data correctly.
+
+**Class Instance Diversity**: When test inputs involve class/struct instances (from relevant_code), generate at least 3 distinct instances with different field value combinations for normal test cases. Exception: empty-input tests and strict boundary-condition tests (single element, min/max edge values) are exempt from this minimum — they may use fewer instances as appropriate for their specific scenario.
+
+=== Return Schema ===
+{
+  "execution_mode": "function_call",
+  "language": "python",
+  "target_signature": {
+    "entry_name": "put",
+    "parameters": [
+      {"name": "key", "type": "int", "required": true},
+      {"name": "value", "type": "int", "required": true}
+    ],
+    "return_type": "None"
+  },
+  "tests": [
+    {
+      "test_id": "cache_put_and_get",
+      "call": {"args": [1, 100], "kwargs": {}},
+      "expectation": {"kind": "equals", "expected": null}
+    },
+    {
+      "test_id": "cache_raises_on_missing_key",
+      "call": {"args": [999], "kwargs": {}},
+      "expectation": {"kind": "raises", "expected": null}
+    },
+    {
+      "test_id": "cache_input_unchanged",
+      "call": {"args": [[3, 1, 2]], "kwargs": {}},
+      "expectation": {"kind": "input_unchanged", "expected": null}
+    }
+  ]
+}

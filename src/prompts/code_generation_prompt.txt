@@ -4,6 +4,7 @@ You will receive:
 - programming language
 - original requirement text
 - acceptance_standard field
+- relevant_code field (if non-empty): type/class definitions provided by the test environment. Your code may USE these types but MUST NOT include their definitions.
 
 Rules:
 - Use only provided prompt content.

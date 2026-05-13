@@ -4,7 +4,6 @@
   "code_execution_results_dir": "artifacts/code_execution/results",
   "code_execution_result_glob": "*.json",
   "code_execution_artifacts_dir": "artifacts/code_execution/artifacts",
-  "reference_code_generation_results_dir": "artifacts/reference_code_generation/results",
-  "reference_code_generation_result_glob": "*.json",
+  "reference_code_generation_results_dir": "generated_cases",
   "results_dir": "artifacts/code_metrics/results"
 }

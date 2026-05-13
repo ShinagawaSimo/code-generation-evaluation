@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List
 
-from shared.case_text import parse_case_text
+from shared.case_text import load_case
 
 from .models import CodeGenerationRequest, CodeGenerationResult
 
@@ -32,13 +32,14 @@ def _load_sidecar_defaults(case_path: Path) -> Dict[str, Any]:
 def load_code_generation_request(case_path: str, defaults: Dict[str, Any] | None = None) -> CodeGenerationRequest:
     path = Path(case_path)
     defaults = {**(defaults or {}), **_load_sidecar_defaults(path)}
-    parsed_case = parse_case_text(path.read_text(encoding="utf-8"), str(defaults.get("language", "")))
+    case_data = load_case(path)
     return CodeGenerationRequest(
-        task_id=str(defaults.get("task_id") or path.stem),
+        task_id=str(defaults.get("task_id") or case_data["task_id"]),
         case_basename=path.stem,
-        language=parsed_case["language"],
-        original_requirement_text=parsed_case["body"],
-        acceptance_standard=dict(defaults.get("acceptance_standard", {})),
+        language=case_data["language"],
+        original_requirement_text=case_data["body"],
+        acceptance_standard=case_data.get("acceptance_standard") or dict(defaults.get("acceptance_standard", {})),
+        relevant_code=str(case_data.get("relevant_code", "")),
     )
 
 

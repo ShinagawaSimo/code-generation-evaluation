@@ -11,9 +11,10 @@ from code_execution.case_io import (
     save_code_execution_result,
 )
 from code_execution.service import execute_code
+from shared.file_utils import clear_output_files
 
 
-def run_code_execution() -> None:
+def run_code_execution(task_id: str | None = None) -> None:
     project_root = Path(__file__).resolve().parents[2]
     stage_config = load_json(str(project_root / "config" / "code_execution.json"))
 
@@ -24,6 +25,10 @@ def run_code_execution() -> None:
             str(stage_config["code_generation_result_glob"]),
         )
     }
+    if task_id:
+        if task_id not in codegen_results:
+            raise ValueError(f"No codegen result found for task_id: {task_id}")
+        codegen_results = {task_id: codegen_results[task_id]}
 
     results_dir = str(project_root / stage_config["results_dir"])
     generated_tests_dir = str(project_root / stage_config["generated_tests_dir"])
@@ -37,6 +42,9 @@ def run_code_execution() -> None:
 
     for case_index, (task_id, codegen_result) in enumerate(codegen_results.items(), start=1):
         print(f"[code_execution] case {case_index}/{total_cases} task={task_id}")
+        clear_output_files(results_dir, [f"{task_id}.json"])
+        clear_output_files(str(Path(logs_dir) / task_id), ["*.log"])
+        clear_output_files(str(Path(artifacts_dir) / task_id), ["execution_summary.json"])
         language = str(codegen_result.get("language", ""))
         result = execute_code(
             task_id=task_id,
@@ -62,4 +70,8 @@ def run_code_execution() -> None:
 
 
 if __name__ == "__main__":
-    run_code_execution()
+    import argparse
+    parser = argparse.ArgumentParser(description="Run code execution")
+    parser.add_argument("--task-id", help="Process a single case by task ID")
+    args = parser.parse_args()
+    run_code_execution(task_id=args.task_id)
