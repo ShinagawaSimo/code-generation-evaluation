@@ -4,9 +4,9 @@ from pathlib import Path
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from generate_case.case_metrics.case_io import load_json, save_case_metrics_result
-from generate_case.case_metrics.service import evaluate_case_metrics
-from generate_case.test_generation.case_io import list_case_paths
+from data_pipeline.case_metrics.case_io import load_json, save_case_metrics_result
+from data_pipeline.case_metrics.service import evaluate_case_metrics
+from data_pipeline.test_data_gen.case_io import list_case_paths
 from shared.case_text import load_case
 
 

@@ -2,15 +2,15 @@ import sys
 from pathlib import Path
 
 if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from code_execution.case_io import (
+from eval_pipeline.code_exec.case_io import (
     build_result_path,
     list_result_paths,
     load_json,
     save_code_execution_result,
 )
-from code_execution.service import execute_code
+from eval_pipeline.code_exec.service import execute_code
 from shared.file_utils import clear_output_files
 
 

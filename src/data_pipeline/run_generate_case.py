@@ -3,15 +3,15 @@ import sys
 from pathlib import Path
 
 if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from generate_case.case_metrics.case_io import load_json, save_case_metrics_result
-from generate_case.case_metrics.service import evaluate_case_metrics
-from generate_case.reference_code_generation.prompting import load_reference_code_prompt
-from generate_case.reference_code_generation.service import generate_reference_code
-from generate_case.test_generation.case_io import build_result_path as build_test_result_path
-from generate_case.test_generation.case_io import list_case_paths
-from generate_case.test_generation.service import generate_tests_for_case
+from data_pipeline.case_metrics.case_io import load_json, save_case_metrics_result
+from data_pipeline.case_metrics.service import evaluate_case_metrics
+from data_pipeline.reference_code_gen.prompting import load_reference_code_prompt
+from data_pipeline.reference_code_gen.service import generate_reference_code
+from data_pipeline.test_data_gen.case_io import build_result_path as build_test_result_path
+from data_pipeline.test_data_gen.case_io import list_case_paths
+from data_pipeline.test_data_gen.service import generate_tests_for_case
 from shared.case_text import load_case
 
 

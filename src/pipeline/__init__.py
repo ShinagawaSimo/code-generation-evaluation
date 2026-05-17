@@ -1,3 +1,3 @@
-from .run_pipeline import run_full_pipeline
+from .run_codegen_pipeline import run_codegen_pipeline
 
-__all__ = ["run_full_pipeline"]
+__all__ = ["run_codegen_pipeline"]

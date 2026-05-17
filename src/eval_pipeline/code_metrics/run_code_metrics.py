@@ -2,15 +2,15 @@ import sys
 from pathlib import Path
 
 if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from code_metrics.case_io import (
+from eval_pipeline.code_metrics.case_io import (
     build_result_path,
     list_result_paths,
     load_json,
     save_code_metrics_result,
 )
-from code_metrics.service import evaluate_code_metrics
+from eval_pipeline.code_metrics.service import evaluate_code_metrics
 from shared.file_utils import clear_output_files
 
 

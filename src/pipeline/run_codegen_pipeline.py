@@ -4,10 +4,10 @@ from pathlib import Path
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from case_metrics.case_io import load_json
-from code_generation.run_code_generation import run_code_generation
-from code_execution.run_code_execution import run_code_execution
-from code_metrics.run_code_metrics import run_code_metrics
+from data_pipeline.case_metrics.case_io import load_json
+from eval_pipeline.code_gen.run_code_generation import run_code_generation
+from eval_pipeline.code_exec.run_code_execution import run_code_execution
+from eval_pipeline.code_metrics.run_code_metrics import run_code_metrics
 
 
 def run_codegen_pipeline() -> None:

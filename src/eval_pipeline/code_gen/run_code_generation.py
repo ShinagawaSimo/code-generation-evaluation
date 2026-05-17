@@ -2,16 +2,16 @@ import sys
 from pathlib import Path
 
 if __package__ in {None, ""}:
-    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from code_generation.case_io import (
+from eval_pipeline.code_gen.case_io import (
     build_result_path,
     list_case_paths,
     load_code_generation_request,
     load_json,
     save_code_generation_result,
 )
-from code_generation.service import generate_code
+from eval_pipeline.code_gen.service import generate_code
 from shared.file_utils import clear_output_files
 
 
